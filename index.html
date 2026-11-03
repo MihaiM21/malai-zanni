@@ -1,0 +1,3021 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MĂLAI RUNNER - Subway Surfers & Temple Run</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ffd700;
+      --primary-glow: rgba(255, 215, 0, 0.45);
+      --accent-marius: #2563eb;
+      --accent-zanni: #e11d48;
+      --accent-gold: #f59e0b;
+      --accent-temple: #10b981;
+      --bg-dark: #080c16;
+      --text: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text);
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* CHARACTER & MODE SELECT SCREEN */
+    #screen-select {
+      background: linear-gradient(180deg, rgba(8, 12, 22, 0.85) 0%, rgba(10, 16, 30, 0.35) 45%, rgba(8, 12, 22, 0.96) 100%);
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 16px 18px 16px;
+      overflow-y: auto;
+    }
+
+    .select-header {
+      text-align: center;
+      margin-top: 4px;
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    .game-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.3rem, 6vw, 4.2rem);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #ffd700 45%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 18px rgba(245, 158, 11, 0.6));
+      line-height: 1;
+    }
+
+    /* GAME MODE SWITCHER TABS */
+    .mode-tabs-container {
+      display: flex;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 5px;
+      margin-top: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .mode-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+    }
+
+    .mode-tab.active[data-mode="subway"] {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #0b0f19;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.45);
+    }
+
+    .mode-tab.active[data-mode="temple"] {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5);
+    }
+
+    .game-tagline {
+      font-size: clamp(0.82rem, 2vw, 1.05rem);
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 1.2px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .character-cards-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      max-width: 860px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .char-card {
+      flex: 1 1 300px;
+      max-width: 360px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+
+    .char-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: #475569;
+      transition: background 0.3s;
+    }
+
+    .char-card.selected {
+      transform: translateY(-5px) scale(1.02);
+      border-color: #ffd700;
+      box-shadow: 0 16px 40px rgba(255, 215, 0, 0.25), 0 0 25px rgba(255, 215, 0, 0.2);
+      background: rgba(26, 36, 56, 0.85);
+    }
+
+    .char-card[data-char="marius"].selected::before {
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    }
+
+    .char-card[data-char="zanni"].selected::before {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    .char-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-fugar {
+      background: rgba(59, 130, 246, 0.25);
+      border: 1px solid #3b82f6;
+      color: #93c5fd;
+    }
+
+    .badge-vanator {
+      background: rgba(245, 158, 11, 0.25);
+      border: 1px solid #f59e0b;
+      color: #fde68a;
+    }
+
+    .char-avatar-frame {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3.5px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      background: #0f172a;
+    }
+
+    .char-card.selected .char-avatar-frame {
+      border-color: #ffd700;
+      transform: scale(1.06);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    }
+
+    .char-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
+
+    .char-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.75rem;
+      letter-spacing: 1px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+
+    .char-role-desc {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      text-align: center;
+      margin-bottom: 10px;
+      min-height: 38px;
+      font-style: italic;
+      line-height: 1.35;
+    }
+
+    .char-stats {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: rgba(10, 15, 28, 0.6);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .stat-bar-bg {
+      width: 110px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      border-radius: 4px;
+    }
+
+    .mode-selector {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 580px;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .mode-badge {
+      background: #e11d48;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .style-toggle-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .style-btn {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .style-btn.active {
+      background: #f59e0b;
+      color: #0b0f19;
+      border-color: #ffd700;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+    }
+
+    /* START BUTTON */
+    .btn-start {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+      color: #080c16;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.85rem;
+      letter-spacing: 1.8px;
+      padding: 14px 48px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.55), inset 0 2px 0 rgba(255,255,255,0.45);
+      transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 16px 45px rgba(245, 158, 11, 0.75);
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    }
+
+    .btn-start:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .controls-hint {
+      display: flex;
+      gap: 16px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 8px;
+      text-align: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .key-badge {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2px 7px;
+      border-radius: 5px;
+      color: #f8fafc;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    /* IN-GAME HUD */
+    #screen-hud {
+      display: none;
+      padding: 18px 22px;
+      justify-content: space-between;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .hud-stats-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hud-stat-pill {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.35);
+    }
+
+    .hud-stat-pill .icon {
+      font-size: 1.25rem;
+    }
+
+    .hud-stat-pill .val {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.45rem;
+      letter-spacing: 0.6px;
+      color: #fff;
+    }
+
+    .hud-stat-pill.coins .val {
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .hud-stat-pill.multiplier {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.8), rgba(185, 28, 28, 0.9));
+      border-color: #ef4444;
+      animation: alertBounce 0.8s infinite alternate;
+    }
+
+    .hud-right-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hud-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 1.15rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.08);
+    }
+
+    /* TEMPLE RUN CORNER TURN WARNING BANNER */
+    #turn-warning {
+      position: absolute;
+      top: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(16, 185, 129, 0.94);
+      border: 2px solid #a7f3d0;
+      padding: 10px 26px;
+      border-radius: 999px;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.35rem;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.85);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #turn-warning.active {
+      opacity: 1;
+      animation: alertBounce 0.5s infinite alternate;
+    }
+
+    /* EDGE FALL WARNING (TEMPLE RUN) */
+    #edge-warning {
+      position: absolute;
+      top: 190px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(239, 68, 68, 0.9);
+      border: 1.5px solid #fca5a5;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    #edge-warning.active {
+      opacity: 1;
+    }
+
+    /* CHASER WARNING BANNER */
+    #chaser-warning {
+      position: absolute;
+      top: 86px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(225, 29, 72, 0.92);
+      border: 2px solid #fda4af;
+      padding: 7px 22px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 25px rgba(225, 29, 72, 0.7);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #chaser-warning.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      animation: alertBounce 0.6s infinite alternate;
+    }
+
+    @keyframes alertBounce {
+      from { transform: translateX(-50%) scale(0.97); }
+      to { transform: translateX(-50%) scale(1.04); }
+    }
+
+    /* POWERUP ACTIVE BANNER */
+    #powerup-bar {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid #fbbf24;
+      padding: 8px 22px;
+      border-radius: 999px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.45);
+    }
+
+    .p-timer-track {
+      width: 130px;
+      height: 7px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .p-timer-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      transition: width 0.1s linear;
+    }
+
+    /* TOUCH CONTROLS ON MOBILE */
+    #touch-zones {
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      width: 100%;
+      display: none;
+      justify-content: space-between;
+      padding: 0 20px;
+      pointer-events: auto;
+    }
+
+    .touch-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      user-select: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .touch-btn:active {
+      background: rgba(255, 215, 0, 0.45);
+      transform: scale(0.92);
+    }
+
+    /* GAME OVER SCREEN */
+    #screen-gameover {
+      display: none;
+      background: radial-gradient(circle at center, rgba(30, 20, 30, 0.85) 0%, rgba(8, 4, 12, 0.96) 100%);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .gameover-box {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(239, 68, 68, 0.45);
+      border-radius: 24px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 35px rgba(239, 68, 68, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: zoomIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .gameover-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.3rem, 6.5vw, 3.4rem);
+      color: #ef4444;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      text-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
+    }
+
+    .gameover-quote {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .gameover-results {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .res-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .res-row .val {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.55rem;
+      color: #fff;
+    }
+
+    .res-row.best .val {
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .res-row.coins .val {
+      color: #fbbf24;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-restart {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      padding: 13px 24px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.45);
+      transition: all 0.2s;
+    }
+
+    .btn-restart:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.65);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 12px 24px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* PAUSE MODAL */
+    #screen-pause {
+      display: none;
+      background: rgba(8, 12, 22, 0.88);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pause-box {
+      background: rgba(30, 41, 59, 0.9);
+      border-radius: 20px;
+      padding: 32px;
+      width: 320px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .pause-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
+
+    .record-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      animation: recordGlow 1s infinite alternate;
+    }
+
+    @keyframes recordGlow {
+      from { transform: scale(0.96); filter: brightness(1); }
+      to { transform: scale(1.05); filter: brightness(1.3); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      .character-cards-container {
+        gap: 12px;
+      }
+      .char-card {
+        padding: 14px 16px;
+      }
+      .char-avatar-frame {
+        width: 100px;
+        height: 100px;
+        margin-top: 4px;
+        margin-bottom: 8px;
+      }
+      .char-name {
+        font-size: 1.45rem;
+      }
+      .char-role-desc {
+        font-size: 0.78rem;
+        min-height: auto;
+        margin-bottom: 8px;
+      }
+      .char-stats {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      #touch-zones {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- THREE.JS CANVAS CONTAINER -->
+  <div id="canvas-container"></div>
+
+  <!-- SCREEN 1: CHARACTER & MODE SELECT SCREEN -->
+  <div id="screen-select" class="ui-layer interactive">
+    <div class="select-header">
+      <h1 class="game-logo">MĂLAI RUNNER</h1>
+      
+      <!-- MODE SWITCHER TABS -->
+      <div class="mode-tabs-container">
+        <button class="mode-tab active" data-mode="subway" onclick="setGameMode('subway')">
+          <span>🚇</span> SUBWAY SURFERS
+        </button>
+        <button class="mode-tab" data-mode="temple" onclick="setGameMode('temple')">
+          <span>🗿</span> TEMPLE RUN
+        </button>
+      </div>
+
+      <p id="mode-tagline" class="game-tagline">Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #fbbf24;">Zannidache</span> pe șinele de metrou!</p>
+    </div>
+
+    <div class="character-cards-container">
+      <!-- CARD 1: MARIUS MATEI -->
+      <div class="char-card selected" data-char="marius" onclick="selectCharacter('marius')">
+        <span class="char-badge badge-fugar">Fugarul Oficial</span>
+        <div class="char-avatar-frame">
+          <img id="img-marius" class="char-avatar-img" alt="Marius Matei" src="assets/marius.png">
+        </div>
+        <h2 class="char-name" style="color: #60a5fa;">Marius Matei</h2>
+        <p id="marius-desc" class="char-role-desc">"Nu stau la discuții, am întâlnire corporate și fuge Zanni după mine!"</p>
+        <div class="char-stats">
+          <div class="stat-row">
+            <span>Viteză</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 82%;"></div></div>
+          </div>
+          <div class="stat-row">
+            <span>Agilitate</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
+          </div>
+          <div class="stat-row">
+            <span>Armură Guler Alb</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 88%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: ZANNIDACHE -->
+      <div class="char-card" data-char="zanni" onclick="selectCharacter('zanni')">
+        <span class="char-badge badge-vanator">Vânătorul de Mălai</span>
+        <div class="char-avatar-frame">
+          <img id="img-zanni" class="char-avatar-img" alt="Zannidache" src="assets/zanni.png">
+        </div>
+        <h2 class="char-name" style="color: #f59e0b;">Zannidache</h2>
+        <p id="zanni-desc" class="char-role-desc">"Unde fugi mă cu mălaiul? Nu scapi de lanțurile de aur și tatuajele mele!"</p>
+        <div class="char-stats">
+          <div class="stat-row">
+            <span>Viteză</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
+          </div>
+          <div class="stat-row">
+            <span>Agilitate</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 85%;"></div></div>
+          </div>
+          <div class="stat-row">
+            <span>Magnetism Mălai</span>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREMISE / SCENARIO -->
+    <div class="mode-selector">
+      <span class="mode-badge">Scenariu</span>
+      <span id="chase-desc">Marius aleargă în față, iar Zannidache îl fugărește nervos din spate!</span>
+    </div>
+
+    <!-- GRAPHICS STYLE TOGGLE -->
+    <div class="style-toggle-bar">
+      <span style="font-size: 0.8rem; font-weight: 700; color: #94a3b8;">STIL MODEL:</span>
+      <button id="btn-style-3d" class="style-btn active" onclick="setRenderStyle('3d')">3D Stylized Pro</button>
+      <button id="btn-style-25d" class="style-btn" onclick="setRenderStyle('25d')">✨ 2.5D HD Foto-Cutout</button>
+    </div>
+
+    <!-- START RUN BUTTON -->
+    <button class="btn-start" onclick="startGame()">
+      <span id="btn-start-label">ÎNCEPE GOANA!</span>
+      <span>🏃💨</span>
+    </button>
+
+    <!-- KEYBOARD / MOBILE CONTROLS HINT -->
+    <div id="controls-hint-subway" class="controls-hint">
+      <div>Benzi 3 Coloane: <span class="key-badge">A / D</span> sau <span class="key-badge">← / →</span></div>
+      <div>Săritură: <span class="key-badge">W / ↑ / SPACE</span></div>
+      <div>Alunecare (Slide): <span class="key-badge">S / ↓</span></div>
+      <div>Pe mobil: <span class="key-badge">Swipe pe ecran</span></div>
+    </div>
+
+    <div id="controls-hint-temple" class="controls-hint" style="display: none;">
+      <div>Direcție pe Drum: <span class="key-badge">Ține apăsat A / D sau ← / →</span> (Atenție la Margini!)</div>
+      <div>Viraje 90°: <span class="key-badge">Apasă A / D sau Swipe la Intersecții</span></div>
+      <div>Săritură peste Găuri: <span class="key-badge">W / SPACE / ↑</span></div>
+      <div>Alunecare: <span class="key-badge">S / ↓</span></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: IN-GAME HUD -->
+  <div id="screen-hud" class="ui-layer">
+    <div class="hud-top">
+      <div class="hud-stats-group">
+        <div class="hud-stat-pill">
+          <span class="icon">🏃</span>
+          <span id="hud-score" class="val">0 m</span>
+        </div>
+        <div class="hud-stat-pill coins">
+          <span class="icon" id="hud-coin-icon">🪙</span>
+          <span id="hud-coins" class="val">0</span>
+        </div>
+        <div class="hud-stat-pill" style="border-color: #38bdf8;">
+          <span class="icon">⚡</span>
+          <span id="hud-speed" class="val">25 km/h</span>
+        </div>
+      </div>
+
+      <div class="hud-right-group interactive">
+        <div id="hud-multiplier" class="hud-stat-pill multiplier" style="display: none;">
+          <span class="val">2X BOOST</span>
+        </div>
+        <button class="hud-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
+          <span id="audio-icon">🔊</span>
+        </button>
+        <button class="hud-btn" onclick="togglePause()" title="Pauză">
+          <span>⏸</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TEMPLE RUN 90 DEGREE TURN WARNING -->
+    <div id="turn-warning">
+      <span>↩️</span>
+      <span id="turn-warning-text">VIREAZĂ LA STÂNGA! (A / ←)</span>
+      <span>↩️</span>
+    </div>
+
+    <!-- EDGE WARNING (TEMPLE RUN) -->
+    <div id="edge-warning">
+      <span>⚠️ ATENȚIE LA MARGINE! CADI ÎN PRĂPASTIE!</span>
+    </div>
+
+    <!-- CHASER ALERT -->
+    <div id="chaser-warning">
+      <span>⚠️</span>
+      <span id="chaser-warning-text">ZANNI E EXACT ÎN SPATELE TĂU!</span>
+      <span>⚠️</span>
+    </div>
+
+    <!-- ACTIVE POWERUP PROGRESS -->
+    <div id="powerup-bar">
+      <span id="powerup-icon">🧲</span>
+      <span id="powerup-label" style="font-size: 0.85rem; font-weight: 700;">MAGNET ACTIV</span>
+      <div class="p-timer-track">
+        <div id="powerup-progress" class="p-timer-fill"></div>
+      </div>
+    </div>
+
+    <!-- MOBILE TOUCH BUTTONS -->
+    <div id="touch-zones">
+      <div class="touch-btn" id="btn-touch-left">◀</div>
+      <div style="display: flex; gap: 12px;">
+        <div class="touch-btn" id="btn-touch-jump">▲</div>
+        <div class="touch-btn" id="btn-touch-slide">▼</div>
+      </div>
+      <div class="touch-btn" id="btn-touch-right">▶</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: GAME OVER -->
+  <div id="screen-gameover" class="ui-layer interactive">
+    <div class="gameover-box">
+      <div id="new-record-tag" class="record-badge" style="display: none;">🏆 NOU RECORD PERSONAL!</div>
+      <h2 id="gameover-title" class="gameover-title">TE-A PRINS!</h2>
+      <p id="gameover-quote" class="gameover-quote">"N-ai avut destulă viteză pentru goana după mălai!"</p>
+
+      <div class="gameover-results">
+        <div class="res-row">
+          <span>Distanță Parcursă:</span>
+          <span id="res-score" class="val">0 m</span>
+        </div>
+        <div class="res-row best">
+          <span>Cel Mai Bun Scor (<span id="res-mode-label">Subway</span>):</span>
+          <span id="res-best" class="val">0 m</span>
+        </div>
+        <div class="res-row coins">
+          <span id="res-coin-label">Mălai Colectat:</span>
+          <span id="res-coins" class="val">0</span>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-restart" onclick="restartGame()">REJOACĂ (SPACE) 🔄</button>
+        <button class="btn-secondary" onclick="returnToMenu()">SCHIMBĂ PERSONAJUL / MODUL 🎭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: PAUSE -->
+  <div id="screen-pause" class="ui-layer interactive">
+    <div class="pause-box">
+      <h2 class="pause-title">JOC ÎN PAUZĂ</h2>
+      <button class="btn-start" style="font-size: 1.2rem; padding: 12px 24px; justify-content: center;" onclick="togglePause()">CONTINUĂ ▶</button>
+      <button class="btn-secondary" onclick="restartGame()">RESTART RUNDĂ 🔄</button>
+      <button class="btn-secondary" onclick="returnToMenu()">MENIU PRINCIPAL 🏠</button>
+    </div>
+  </div>
+
+  <!-- LOAD EMBEDDED BASE64 TEXTURES -->
+  <script src="assets/textures.js"></script>
+
+  <!-- LOAD THREE.JS -->
+  <script src="assets/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- MAIN GAME ENGINE SCRIPT -->
+  <script>
+    /* =========================================================================
+       1. SYNTHESIZED WEB AUDIO API SYSTEM
+       ========================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.musicPlaying = false;
+        this.musicTimer = null;
+        this.currentStep = 0;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playTone(freq, type, duration, startVol = 0.3, endVol = 0.001) {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(startVol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(endVol, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+
+      jump() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(175, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(560, this.ctx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.2);
+        } catch(e) {}
+      }
+
+      slide() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(75, this.ctx.currentTime + 0.25);
+          gain.gain.setValueAtTime(0.24, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.3);
+        } catch(e) {}
+      }
+
+      laneSwitch() {
+        this.playTone(320, 'sine', 0.09, 0.22, 0.01);
+      }
+
+      turn90() {
+        this.playTone(440, 'triangle', 0.12, 0.35, 0.01);
+        setTimeout(() => this.playTone(880, 'sine', 0.25, 0.3, 0.001), 60);
+      }
+
+      coin() {
+        if (!this.enabled || !this.ctx) return;
+        const freqs = (gameMode === 'subway') ? [987.77, 1174.66, 1318.51, 1567.98] : [587.33, 880.00, 1174.66];
+        const f = freqs[Math.floor(Math.random() * freqs.length)];
+        this.playTone(f, 'sine', 0.14, 0.28, 0.001);
+      }
+
+      powerup() {
+        if (!this.enabled || !this.ctx) return;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          setTimeout(() => {
+            this.playTone(freq, 'triangle', 0.22, 0.32, 0.01);
+          }, idx * 60);
+        });
+      }
+
+      crash() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(25, this.ctx.currentTime + 0.45);
+          gain.gain.setValueAtTime(0.55, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.5);
+        } catch(e) {}
+      }
+
+      startMusic() {
+        if (!this.enabled || this.musicPlaying) return;
+        this.init();
+        this.musicPlaying = true;
+        this.currentStep = 0;
+        
+        const tick = () => {
+          if (!this.musicPlaying || !this.enabled || !this.ctx) return;
+          const step = this.currentStep % 16;
+          
+          if (gameMode === 'subway') {
+            const bassNotes = [65.41, 65.41, 73.42, 65.41, 58.27, 58.27, 65.41, 77.78];
+            const leadNotes = [261.63, 311.13, 392.00, 311.13, 261.63, 349.23, 392.00, 466.16];
+            
+            if (step % 4 === 0) this.playTone(110, 'sine', 0.12, 0.38, 0.01);
+            if (step % 2 === 1) this.playTone(4200 + Math.random() * 1500, 'triangle', 0.04, 0.07, 0.001);
+            if (step % 2 === 0) {
+              const bFreq = bassNotes[(Math.floor(this.currentStep / 2)) % bassNotes.length];
+              this.playTone(bFreq, 'sawtooth', 0.18, 0.12, 0.01);
+            }
+            if (step % 4 === 2) {
+              const lFreq = leadNotes[(Math.floor(this.currentStep / 2)) % leadNotes.length];
+              this.playTone(lFreq, 'square', 0.14, 0.08, 0.01);
+            }
+          } else {
+            // Temple Run Mode: Tribal Jungle Drums & Taiko
+            const djembeNotes = [60, 80, 55, 95];
+            if (step % 4 === 0 || step === 14) {
+              this.playTone(djembeNotes[Math.floor(Math.random() * djembeNotes.length)], 'sine', 0.28, 0.45, 0.005);
+            }
+            if (step % 2 === 1) {
+              this.playTone(1800 + Math.random() * 600, 'triangle', 0.03, 0.1, 0.001);
+            }
+            if (step === 2 || step === 10) {
+              this.playTone(240, 'triangle', 0.09, 0.18, 0.01);
+            }
+            if (step === 6) {
+              this.playTone(130.81, 'sawtooth', 0.3, 0.12, 0.01);
+            }
+          }
+
+          this.currentStep++;
+          this.musicTimer = setTimeout(tick, 125);
+        };
+        tick();
+      }
+
+      stopMusic() {
+        this.musicPlaying = false;
+        if (this.musicTimer) {
+          clearTimeout(this.musicTimer);
+          this.musicTimer = null;
+        }
+      }
+
+      toggle() {
+        this.enabled = !this.enabled;
+        if (!this.enabled) {
+          this.stopMusic();
+        } else {
+          this.init();
+          this.startMusic();
+        }
+        return this.enabled;
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* =========================================================================
+       2. TEXTURE CROPPING & PROCEDURAL GENERATORS
+       ========================================================================= */
+    function createCroppedFaceTexture(imgSrc, sx, sy, sWidth, sHeight) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffdfc4';
+      ctx.fillRect(0, 0, 512, 512);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 512, 512);
+        texture.needsUpdate = true;
+      };
+      img.src = imgSrc;
+      return texture;
+    }
+
+    function createFullPortraitCutoutTexture(imgSrc) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, 512, 512);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(256, 256, 240, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(img, 0, 0, 512, 512);
+        ctx.restore();
+        
+        ctx.beginPath();
+        ctx.arc(256, 256, 240, 0, Math.PI * 2);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = '#ffd700';
+        ctx.stroke();
+
+        texture.needsUpdate = true;
+      };
+      img.src = imgSrc;
+      return texture;
+    }
+
+    const mariusSrc = (window.CHARACTER_ASSETS && window.CHARACTER_ASSETS.marius) ? window.CHARACTER_ASSETS.marius : 'assets/marius.png';
+    const zanniSrc = (window.CHARACTER_ASSETS && window.CHARACTER_ASSETS.zanni) ? window.CHARACTER_ASSETS.zanni : 'assets/zanni.png';
+
+    const mariusFaceTexture = createCroppedFaceTexture(mariusSrc, 180, 40, 280, 290);
+    const mariusPortraitTexture = createFullPortraitCutoutTexture(mariusSrc);
+
+    const zanniFaceTexture = createCroppedFaceTexture(zanniSrc, 170, 30, 330, 330);
+    const zanniPortraitTexture = createFullPortraitCutoutTexture(zanniSrc);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('img-marius').src = mariusSrc;
+      document.getElementById('img-zanni').src = zanniSrc;
+    });
+
+    /* =========================================================================
+       3. CHARACTER MODELS (3D PRO & 2.5D CUTOUT RIGS)
+       ========================================================================= */
+    let currentRenderStyle = '3d';
+    let gameMode = 'subway'; // 'subway' or 'temple'
+
+    function setRenderStyle(style) {
+      currentRenderStyle = style;
+      document.getElementById('btn-style-3d').classList.toggle('active', style === '3d');
+      document.getElementById('btn-style-25d').classList.toggle('active', style === '25d');
+      buildCharacters();
+    }
+
+    function setGameMode(mode) {
+      gameMode = mode;
+      document.querySelectorAll('.mode-tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-mode') === mode);
+      });
+
+      const tagline = document.getElementById('mode-tagline');
+      const startBtnLabel = document.getElementById('btn-start-label');
+      const coinIcon = document.getElementById('hud-coin-icon');
+      const coinLabel = document.getElementById('res-coin-label');
+      const modeLabel = document.getElementById('res-mode-label');
+      const hintSubway = document.getElementById('controls-hint-subway');
+      const hintTemple = document.getElementById('controls-hint-temple');
+
+      if (mode === 'subway') {
+        tagline.innerHTML = 'Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #fbbf24;">Zannidache</span> pe cele 3 benzi de metrou!';
+        startBtnLabel.innerText = 'ÎNCEPE GOANA!';
+        coinIcon.innerText = '🪙';
+        coinLabel.innerText = 'Mălai Colectat:';
+        modeLabel.innerText = 'Subway Surfers';
+        hintSubway.style.display = 'flex';
+        hintTemple.style.display = 'none';
+      } else {
+        tagline.innerHTML = 'Ruinele Străvechi: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #f59e0b;">Zannidache</span> pe un singur drum îngust de piatră cu margini și prăpăstii!';
+        startBtnLabel.innerText = 'EXPLOREAZĂ TEMPLUL! 🗿';
+        coinIcon.innerText = '💎';
+        coinLabel.innerText = 'Nestemate & Idoli:';
+        modeLabel.innerText = 'Temple Run';
+        hintSubway.style.display = 'none';
+        hintTemple.style.display = 'flex';
+      }
+
+      rebuildTracks();
+      buildCharacters();
+      sound.laneSwitch();
+    }
+
+    function createCharacterMesh(type) {
+      const charGroup = new THREE.Group();
+
+      const shadowGeo = new THREE.PlaneGeometry(1.3, 1.3);
+      const shadowMat = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        opacity: 0.45,
+        depthWrite: false
+      });
+      const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+      shadowMesh.rotation.x = -Math.PI / 2;
+      shadowMesh.position.y = 0.02;
+      charGroup.add(shadowMesh);
+      charGroup.shadowMesh = shadowMesh;
+
+      const bodyGroup = new THREE.Group();
+      charGroup.add(bodyGroup);
+      charGroup.bodyGroup = bodyGroup;
+
+      if (currentRenderStyle === '25d') {
+        const portraitTex = (type === 'marius') ? mariusPortraitTexture : zanniPortraitTexture;
+        const billboardGeo = new THREE.PlaneGeometry(1.8, 1.8);
+        const billboardMat = new THREE.MeshLambertMaterial({
+          map: portraitTex,
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        const billboard = new THREE.Mesh(billboardGeo, billboardMat);
+        billboard.position.y = 1.75;
+        bodyGroup.add(billboard);
+
+        const legMat = new THREE.MeshLambertMaterial({
+          color: (type === 'marius') ? 0x0f172a : 0x18181b
+        });
+        const legGeo = new THREE.BoxGeometry(0.25, 0.85, 0.26);
+        const leftLeg = new THREE.Mesh(legGeo, legMat);
+        leftLeg.position.set(-0.35, 0.45, 0);
+        bodyGroup.add(leftLeg);
+
+        const rightLeg = new THREE.Mesh(legGeo, legMat);
+        rightLeg.position.set(0.35, 0.45, 0);
+        bodyGroup.add(rightLeg);
+
+        const shoeMat = new THREE.MeshLambertMaterial({
+          color: (type === 'marius') ? 0x1e293b : 0xf59e0b
+        });
+        const shoeGeo = new THREE.BoxGeometry(0.26, 0.16, 0.38);
+        const leftShoe = new THREE.Mesh(shoeGeo, shoeMat);
+        leftShoe.position.set(-0.35, 0.08, -0.06);
+        bodyGroup.add(leftShoe);
+
+        const rightShoe = new THREE.Mesh(shoeGeo, shoeMat);
+        rightShoe.position.set(0.35, 0.08, -0.06);
+        bodyGroup.add(rightShoe);
+
+        charGroup.leftLeg = leftLeg;
+        charGroup.rightLeg = rightLeg;
+        charGroup.leftShoe = leftShoe;
+        charGroup.rightShoe = rightShoe;
+        charGroup.billboard = billboard;
+
+        return charGroup;
+      }
+
+      /* 3D PRO RIG */
+      const skinMat = new THREE.MeshLambertMaterial({ color: 0xffdfc4 });
+
+      if (type === 'marius') {
+        const suitNavyMat = new THREE.MeshLambertMaterial({ color: 0x141f36 });
+        const turtleneckMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+        const pantsMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+        const shoesMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+        const darkHairMat = new THREE.MeshLambertMaterial({ color: 0x18181b });
+
+        const hipsGeo = new THREE.BoxGeometry(0.72, 0.32, 0.42);
+        const hips = new THREE.Mesh(hipsGeo, suitNavyMat);
+        hips.position.y = 0.95;
+        bodyGroup.add(hips);
+
+        const torsoGeo = new THREE.BoxGeometry(0.8, 0.78, 0.46);
+        const torso = new THREE.Mesh(torsoGeo, suitNavyMat);
+        torso.position.y = 1.48;
+        bodyGroup.add(torso);
+
+        const neckGeo = new THREE.CylinderGeometry(0.21, 0.23, 0.24, 16);
+        const neck = new THREE.Mesh(neckGeo, turtleneckMat);
+        neck.position.y = 1.92;
+        bodyGroup.add(neck);
+
+        const headGroup = new THREE.Group();
+        headGroup.position.y = 2.28;
+        bodyGroup.add(headGroup);
+
+        const headFaceMat = new THREE.MeshLambertMaterial({ map: mariusFaceTexture });
+        const headMaterials = [
+          skinMat,       // right (+X)
+          skinMat,       // left (-X)
+          darkHairMat,   // top (+Y)
+          skinMat,       // bottom (-Y)
+          darkHairMat,   // back (+Z)
+          headFaceMat    // front (-Z)
+        ];
+        const headGeo = new THREE.BoxGeometry(0.6, 0.62, 0.54);
+        const headMesh = new THREE.Mesh(headGeo, headMaterials);
+        headGroup.add(headMesh);
+
+        const hairTopGeo = new THREE.BoxGeometry(0.62, 0.18, 0.56);
+        const hairTop = new THREE.Mesh(hairTopGeo, darkHairMat);
+        hairTop.position.set(0, 0.3, 0.02);
+        headGroup.add(hairTop);
+
+        const legGeo = new THREE.BoxGeometry(0.24, 0.85, 0.26);
+        const leftLeg = new THREE.Mesh(legGeo, pantsMat);
+        leftLeg.position.set(-0.22, 0.45, 0);
+        bodyGroup.add(leftLeg);
+
+        const rightLeg = new THREE.Mesh(legGeo, pantsMat);
+        rightLeg.position.set(0.22, 0.45, 0);
+        bodyGroup.add(rightLeg);
+
+        const shoeGeo = new THREE.BoxGeometry(0.25, 0.15, 0.38);
+        const leftShoe = new THREE.Mesh(shoeGeo, shoesMat);
+        leftShoe.position.set(-0.22, 0.08, -0.06);
+        bodyGroup.add(leftShoe);
+
+        const rightShoe = new THREE.Mesh(shoeGeo, shoesMat);
+        rightShoe.position.set(0.22, 0.08, -0.06);
+        bodyGroup.add(rightShoe);
+
+        const armGeo = new THREE.BoxGeometry(0.22, 0.72, 0.24);
+        const leftArm = new THREE.Mesh(armGeo, suitNavyMat);
+        leftArm.position.set(-0.55, 1.48, 0);
+        bodyGroup.add(leftArm);
+
+        const rightArm = new THREE.Mesh(armGeo, suitNavyMat);
+        rightArm.position.set(0.55, 1.48, 0);
+        bodyGroup.add(rightArm);
+
+        charGroup.leftLeg = leftLeg;
+        charGroup.rightLeg = rightLeg;
+        charGroup.leftShoe = leftShoe;
+        charGroup.rightShoe = rightShoe;
+        charGroup.leftArm = leftArm;
+        charGroup.rightArm = rightArm;
+        charGroup.headGroup = headGroup;
+
+      } else {
+        const streetMat = new THREE.MeshLambertMaterial({ color: 0x1f1f23 });
+        const zanniPantsMat = new THREE.MeshLambertMaterial({ color: 0x111318 });
+        const goldChainMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.9, roughness: 0.18 });
+        const silverChainMat = new THREE.MeshStandardMaterial({ color: 0xd1d5db, metalness: 0.92, roughness: 0.15 });
+        const blondeHairMat = new THREE.MeshLambertMaterial({ color: 0xdfbf6c });
+        const blackHairMat = new THREE.MeshLambertMaterial({ color: 0x141414 });
+
+        const hipsGeo = new THREE.BoxGeometry(0.7, 0.32, 0.4);
+        const hips = new THREE.Mesh(hipsGeo, zanniPantsMat);
+        hips.position.y = 0.95;
+        bodyGroup.add(hips);
+
+        const torsoGeo = new THREE.BoxGeometry(0.78, 0.78, 0.46);
+        const torso = new THREE.Mesh(torsoGeo, streetMat);
+        torso.position.y = 1.48;
+        bodyGroup.add(torso);
+
+        const neckGeo = new THREE.CylinderGeometry(0.2, 0.22, 0.24, 16);
+        const neckTattooMat = new THREE.MeshLambertMaterial({ color: 0x0284c7 });
+        const neck = new THREE.Mesh(neckGeo, neckTattooMat);
+        neck.position.y = 1.92;
+        bodyGroup.add(neck);
+
+        const chainGeo1 = new THREE.TorusGeometry(0.26, 0.05, 8, 24);
+        const goldChain = new THREE.Mesh(chainGeo1, goldChainMat);
+        goldChain.rotation.x = Math.PI / 2.3;
+        goldChain.position.set(0, 1.86, -0.05);
+        bodyGroup.add(goldChain);
+
+        const chainGeo2 = new THREE.TorusGeometry(0.3, 0.04, 8, 24);
+        const silverChain = new THREE.Mesh(chainGeo2, silverChainMat);
+        silverChain.rotation.x = Math.PI / 2.1;
+        silverChain.position.set(0, 1.78, -0.07);
+        bodyGroup.add(silverChain);
+
+        const headGroup = new THREE.Group();
+        headGroup.position.y = 2.28;
+        bodyGroup.add(headGroup);
+
+        const headFaceMat = new THREE.MeshLambertMaterial({ map: zanniFaceTexture });
+        const headMaterials = [
+          blondeHairMat,  // right (+X)
+          blackHairMat,   // left (-X)
+          blondeHairMat,  // top (+Y)
+          skinMat,        // bottom (-Y)
+          blackHairMat,   // back (+Z)
+          headFaceMat     // front (-Z)
+        ];
+        const headGeo = new THREE.BoxGeometry(0.6, 0.62, 0.54);
+        const headMesh = new THREE.Mesh(headGeo, headMaterials);
+        headGroup.add(headMesh);
+
+        // 3D Dual Hair
+        const rightHairGeo = new THREE.BoxGeometry(0.31, 0.16, 0.56);
+        const rightHair = new THREE.Mesh(rightHairGeo, blondeHairMat);
+        rightHair.position.set(0.155, 0.32, 0.01);
+        headGroup.add(rightHair);
+
+        const leftHairGeo = new THREE.BoxGeometry(0.31, 0.16, 0.56);
+        const leftHair = new THREE.Mesh(leftHairGeo, blackHairMat);
+        leftHair.position.set(-0.155, 0.32, 0.01);
+        headGroup.add(leftHair);
+
+        const legGeo = new THREE.BoxGeometry(0.24, 0.85, 0.26);
+        const leftLeg = new THREE.Mesh(legGeo, zanniPantsMat);
+        leftLeg.position.set(-0.22, 0.45, 0);
+        bodyGroup.add(leftLeg);
+
+        const rightLeg = new THREE.Mesh(legGeo, zanniPantsMat);
+        rightLeg.position.set(0.22, 0.45, 0);
+        bodyGroup.add(rightLeg);
+
+        const sneakerMat = new THREE.MeshLambertMaterial({ color: 0xf59e0b });
+        const shoeGeo = new THREE.BoxGeometry(0.25, 0.16, 0.38);
+        const leftShoe = new THREE.Mesh(shoeGeo, sneakerMat);
+        leftShoe.position.set(-0.22, 0.08, -0.06);
+        bodyGroup.add(leftShoe);
+
+        const rightShoe = new THREE.Mesh(shoeGeo, sneakerMat);
+        rightShoe.position.set(0.22, 0.08, -0.06);
+        bodyGroup.add(rightShoe);
+
+        const armGeo = new THREE.BoxGeometry(0.22, 0.72, 0.24);
+        const leftArm = new THREE.Mesh(armGeo, streetMat);
+        leftArm.position.set(-0.55, 1.48, 0);
+        bodyGroup.add(leftArm);
+
+        const rightArm = new THREE.Mesh(armGeo, streetMat);
+        rightArm.position.set(0.55, 1.48, 0);
+        bodyGroup.add(rightArm);
+
+        charGroup.leftLeg = leftLeg;
+        charGroup.rightLeg = rightLeg;
+        charGroup.leftShoe = leftShoe;
+        charGroup.rightShoe = rightShoe;
+        charGroup.leftArm = leftArm;
+        charGroup.rightArm = rightArm;
+        charGroup.headGroup = headGroup;
+      }
+
+      return charGroup;
+    }
+
+    /* =========================================================================
+       4. GAME STATE & CONSTANTS
+       ========================================================================= */
+    const SUBWAY_LANES = [-2.6, 0, 2.6];
+    const TEMPLE_ROAD_HALF_WIDTH = 2.4; // Single road with edges at ±2.4
+    const GRAVITY = -42.0;
+    const JUMP_FORCE = 15.5;
+
+    const STATE = {
+      MENU: 0,
+      PLAYING: 1,
+      PAUSED: 2,
+      GAMEOVER: 3
+    };
+
+    let currentState = STATE.MENU;
+    let selectedPlayerType = 'marius';
+    let chaserType = 'zanni';
+
+    let score = 0;
+    let coins = 0;
+    let speed = 25.0;
+    let baseWorldSpeed = 16.0;
+
+    let magnetTimer = 0;
+    let multiplierTimer = 0;
+
+    let scene, camera, renderer;
+    let playerGroup, chaserGroup;
+    let trackChunks = [];
+    let obstacles = [];
+    let collectibleCoins = [];
+    let particles = [];
+
+    // Movement:
+    // In Subway: currentLane 0, 1, 2
+    let currentLane = 1;
+    // In Temple Run: playerX is smooth continuous position across the single road!
+    let playerX = 0;
+    let targetX = 0;
+    let playerY = 0;
+    let playerVY = 0;
+    let isJumping = false;
+    let isSliding = false;
+    let slideTimer = 0;
+
+    // Continuous key press tracking for Temple Run smooth steering
+    const keysDown = {};
+
+    // Temple Run 90° Turn state
+    let activeTurnDirection = null; // 'left' or 'right'
+    let activeTurnChunkZ = null;
+    let turnExecuted = false;
+
+    // Chaser State
+    let chaserLane = 1;
+    let chaserX = 0;
+    let chaserZ = 5.2;
+    let chaserTargetZ = 5.2;
+    let chaserWarningActive = false;
+
+    let clock = new THREE.Clock();
+    let animTime = 0;
+
+    /* =========================================================================
+       5. TRACK BUILDER: SUBWAY (3 LANES) VS TEMPLE RUN (SINGLE NARROW ROAD + EDGES)
+       ========================================================================= */
+    const CHUNK_LENGTH = 32;
+    const ACTIVE_CHUNKS = 8;
+
+    function createTrackChunk(zPos, isTurn = false, turnDir = 'left') {
+      const chunk = new THREE.Group();
+      chunk.position.z = zPos;
+      chunk.isTurnChunk = isTurn;
+      chunk.turnDir = turnDir;
+
+      if (gameMode === 'subway') {
+        /* ================= SUBWAY SURFERS (3 LANES) ================= */
+        const roadGeo = new THREE.PlaneGeometry(9.2, CHUNK_LENGTH);
+        const roadMat = new THREE.MeshLambertMaterial({ color: 0x181e29 });
+        const road = new THREE.Mesh(roadGeo, roadMat);
+        road.rotation.x = -Math.PI / 2;
+        road.receiveShadow = true;
+        chunk.add(road);
+
+        for (let lx of [-1.3, 1.3]) {
+          for (let sz = -CHUNK_LENGTH/2 + 2; sz < CHUNK_LENGTH/2; sz += 5) {
+            const dashGeo = new THREE.PlaneGeometry(0.14, 2.5);
+            const dashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
+            const dash = new THREE.Mesh(dashGeo, dashMat);
+            dash.rotation.x = -Math.PI / 2;
+            dash.position.set(lx, 0.01, sz);
+            chunk.add(dash);
+          }
+        }
+
+        const curbGeo = new THREE.BoxGeometry(0.5, 0.4, CHUNK_LENGTH);
+        const curbMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+        const leftCurb = new THREE.Mesh(curbGeo, curbMat);
+        leftCurb.position.set(-4.6, 0.2, 0);
+        chunk.add(leftCurb);
+
+        const rightCurb = new THREE.Mesh(curbGeo, curbMat);
+        rightCurb.position.set(4.6, 0.2, 0);
+        chunk.add(rightCurb);
+
+        for (let side of [-1, 1]) {
+          const bWidth = 5 + Math.random() * 3;
+          const bHeight = 8 + Math.random() * 12;
+          const bDepth = CHUNK_LENGTH * 0.85;
+          const bGeo = new THREE.BoxGeometry(bWidth, bHeight, bDepth);
+          const bMat = new THREE.MeshLambertMaterial({
+            color: side === -1 ? 0x0f172a : 0x111827
+          });
+          const building = new THREE.Mesh(bGeo, bMat);
+          building.position.set(side * (7.5 + bWidth/2), bHeight / 2 - 0.5, 0);
+          chunk.add(building);
+
+          if (Math.random() > 0.4) {
+            const signGeo = new THREE.PlaneGeometry(2.5, 1.2);
+            const signColor = (Math.random() > 0.5) ? 0xef4444 : 0x38bdf8;
+            const signMat = new THREE.MeshBasicMaterial({ color: signColor });
+            const sign = new THREE.Mesh(signGeo, signMat);
+            sign.position.set(side * 5.0, 3.5, (Math.random() - 0.5) * 12);
+            sign.rotation.y = side === -1 ? Math.PI / 2 : -Math.PI / 2;
+            chunk.add(sign);
+          }
+
+          const lampPoleGeo = new THREE.CylinderGeometry(0.08, 0.08, 4.5);
+          const lampPoleMat = new THREE.MeshLambertMaterial({ color: 0x475569 });
+          const lampPole = new THREE.Mesh(lampPoleGeo, lampPoleMat);
+          lampPole.position.set(side * 4.4, 2.25, 0);
+          chunk.add(lampPole);
+
+          const bulbGeo = new THREE.SphereGeometry(0.25, 8, 8);
+          const bulbMat = new THREE.MeshBasicMaterial({ color: 0xfffbeb });
+          const bulb = new THREE.Mesh(bulbGeo, bulbMat);
+          bulb.position.set(side * 4.1, 4.4, 0);
+          chunk.add(bulb);
+        }
+
+      } else {
+        /* ================= TEMPLE RUN (SINGLE ROAD WITH EDGES & CORNERS) =================
+           Un singur drum îngust de piatră cu margini abisale, fără coloane de metrou!
+           Viraje la 90 de grade la stânga și la dreapta!
+        ================================================================================= */
+        const stoneMat = new THREE.MeshLambertMaterial({ color: 0x443e37 }); // Dale antice de piatră
+        const curbMat = new THREE.MeshLambertMaterial({ color: 0x2b2722 });  // Bordură crăpată
+        const mossMat = new THREE.MeshLambertMaterial({ color: 0x2b4226 });  // Mușchi de templu
+
+        if (isTurn) {
+          // 90 DEGREE TURN CORNER INTERSECTION
+          // Platform of intersection
+          const turnPlatformGeo = new THREE.BoxGeometry(6.2, 1.2, 6.2);
+          const turnPlatform = new THREE.Mesh(turnPlatformGeo, stoneMat);
+          turnPlatform.position.y = -0.6;
+          chunk.add(turnPlatform);
+
+          // Temple back wall (blocks straight path to enforce the 90° corner)
+          const wallGeo = new THREE.BoxGeometry(6.4, 4.5, 1.4);
+          const wall = new THREE.Mesh(wallGeo, stoneMat);
+          wall.position.set(0, 2.25, -3.4);
+          chunk.add(wall);
+
+          // Path extends 90° to the side (Left or Right)
+          const sideRoadGeo = new THREE.BoxGeometry(10.0, 1.2, 5.0);
+          const sideRoad = new THREE.Mesh(sideRoadGeo, stoneMat);
+          sideRoad.position.set((turnDir === 'left') ? -7.0 : 7.0, -0.6, 0);
+          chunk.add(sideRoad);
+
+          // Glowing Green Ancient Arrow glyph on floor
+          const arrowGeo = new THREE.PlaneGeometry(2.8, 2.8);
+          const arrowMat = new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.9 });
+          const arrow = new THREE.Mesh(arrowGeo, arrowMat);
+          arrow.rotation.x = -Math.PI / 2;
+          arrow.rotation.z = (turnDir === 'left') ? Math.PI / 2 : -Math.PI / 2;
+          arrow.position.set(0, 0.02, 0);
+          chunk.add(arrow);
+
+        } else {
+          // Single continuous narrow stone road (Width: 5.0)
+          const roadGeo = new THREE.BoxGeometry(5.0, 1.2, CHUNK_LENGTH);
+          const road = new THREE.Mesh(roadGeo, stoneMat);
+          road.position.y = -0.6;
+          chunk.add(road);
+
+          // Ancient Crumbling Curbs on the edges (Left: -2.5, Right: +2.5)
+          const curbGeo = new THREE.BoxGeometry(0.35, 0.35, CHUNK_LENGTH);
+          const leftCurb = new THREE.Mesh(curbGeo, curbMat);
+          leftCurb.position.set(-2.5, 0.15, 0);
+          chunk.add(leftCurb);
+
+          const rightCurb = new THREE.Mesh(curbGeo, curbMat);
+          rightCurb.position.set(2.5, 0.15, 0);
+          chunk.add(rightCurb);
+
+          // Moss patches along the road
+          for (let mz = -CHUNK_LENGTH/2 + 3; mz < CHUNK_LENGTH/2; mz += 8) {
+            const mossGeo = new THREE.PlaneGeometry(0.6, 1.5);
+            const moss = new THREE.Mesh(mossGeo, mossMat);
+            moss.rotation.x = -Math.PI / 2;
+            moss.position.set((Math.random() - 0.5) * 3.5, 0.01, mz);
+            chunk.add(moss);
+          }
+
+          // Ancient Stone Pillars with Burning Torches along the edges
+          for (let side of [-1, 1]) {
+            for (let sz = -CHUNK_LENGTH/2 + 5; sz < CHUNK_LENGTH/2; sz += 12) {
+              const pilGeo = new THREE.BoxGeometry(0.6, 3.4, 0.6);
+              const pil = new THREE.Mesh(pilGeo, stoneMat);
+              pil.position.set(side * 2.9, 1.6, sz);
+              chunk.add(pil);
+
+              // Flaming Torch
+              const flameGeo = new THREE.SphereGeometry(0.22, 6, 6);
+              const flameMat = new THREE.MeshBasicMaterial({ color: 0xf97316 });
+              const flame = new THREE.Mesh(flameGeo, flameMat);
+              flame.position.set(side * 2.8, 3.4, sz);
+              chunk.add(flame);
+            }
+          }
+        }
+      }
+
+      scene.add(chunk);
+      return chunk;
+    }
+
+    function rebuildTracks() {
+      trackChunks.forEach(c => scene.remove(c));
+      trackChunks = [];
+      obstacles.forEach(o => scene.remove(o));
+      obstacles = [];
+      collectibleCoins.forEach(c => scene.remove(c));
+      collectibleCoins = [];
+
+      for (let i = 0; i < ACTIVE_CHUNKS; i++) {
+        const chunk = createTrackChunk(-i * CHUNK_LENGTH);
+        trackChunks.push(chunk);
+      }
+
+      for (let z = -30; z > -ACTIVE_CHUNKS * CHUNK_LENGTH; z -= 24) {
+        spawnObstaclePattern(z);
+      }
+    }
+
+    /* =========================================================================
+       6. OBSTACLES & TEMPLE RUN SINGLE ROAD CHASM / ROOT / ARCHES
+       ========================================================================= */
+    function spawnObstaclePattern(zPos) {
+      if (zPos > -25) return;
+
+      if (gameMode === 'temple') {
+        // TEMPLE RUN: Obstacles placed across the single road!
+        const templeType = Math.floor(Math.random() * 4);
+
+        if (templeType === 0) {
+          // Low ancient stone archway (SLIDE UNDER)
+          createTempleArch(0, zPos);
+        } else if (templeType === 1) {
+          // Tree Root / Fallen stone log across road (JUMP OVER)
+          createTempleLog(0, zPos);
+          spawnTempleGemArc(zPos);
+        } else if (templeType === 2) {
+          // Broken floor gap / Chasm across the road (MUST JUMP)
+          createTempleChasm(0, zPos);
+        } else if (templeType === 3) {
+          // Curved trail of Temple Gems to steer through!
+          spawnTempleGemCurve(zPos);
+        }
+        return;
+      }
+
+      // SUBWAY SURFERS: 3 Lanes
+      const patternType = Math.floor(Math.random() * 5);
+      const freeLane = Math.floor(Math.random() * 3);
+
+      for (let l = 0; l < 3; l++) {
+        if (l === freeLane && patternType !== 4) {
+          spawnSubwayCoinLine(l, zPos + 4, 3);
+          continue;
+        }
+
+        const laneX = SUBWAY_LANES[l];
+
+        if (patternType === 0) {
+          createHurdle(laneX, zPos);
+          spawnCoinArc(l, zPos);
+        } else if (patternType === 1) {
+          createHighBarrier(laneX, zPos);
+        } else if (patternType === 2) {
+          createMetroTrain(laneX, zPos);
+        } else if (patternType === 3) {
+          createRoadblock(laneX, zPos);
+        } else if (patternType === 4) {
+          if (l === 1 && Math.random() < 0.28) {
+            spawnPowerup(laneX, zPos);
+          } else {
+            spawnSubwayCoinLine(l, zPos + 3, 2);
+          }
+        }
+      }
+    }
+
+    /* TEMPLE RUN OBSTACLES */
+    function createTempleArch(x, z) {
+      const arch = new THREE.Group();
+      arch.position.set(x, 0, z);
+      arch.obsType = 'high'; // must slide under
+
+      const stoneMat = new THREE.MeshLambertMaterial({ color: 0x3d3832 });
+      const lintelGeo = new THREE.BoxGeometry(5.4, 0.8, 1.2);
+      const lintel = new THREE.Mesh(lintelGeo, stoneMat);
+      lintel.position.y = 2.15;
+      arch.add(lintel);
+
+      const postGeo = new THREE.BoxGeometry(0.7, 3.2, 1.2);
+      const p1 = new THREE.Mesh(postGeo, stoneMat);
+      p1.position.set(-2.4, 1.6, 0);
+      arch.add(p1);
+
+      const p2 = new THREE.Mesh(postGeo, stoneMat);
+      p2.position.set(2.4, 1.6, 0);
+      arch.add(p2);
+
+      scene.add(arch);
+      obstacles.push(arch);
+    }
+
+    function createTempleLog(x, z) {
+      const logGroup = new THREE.Group();
+      logGroup.position.set(x, 0, z);
+      logGroup.obsType = 'low'; // must jump over
+
+      const logGeo = new THREE.CylinderGeometry(0.35, 0.35, 5.0, 12);
+      const woodMat = new THREE.MeshLambertMaterial({ color: 0x451a03 });
+      const log = new THREE.Mesh(logGeo, woodMat);
+      log.rotation.z = Math.PI / 2;
+      log.position.y = 0.55;
+      logGroup.add(log);
+
+      scene.add(logGroup);
+      obstacles.push(logGroup);
+    }
+
+    function createTempleChasm(x, z) {
+      const chasm = new THREE.Group();
+      chasm.position.set(x, 0, z);
+      chasm.obsType = 'low'; // must jump over the pit
+
+      const pitGeo = new THREE.BoxGeometry(5.2, 0.4, 4.0);
+      const pitMat = new THREE.MeshBasicMaterial({ color: 0x030712 });
+      const pit = new THREE.Mesh(pitGeo, pitMat);
+      pit.position.y = 0.05;
+      chasm.add(pit);
+
+      scene.add(chasm);
+      obstacles.push(chasm);
+    }
+
+    /* SUBWAY SURFERS OBSTACLES */
+    function createHurdle(x, z) {
+      const hurdle = new THREE.Group();
+      hurdle.position.set(x, 0, z);
+      hurdle.obsType = 'low';
+
+      const barGeo = new THREE.BoxGeometry(2.1, 0.45, 0.15);
+      const barMat = new THREE.MeshLambertMaterial({ color: 0xef4444 });
+      const bar = new THREE.Mesh(barGeo, barMat);
+      bar.position.y = 0.65;
+      hurdle.add(bar);
+
+      const legGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.9);
+      const legMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+      const leftLeg = new THREE.Mesh(legGeo, legMat);
+      leftLeg.position.set(-0.9, 0.45, 0);
+      hurdle.add(leftLeg);
+
+      const rightLeg = new THREE.Mesh(legGeo, legMat);
+      rightLeg.position.set(0.9, 0.45, 0);
+      hurdle.add(rightLeg);
+
+      scene.add(hurdle);
+      obstacles.push(hurdle);
+    }
+
+    function createHighBarrier(x, z) {
+      const barrier = new THREE.Group();
+      barrier.position.set(x, 0, z);
+      barrier.obsType = 'high';
+
+      const beamGeo = new THREE.BoxGeometry(2.2, 0.5, 0.2);
+      const beamMat = new THREE.MeshLambertMaterial({ color: 0xf59e0b });
+      const beam = new THREE.Mesh(beamGeo, beamMat);
+      beam.position.y = 2.1;
+      barrier.add(beam);
+
+      const stripeGeo = new THREE.BoxGeometry(2.22, 0.2, 0.22);
+      const stripeMat = new THREE.MeshLambertMaterial({ color: 0x111827 });
+      const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+      stripe.position.y = 2.1;
+      barrier.add(stripe);
+
+      const poleGeo = new THREE.CylinderGeometry(0.08, 0.08, 2.5);
+      const poleMat = new THREE.MeshLambertMaterial({ color: 0x64748b });
+      const p1 = new THREE.Mesh(poleGeo, poleMat);
+      p1.position.set(-1.0, 1.25, 0);
+      barrier.add(p1);
+
+      const p2 = new THREE.Mesh(poleGeo, poleMat);
+      p2.position.set(1.0, 1.25, 0);
+      barrier.add(p2);
+
+      scene.add(barrier);
+      obstacles.push(barrier);
+    }
+
+    function createMetroTrain(x, z) {
+      const train = new THREE.Group();
+      train.position.set(x, 0, z);
+      train.obsType = 'full';
+
+      const trainGeo = new THREE.BoxGeometry(2.2, 2.8, 6.0);
+      const trainMat = new THREE.MeshLambertMaterial({ color: 0x0284c7 });
+      const trainBody = new THREE.Mesh(trainGeo, trainMat);
+      trainBody.position.y = 1.4;
+      train.add(trainBody);
+
+      const windGeo = new THREE.PlaneGeometry(1.8, 0.9);
+      const windMat = new THREE.MeshLambertMaterial({ color: 0x0369a1 });
+      const wind = new THREE.Mesh(windGeo, windMat);
+      wind.position.set(0, 1.8, 3.01);
+      train.add(wind);
+
+      for (let hx of [-0.65, 0.65]) {
+        const lightGeo = new THREE.SphereGeometry(0.18, 8, 8);
+        const lightMat = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+        const light = new THREE.Mesh(lightGeo, lightMat);
+        light.position.set(hx, 0.7, 3.02);
+        train.add(light);
+      }
+
+      scene.add(train);
+      obstacles.push(train);
+    }
+
+    function createRoadblock(x, z) {
+      const rb = new THREE.Group();
+      rb.position.set(x, 0, z);
+      rb.obsType = 'low';
+
+      const coneGeo = new THREE.ConeGeometry(0.35, 0.8, 12);
+      const coneMat = new THREE.MeshLambertMaterial({ color: 0xf97316 });
+      
+      const c1 = new THREE.Mesh(coneGeo, coneMat);
+      c1.position.set(-0.5, 0.4, 0);
+      rb.add(c1);
+
+      const c2 = new THREE.Mesh(coneGeo, coneMat);
+      c2.position.set(0.5, 0.4, 0);
+      rb.add(c2);
+
+      scene.add(rb);
+      obstacles.push(rb);
+    }
+
+    // COLLECTIBLES: COINS & TEMPLE GEMS
+    const coinGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.08, 16);
+    const gemGeo = new THREE.OctahedronGeometry(0.35);
+
+    function createSingleCoin(x, y, z) {
+      let coinMesh;
+      if (gameMode === 'subway') {
+        const coinMat = new THREE.MeshStandardMaterial({
+          color: 0xffd700,
+          metalness: 0.9,
+          roughness: 0.22,
+          emissive: 0x854d0e,
+          emissiveIntensity: 0.2
+        });
+        coinMesh = new THREE.Mesh(coinGeo, coinMat);
+        coinMesh.rotation.z = Math.PI / 2;
+      } else {
+        const gemMat = new THREE.MeshStandardMaterial({
+          color: 0x10b981,
+          metalness: 0.85,
+          roughness: 0.15,
+          emissive: 0x047857,
+          emissiveIntensity: 0.35
+        });
+        coinMesh = new THREE.Mesh(gemGeo, gemMat);
+      }
+      coinMesh.position.set(x, y, z);
+      coinMesh.isCoin = true;
+      scene.add(coinMesh);
+      collectibleCoins.push(coinMesh);
+    }
+
+    function spawnSubwayCoinLine(laneIdx, zStart, count) {
+      const x = SUBWAY_LANES[laneIdx];
+      for (let i = 0; i < count; i++) {
+        createSingleCoin(x, 0.8, zStart - i * 2.2);
+      }
+    }
+
+    function spawnCoinArc(laneIdx, hurdleZ) {
+      const x = SUBWAY_LANES[laneIdx];
+      const heights = [1.2, 2.2, 2.5, 2.2, 1.2];
+      const offsets = [3.0, 1.5, 0, -1.5, -3.0];
+      for (let i = 0; i < offsets.length; i++) {
+        createSingleCoin(x, heights[i], hurdleZ + offsets[i]);
+      }
+    }
+
+    /* Temple Run Smooth Gem Line / Curve across the single path */
+    function spawnTempleGemCurve(zCenter) {
+      const offsets = [4, 2, 0, -2, -4];
+      const side = (Math.random() > 0.5) ? 1 : -1;
+      for (let i = 0; i < offsets.length; i++) {
+        const x = Math.sin((i / offsets.length) * Math.PI) * 1.5 * side;
+        createSingleCoin(x, 0.8, zCenter + offsets[i]);
+      }
+    }
+
+    function spawnTempleGemArc(hurdleZ) {
+      const heights = [1.2, 2.2, 2.5, 2.2, 1.2];
+      const offsets = [3.0, 1.5, 0, -1.5, -3.0];
+      for (let i = 0; i < offsets.length; i++) {
+        createSingleCoin(0, heights[i], hurdleZ + offsets[i]);
+      }
+    }
+
+    function spawnPowerup(x, z) {
+      const pGroup = new THREE.Group();
+      pGroup.position.set(x, 1.2, z);
+      const isMagnet = Math.random() > 0.5;
+      pGroup.isPowerup = true;
+      pGroup.pType = isMagnet ? 'magnet' : 'multiplier';
+
+      if (isMagnet) {
+        const magGeo = new THREE.TorusGeometry(0.35, 0.1, 8, 16, Math.PI);
+        const magMat = new THREE.MeshLambertMaterial({ color: 0xef4444 });
+        const mag = new THREE.Mesh(magGeo, magMat);
+        mag.rotation.z = Math.PI;
+        pGroup.add(mag);
+      } else {
+        const dGeo = new THREE.OctahedronGeometry(0.4);
+        const dMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+        const dMesh = new THREE.Mesh(dGeo, dMat);
+        pGroup.add(dMesh);
+      }
+
+      scene.add(pGroup);
+      collectibleCoins.push(pGroup);
+    }
+
+    /* =========================================================================
+       7. PARTICLES
+       ========================================================================= */
+    function spawnParticles(pos, count, colorHex, spread = 0.4) {
+      for (let i = 0; i < count; i++) {
+        const pGeo = new THREE.SphereGeometry(0.08 + Math.random() * 0.06, 6, 6);
+        const pMat = new THREE.MeshBasicMaterial({ color: colorHex });
+        const p = new THREE.Mesh(pGeo, pMat);
+        p.position.copy(pos);
+        p.velocity = new THREE.Vector3(
+          (Math.random() - 0.5) * spread * 6,
+          Math.random() * 4 + 1.5,
+          (Math.random() - 0.5) * spread * 6
+        );
+        p.life = 0.45;
+        scene.add(p);
+        particles.push(p);
+      }
+    }
+
+    /* =========================================================================
+       8. THREE.JS INITIALIZATION
+       ========================================================================= */
+    function initThreeScene() {
+      const container = document.getElementById('canvas-container');
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x080c16);
+      scene.fog = new THREE.FogExp2(0x080c16, 0.016);
+
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 150);
+      setCameraMenuMode();
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffecd2, 1.25);
+      dirLight.position.set(8, 20, 10);
+      dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 1024;
+      dirLight.shadow.mapSize.height = 1024;
+      scene.add(dirLight);
+
+      const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.5);
+      rimLight.position.set(-10, 8, -15);
+      scene.add(rimLight);
+
+      for (let i = 0; i < ACTIVE_CHUNKS; i++) {
+        const chunk = createTrackChunk(-i * CHUNK_LENGTH);
+        trackChunks.push(chunk);
+      }
+
+      for (let z = -30; z > -ACTIVE_CHUNKS * CHUNK_LENGTH; z -= 24) {
+        spawnObstaclePattern(z);
+      }
+
+      buildCharacters();
+
+      window.addEventListener('resize', onWindowResize);
+    }
+
+    function setCameraMenuMode() {
+      camera.position.set(0, 1.8, -3.8);
+      camera.lookAt(0, 1.5, 0);
+    }
+
+    function setCameraPlayMode() {
+      camera.position.set(0, 4.0, 7.0);
+      camera.lookAt(0, 1.8, -10.0);
+    }
+
+    function buildCharacters() {
+      if (playerGroup) scene.remove(playerGroup);
+      if (chaserGroup) scene.remove(chaserGroup);
+
+      playerGroup = createCharacterMesh(selectedPlayerType);
+      playerGroup.position.set(0, 0, 0);
+      scene.add(playerGroup);
+
+      chaserGroup = createCharacterMesh(chaserType);
+      chaserGroup.position.set(0, 0, chaserZ);
+      scene.add(chaserGroup);
+
+      if (currentState === STATE.MENU) {
+        playerGroup.rotation.y = 0;
+        chaserGroup.position.z = 25;
+      } else {
+        playerGroup.rotation.y = (currentRenderStyle === '25d') ? 0 : 0.25;
+      }
+    }
+
+    function onWindowResize() {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    /* =========================================================================
+       9. GAME LOOP
+       ========================================================================= */
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const dt = Math.min(clock.getDelta(), 0.1);
+      animTime += dt;
+
+      if (currentState === STATE.PLAYING) {
+        updateGameplay(dt);
+      } else if (currentState === STATE.MENU) {
+        updateMenuPreview(dt);
+      } else if (currentState === STATE.GAMEOVER) {
+        updateGameOverCamera(dt);
+      }
+
+      updateCharacterAnimations(dt);
+      updateParticles(dt);
+
+      renderer.render(scene, camera);
+    }
+
+    function updateMenuPreview(dt) {
+      if (playerGroup) {
+        playerGroup.rotation.y = Math.sin(animTime * 1.5) * 0.35;
+        playerGroup.position.y = Math.sin(animTime * 2.5) * 0.05;
+      }
+    }
+
+    function updateGameOverCamera(dt) {
+      camera.position.x += Math.sin(animTime * 0.8) * 0.02;
+      camera.lookAt(playerX, 1.2, 0);
+    }
+
+    function updateGameplay(dt) {
+      // 1. Difficulty & Speed
+      const currentWorldSpeed = baseWorldSpeed + (score * 0.0035);
+      speed = Math.floor(currentWorldSpeed * 1.6);
+      document.getElementById('hud-speed').innerText = `${speed} km/h`;
+
+      const distDelta = currentWorldSpeed * dt;
+      const pointsMultiplier = (multiplierTimer > 0) ? 2 : 1;
+      score += Math.floor(distDelta * pointsMultiplier);
+      document.getElementById('hud-score').innerText = `${score} m`;
+
+      // 2. Continuous Track Movement Towards Positive Z
+      const moveDistance = currentWorldSpeed * dt;
+      for (let i = 0; i < trackChunks.length; i++) {
+        const chunk = trackChunks[i];
+        chunk.position.z += moveDistance;
+
+        // Temple Run 90° Turn Corner Detection
+        if (gameMode === 'temple' && chunk.isTurnChunk) {
+          const distToTurn = chunk.position.z;
+
+          if (distToTurn > -18 && distToTurn < 6) {
+            activeTurnDirection = chunk.turnDir;
+            activeTurnChunkZ = chunk.position.z;
+            const turnWarn = document.getElementById('turn-warning');
+            turnWarn.classList.add('active');
+            document.getElementById('turn-warning-text').innerText = 
+              (activeTurnDirection === 'left') ? 'VIREAZĂ LA STÂNGA! (A / ← / SWIPE)' : 'VIREAZĂ LA DREAPTA! (D / → / SWIPE)';
+
+            // Failed to turn before crossing corner: fall into the abyss!
+            if (distToTurn > 3.0 && !turnExecuted) {
+              handleCrash(null, "Ai căzut de pe stâncă în prăpastia templului! N-ai virat la timp!");
+            }
+          }
+        }
+
+        // Recycle chunk to front
+        if (chunk.position.z > CHUNK_LENGTH) {
+          const lowestZ = Math.min(...trackChunks.map(c => c.position.z));
+          scene.remove(chunk);
+
+          // In Temple Run, spawn a 90° turn every ~100m
+          const shouldSpawnTurn = (gameMode === 'temple' && Math.random() < 0.22 && score > 60);
+          const turnDir = (Math.random() > 0.5) ? 'left' : 'right';
+          const newChunk = createTrackChunk(lowestZ - CHUNK_LENGTH, shouldSpawnTurn, turnDir);
+          trackChunks[i] = newChunk;
+        }
+      }
+
+      if (activeTurnChunkZ !== null && activeTurnChunkZ > 6) {
+        document.getElementById('turn-warning').classList.remove('active');
+        activeTurnDirection = null;
+        activeTurnChunkZ = null;
+        turnExecuted = false;
+      }
+
+      // 3. Move & Check Obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.position.z += moveDistance;
+        checkObstacleCollision(obs);
+
+        if (obs.position.z > 12) {
+          scene.remove(obs);
+          obstacles.splice(i, 1);
+        }
+      }
+
+      const farthestObsZ = obstacles.length > 0 ? Math.min(...obstacles.map(o => o.position.z)) : 0;
+      if (farthestObsZ > -(ACTIVE_CHUNKS - 1) * CHUNK_LENGTH) {
+        spawnObstaclePattern(farthestObsZ - 22 - Math.random() * 8);
+      }
+
+      // 4. Collectibles & Magnet
+      for (let i = collectibleCoins.length - 1; i >= 0; i--) {
+        const item = collectibleCoins[i];
+        item.position.z += moveDistance;
+        item.rotation.y += dt * 3.5;
+
+        if (magnetTimer > 0 && item.isCoin) {
+          const dx = playerX - item.position.x;
+          const dy = (playerY + 1.0) - item.position.y;
+          const dz = 0 - item.position.z;
+          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+          if (dist < 14) {
+            item.position.x += dx * 7.5 * dt;
+            item.position.y += dy * 7.5 * dt;
+            item.position.z += dz * 7.5 * dt;
+          }
+        }
+
+        const distToPlayer = Math.hypot(item.position.x - playerX, item.position.z - 0);
+        if (distToPlayer < 1.15 && Math.abs(item.position.y - (playerY + 1.0)) < 1.4) {
+          if (item.isCoin) {
+            coins++;
+            document.getElementById('hud-coins').innerText = coins;
+            sound.coin();
+            spawnParticles(item.position, 8, (gameMode === 'subway') ? 0xffd700 : 0x10b981, 0.3);
+          } else if (item.isPowerup) {
+            sound.powerup();
+            if (item.pType === 'magnet') {
+              magnetTimer = 10.0;
+              showPowerupUI('🧲', 'MAGNET ACTIV', 10.0);
+            } else {
+              multiplierTimer = 12.0;
+              showPowerupUI('⚡', '2X MULTIPLICATOR', 12.0);
+              document.getElementById('hud-multiplier').style.display = 'flex';
+            }
+          }
+          scene.remove(item);
+          collectibleCoins.splice(i, 1);
+          continue;
+        }
+
+        if (item.position.z > 10) {
+          scene.remove(item);
+          collectibleCoins.splice(i, 1);
+        }
+      }
+
+      // 5. MOVEMENT LOGIC:
+      // In Subway Mode: Discrete 3-lane lerp
+      // In Temple Run Mode: Continuous smooth analog steering across the single stone path!
+      if (gameMode === 'subway') {
+        targetX = SUBWAY_LANES[currentLane];
+        playerX += (targetX - playerX) * 14 * dt;
+        document.getElementById('edge-warning').classList.remove('active');
+      } else {
+        // TEMPLE RUN: Smooth steering across single road width with edge drop physics!
+        const steerSpeed = 9.0;
+        if (keysDown['ArrowLeft'] || keysDown['KeyA']) {
+          playerX -= steerSpeed * dt;
+        }
+        if (keysDown['ArrowRight'] || keysDown['KeyD']) {
+          playerX += steerSpeed * dt;
+        }
+
+        // Edge detection & warning on Temple Run's single road
+        const distFromCenter = Math.abs(playerX);
+        const edgeWarnEl = document.getElementById('edge-warning');
+
+        if (distFromCenter > 1.95 && distFromCenter <= 2.6) {
+          edgeWarnEl.classList.add('active');
+        } else {
+          edgeWarnEl.classList.remove('active');
+        }
+
+        // Falling off edge into abyss!
+        if (distFromCenter > 2.65 && !isJumping) {
+          handleCrash(null, "Ai alunecat de pe marginea îngustă a drumului în prăpastia templului!");
+        }
+      }
+
+      playerGroup.position.x = playerX;
+
+      // 6. Jump Physics
+      if (isJumping) {
+        playerVY += GRAVITY * dt;
+        playerY += playerVY * dt;
+
+        if (playerY <= 0) {
+          playerY = 0;
+          playerVY = 0;
+          isJumping = false;
+          spawnParticles(new THREE.Vector3(playerX, 0.1, 0), 6, 0x94a3b8, 0.2);
+        }
+      }
+      playerGroup.position.y = playerY;
+
+      if (playerGroup.shadowMesh) {
+        const shadowScale = Math.max(0.3, 1.0 - playerY * 0.28);
+        playerGroup.shadowMesh.scale.set(shadowScale, shadowScale, shadowScale);
+        playerGroup.shadowMesh.material.opacity = 0.45 * shadowScale;
+      }
+
+      // 7. Slide
+      if (isSliding) {
+        slideTimer -= dt;
+        if (Math.random() < 0.4) {
+          spawnParticles(new THREE.Vector3(playerX + (Math.random()-0.5)*0.4, 0.05, 0.2), 2, 0xf59e0b, 0.15);
+        }
+        if (slideTimer <= 0) {
+          isSliding = false;
+          playerGroup.bodyGroup.scale.set(1, 1, 1);
+          playerGroup.bodyGroup.position.y = 0;
+          playerGroup.bodyGroup.rotation.x = 0;
+        }
+      }
+
+      // 8. Chaser AI
+      updateChaserAI(dt);
+
+      // 9. Power-ups
+      if (magnetTimer > 0) {
+        magnetTimer -= dt;
+        updatePowerupProgress(magnetTimer / 10.0);
+        if (magnetTimer <= 0) hidePowerupUI();
+      }
+      if (multiplierTimer > 0) {
+        multiplierTimer -= dt;
+        if (magnetTimer <= 0) {
+          updatePowerupProgress(multiplierTimer / 12.0);
+        }
+        if (multiplierTimer <= 0) {
+          document.getElementById('hud-multiplier').style.display = 'none';
+          hidePowerupUI();
+        }
+      }
+
+      // 10. Camera Follow
+      camera.position.x += (playerX * 0.45 - camera.position.x) * 10 * dt;
+      const bankAngle = (gameMode === 'subway') ? (playerX - targetX) * 0.06 : (keysDown['ArrowLeft'] || keysDown['KeyA'] ? -0.06 : (keysDown['ArrowRight'] || keysDown['KeyD'] ? 0.06 : 0));
+      camera.rotation.z += (bankAngle - camera.rotation.z) * 8 * dt;
+
+      const targetCamY = isSliding ? 3.3 : (4.0 + playerY * 0.4);
+      camera.position.y += (targetCamY - camera.position.y) * 10 * dt;
+    }
+
+    function updateChaserAI(dt) {
+      if (gameMode === 'subway') {
+        const chaserTargetX = SUBWAY_LANES[chaserLane];
+        chaserX += (chaserTargetX - chaserX) * 7.5 * dt;
+      } else {
+        // In Temple Run: Chaser tracks player smoothly along the single road
+        chaserX += (playerX - chaserX) * 5.5 * dt;
+      }
+      chaserGroup.position.x = chaserX;
+
+      chaserZ += (chaserTargetZ - chaserZ) * 4.0 * dt;
+      chaserGroup.position.z = chaserZ;
+
+      const isVeryClose = (chaserZ < 3.8);
+      const chaserWarningEl = document.getElementById('chaser-warning');
+
+      if (isVeryClose && !chaserWarningActive) {
+        chaserWarningActive = true;
+        chaserWarningEl.classList.add('active');
+        document.getElementById('chaser-warning-text').innerText = 
+          (chaserType === 'zanni') ? 'ZANNI E EXACT ÎN SPATELE TĂU!' : 'MARIUS TE AJUNGE DIN URMĂ!';
+      } else if (!isVeryClose && chaserWarningActive) {
+        chaserWarningActive = false;
+        chaserWarningEl.classList.remove('active');
+      }
+
+      if (chaserLane !== currentLane) {
+        setTimeout(() => {
+          chaserLane = currentLane;
+        }, 160);
+      }
+    }
+
+    /* =========================================================================
+       10. CHARACTER ANIMATIONS
+       ========================================================================= */
+    function updateCharacterAnimations(dt) {
+      const runFrequency = (currentState === STATE.PLAYING) ? speed * 0.42 : 5.0;
+
+      if (playerGroup) {
+        const body = playerGroup.bodyGroup;
+
+        if (currentState === STATE.MENU) {
+          body.position.y = Math.sin(animTime * 3) * 0.04;
+          return;
+        }
+
+        if (isSliding) {
+          body.position.y = -0.4;
+          body.scale.set(1.0, 0.45, 1.2);
+          body.rotation.x = Math.PI / 6;
+          if (playerGroup.leftLeg) playerGroup.leftLeg.rotation.x = Math.PI / 3;
+          if (playerGroup.rightLeg) playerGroup.rightLeg.rotation.x = Math.PI / 3;
+        } else if (isJumping) {
+          body.rotation.x = 0;
+          body.scale.set(1, 1, 1);
+          body.position.y = 0;
+          if (playerGroup.leftLeg) playerGroup.leftLeg.rotation.x = -Math.PI / 4;
+          if (playerGroup.rightLeg) playerGroup.rightLeg.rotation.x = -Math.PI / 5;
+          if (playerGroup.leftArm) playerGroup.leftArm.rotation.x = Math.PI / 3;
+          if (playerGroup.rightArm) playerGroup.rightArm.rotation.x = Math.PI / 3;
+        } else {
+          const runPhase = animTime * runFrequency;
+          body.position.y = Math.abs(Math.sin(runPhase)) * 0.12;
+          body.rotation.x = -0.08;
+
+          const legSwing = Math.sin(runPhase) * 0.85;
+          if (playerGroup.leftLeg) playerGroup.leftLeg.rotation.x = legSwing;
+          if (playerGroup.rightLeg) playerGroup.rightLeg.rotation.x = -legSwing;
+          if (playerGroup.leftArm) playerGroup.leftArm.rotation.x = -legSwing * 0.9;
+          if (playerGroup.rightArm) playerGroup.rightArm.rotation.x = legSwing * 0.9;
+        }
+
+        // Body tilt when steering or changing lanes
+        const tiltAmount = (gameMode === 'subway') ? (targetX - playerX) * -0.12 : ((keysDown['ArrowLeft'] || keysDown['KeyA']) ? -0.15 : ((keysDown['ArrowRight'] || keysDown['KeyD']) ? 0.15 : 0));
+        body.rotation.z += (tiltAmount - body.rotation.z) * 10 * dt;
+
+        if (playerGroup.headGroup) {
+          if (chaserZ < 3.8 && !isSliding) {
+            playerGroup.headGroup.rotation.y = Math.PI - 0.4 + Math.sin(animTime * 4) * 0.3;
+          } else {
+            playerGroup.headGroup.rotation.y = (currentRenderStyle === '3d') ? 0.35 : 0;
+          }
+        }
+      }
+
+      if (chaserGroup && currentState === STATE.PLAYING) {
+        const cBody = chaserGroup.bodyGroup;
+        const cRunPhase = animTime * runFrequency * 1.05;
+        cBody.position.y = Math.abs(Math.sin(cRunPhase)) * 0.15;
+        cBody.rotation.x = -0.22;
+
+        const cLegSwing = Math.sin(cRunPhase) * 0.95;
+        if (chaserGroup.leftLeg) chaserGroup.leftLeg.rotation.x = cLegSwing;
+        if (chaserGroup.rightLeg) chaserGroup.rightLeg.rotation.x = -cLegSwing;
+
+        const armGrab = Math.PI / 2.6 + Math.sin(cRunPhase * 2) * 0.15;
+        if (chaserGroup.leftArm) chaserGroup.leftArm.rotation.x = armGrab;
+        if (chaserGroup.rightArm) chaserGroup.rightArm.rotation.x = armGrab;
+      }
+    }
+
+    function updateParticles(dt) {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.position.addScaledVector(p.velocity, dt);
+        p.velocity.y += GRAVITY * 0.4 * dt;
+        p.life -= dt;
+        p.scale.multiplyScalar(0.92);
+
+        if (p.life <= 0) {
+          scene.remove(p);
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    /* =========================================================================
+       11. COLLISION HANDLING & GAME OVER
+       ========================================================================= */
+    function checkObstacleCollision(obs) {
+      const dz = Math.abs(obs.position.z - 0);
+      if (dz > 1.3) return;
+
+      const dx = Math.abs(obs.position.x - playerX);
+      if (dx > (gameMode === 'subway' ? 0.95 : 2.0)) return;
+
+      if (obs.obsType === 'low') {
+        if (playerY > 1.15) return;
+      } else if (obs.obsType === 'high') {
+        if (isSliding) return;
+      }
+
+      handleCrash(obs);
+    }
+
+    function handleCrash(obs, customQuote = null) {
+      if (currentState !== STATE.PLAYING) return;
+      currentState = STATE.GAMEOVER;
+
+      sound.crash();
+      spawnParticles(new THREE.Vector3(playerX, 1.2, 0), 22, 0xef4444, 0.85);
+
+      chaserTargetZ = 0.4;
+
+      const storageKey = (gameMode === 'subway') ? 'malai_best_score' : 'temple_best_score';
+      let currentBest = parseInt(localStorage.getItem(storageKey) || '0', 10);
+      let isNewRecord = false;
+
+      if (score > currentBest) {
+        currentBest = score;
+        localStorage.setItem(storageKey, currentBest.toString());
+        isNewRecord = true;
+      }
+
+      setTimeout(() => {
+        document.getElementById('screen-hud').style.display = 'none';
+        document.getElementById('turn-warning').classList.remove('active');
+        document.getElementById('edge-warning').classList.remove('active');
+        document.getElementById('screen-gameover').style.display = 'flex';
+        
+        document.getElementById('res-score').innerText = `${score} m`;
+        document.getElementById('res-best').innerText = `${currentBest} m`;
+        document.getElementById('res-coins').innerText = coins;
+        document.getElementById('res-mode-label').innerText = (gameMode === 'subway') ? 'Subway' : 'Temple Run';
+        
+        const recBadge = document.getElementById('new-record-tag');
+        recBadge.style.display = isNewRecord ? 'inline-block' : 'none';
+
+        if (customQuote) {
+          document.getElementById('gameover-quote').innerText = customQuote;
+        } else {
+          const quotes = (chaserType === 'zanni') ? [
+            "Zannidache: 'Ai crezut că scapi cu mălaiul meu? Niciodată!'",
+            "Zannidache: 'Te-am prins, Marius! Lanțurile de aur sunt mai rapide!'",
+            "Ai fugit bine, dar Zanni cunoaște toate scurtăturile din templu!"
+          ] : [
+            "Marius: 'Te-am prins, Zanni! Acum semnează contractul de consultanță!'",
+            "Marius: 'Gulerul alb întotdeauna își recuperează investiția!'",
+            "Costumul lui Marius a tăiat vântul mai eficient decât credeai!"
+          ];
+          document.getElementById('gameover-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        }
+      }, 700);
+    }
+
+    /* =========================================================================
+       12. INPUT (SUBWAY 3-LANES VS TEMPLE RUN STEERING & 90° CORNER TURNS)
+       ========================================================================= */
+    function handleInput(action) {
+      if (currentState !== STATE.PLAYING) return;
+
+      // Temple Run 90° Corner Check
+      if (gameMode === 'temple' && activeTurnDirection !== null && !turnExecuted) {
+        if (action === activeTurnDirection) {
+          turnExecuted = true;
+          sound.turn90();
+          document.getElementById('turn-warning').classList.remove('active');
+
+          camera.rotation.y += (activeTurnDirection === 'left') ? 0.35 : -0.35;
+          setTimeout(() => { camera.rotation.y = 0; }, 300);
+
+          score += 60; // 90° corner bonus!
+          spawnParticles(new THREE.Vector3(playerX, 1.2, 0), 12, 0x10b981, 0.4);
+          return;
+        }
+      }
+
+      if (action === 'left') {
+        if (gameMode === 'subway') {
+          if (currentLane > 0) {
+            currentLane--;
+            sound.laneSwitch();
+          }
+        } else {
+          // Temple Run tap step
+          playerX = Math.max(-TEMPLE_ROAD_HALF_WIDTH - 0.2, playerX - 0.85);
+          sound.laneSwitch();
+        }
+      } else if (action === 'right') {
+        if (gameMode === 'subway') {
+          if (currentLane < 2) {
+            currentLane++;
+            sound.laneSwitch();
+          }
+        } else {
+          // Temple Run tap step
+          playerX = Math.min(TEMPLE_ROAD_HALF_WIDTH + 0.2, playerX + 0.85);
+          sound.laneSwitch();
+        }
+      } else if (action === 'jump') {
+        if (!isJumping && !isSliding) {
+          isJumping = true;
+          playerVY = JUMP_FORCE;
+          sound.jump();
+        }
+      } else if (action === 'slide') {
+        if (!isSliding) {
+          isSliding = true;
+          slideTimer = 0.75;
+          sound.slide();
+          if (isJumping) {
+            playerVY = -22.0;
+          }
+        }
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const code = e.code;
+      keysDown[code] = true;
+
+      if (currentState === STATE.MENU) {
+        if (code === 'Space' || code === 'Enter') {
+          startGame();
+        }
+        return;
+      }
+
+      if (currentState === STATE.GAMEOVER) {
+        if (code === 'Space' || code === 'Enter') {
+          restartGame();
+        }
+        return;
+      }
+
+      if (code === 'ArrowLeft' || code === 'KeyA') {
+        if (gameMode === 'subway' || (gameMode === 'temple' && activeTurnDirection !== null)) {
+          handleInput('left');
+        }
+      } else if (code === 'ArrowRight' || code === 'KeyD') {
+        if (gameMode === 'subway' || (gameMode === 'temple' && activeTurnDirection !== null)) {
+          handleInput('right');
+        }
+      } else if (code === 'ArrowUp' || code === 'KeyW' || code === 'Space') {
+        e.preventDefault();
+        handleInput('jump');
+      } else if (code === 'ArrowDown' || code === 'KeyS') {
+        e.preventDefault();
+        handleInput('slide');
+      } else if (code === 'Escape') {
+        togglePause();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      keysDown[e.code] = false;
+    });
+
+    // Touch & Swipe Listeners
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchCurrentX = 0;
+    let isTouching = false;
+
+    window.addEventListener('touchstart', (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchCurrentX = touchStartX;
+      isTouching = true;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isTouching || !e.touches || e.touches.length === 0) return;
+      touchCurrentX = e.touches[0].clientX;
+
+      // In Temple Run: Smooth finger dragging across the single road width!
+      if (gameMode === 'temple' && currentState === STATE.PLAYING) {
+        const deltaX = (touchCurrentX - touchStartX) / (window.innerWidth * 0.35);
+        playerX = Math.max(-2.5, Math.min(2.5, deltaX * TEMPLE_ROAD_HALF_WIDTH));
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      isTouching = false;
+      if (!e.changedTouches || e.changedTouches.length === 0) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+
+      const SWIPE_THRESHOLD = 28;
+
+      if (Math.max(absX, absY) > SWIPE_THRESHOLD) {
+        if (absX > absY) {
+          if (dx > 0) handleInput('right');
+          else handleInput('left');
+        } else {
+          if (dy < 0) handleInput('jump');
+          else handleInput('slide');
+        }
+      }
+    }, { passive: true });
+
+    // Touch Buttons hold listeners
+    const btnLeft = document.getElementById('btn-touch-left');
+    const btnRight = document.getElementById('btn-touch-right');
+    const btnJump = document.getElementById('btn-touch-jump');
+    const btnSlide = document.getElementById('btn-touch-slide');
+
+    btnLeft.addEventListener('pointerdown', () => { keysDown['ArrowLeft'] = true; handleInput('left'); });
+    btnLeft.addEventListener('pointerup', () => { keysDown['ArrowLeft'] = false; });
+    btnRight.addEventListener('pointerdown', () => { keysDown['ArrowRight'] = true; handleInput('right'); });
+    btnRight.addEventListener('pointerup', () => { keysDown['ArrowRight'] = false; });
+    btnJump.addEventListener('pointerdown', () => { handleInput('jump'); });
+    btnSlide.addEventListener('pointerdown', () => { handleInput('slide'); });
+
+    /* =========================================================================
+       13. UI & GAME CONTROL FLOW
+       ========================================================================= */
+    function selectCharacter(charType) {
+      selectedPlayerType = charType;
+      chaserType = (charType === 'marius') ? 'zanni' : 'marius';
+
+      document.querySelectorAll('.char-card').forEach(c => {
+        c.classList.toggle('selected', c.getAttribute('data-char') === charType);
+      });
+
+      const descEl = document.getElementById('chase-desc');
+      if (charType === 'marius') {
+        descEl.innerText = (gameMode === 'subway') 
+          ? "Marius aleargă în față, iar Zannidache îl fugărește nervos din spate!"
+          : "Marius sprintează pe drumul îngust de piatră cu Zanni pe urmele lui!";
+      } else {
+        descEl.innerText = (gameMode === 'subway')
+          ? "Zannidache sprintează cu mălaiul, iar Marius îl urmărește la costum!"
+          : "Zannidache a sustras Idoulul Străvechi, iar Marius vrea să-l recupereze!";
+      }
+
+      buildCharacters();
+      sound.init();
+      sound.laneSwitch();
+    }
+
+    function startGame() {
+      sound.init();
+      sound.startMusic();
+
+      score = 0;
+      coins = 0;
+      currentLane = 1;
+      playerX = 0;
+      targetX = 0;
+      playerY = 0;
+      playerVY = 0;
+      isJumping = false;
+      isSliding = false;
+      magnetTimer = 0;
+      multiplierTimer = 0;
+      chaserLane = 1;
+      chaserX = 0;
+      chaserZ = 5.2;
+      chaserTargetZ = 5.2;
+      chaserWarningActive = false;
+      activeTurnDirection = null;
+      activeTurnChunkZ = null;
+      turnExecuted = false;
+
+      setCameraPlayMode();
+
+      currentState = STATE.PLAYING;
+      rebuildTracks();
+      buildCharacters();
+
+      document.getElementById('screen-select').style.display = 'none';
+      document.getElementById('screen-gameover').style.display = 'none';
+      document.getElementById('screen-pause').style.display = 'none';
+      document.getElementById('turn-warning').classList.remove('active');
+      document.getElementById('edge-warning').classList.remove('active');
+      document.getElementById('screen-hud').style.display = 'flex';
+      document.getElementById('hud-multiplier').style.display = 'none';
+      document.getElementById('hud-score').innerText = '0 m';
+      document.getElementById('hud-coins').innerText = '0';
+      document.getElementById('hud-speed').innerText = '25 km/h';
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    function returnToMenu() {
+      currentState = STATE.MENU;
+      setCameraMenuMode();
+      rebuildTracks();
+      buildCharacters();
+
+      document.getElementById('screen-hud').style.display = 'none';
+      document.getElementById('screen-gameover').style.display = 'none';
+      document.getElementById('screen-pause').style.display = 'none';
+      document.getElementById('turn-warning').classList.remove('active');
+      document.getElementById('edge-warning').classList.remove('active');
+      document.getElementById('screen-select').style.display = 'flex';
+      sound.stopMusic();
+    }
+
+    function togglePause() {
+      if (currentState === STATE.PLAYING) {
+        currentState = STATE.PAUSED;
+        document.getElementById('screen-pause').style.display = 'flex';
+      } else if (currentState === STATE.PAUSED) {
+        currentState = STATE.PLAYING;
+        document.getElementById('screen-pause').style.display = 'none';
+      }
+    }
+
+    function toggleAudio() {
+      const isEnabled = sound.toggle();
+      document.getElementById('audio-icon').innerText = isEnabled ? '🔊' : '🔇';
+    }
+
+    function showPowerupUI(icon, text, duration) {
+      const bar = document.getElementById('powerup-bar');
+      document.getElementById('powerup-icon').innerText = icon;
+      document.getElementById('powerup-label').innerText = text;
+      bar.style.display = 'flex';
+    }
+
+    function updatePowerupProgress(ratio) {
+      const fill = document.getElementById('powerup-progress');
+      fill.style.width = `${Math.max(0, Math.min(100, ratio * 100))}%`;
+    }
+
+    function hidePowerupUI() {
+      document.getElementById('powerup-bar').style.display = 'none';
+    }
+
+    window.onload = () => {
+      initThreeScene();
+      animate();
+    };
+  </script>
+</body>
+</html>
