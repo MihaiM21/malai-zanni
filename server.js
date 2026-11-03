@@ -10,7 +10,8 @@ const MIME_TYPES = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.json': 'application/json',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.mp3': 'audio/mpeg'
 };
 
 const server = http.createServer((req, res) => {
@@ -31,8 +32,12 @@ const server = http.createServer((req, res) => {
         res.end('Server Error: ' + err.code);
       }
     } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Length': content.length,
+        'Accept-Ranges': 'bytes'
+      });
+      res.end(content);
     }
   });
 });

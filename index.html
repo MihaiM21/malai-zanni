@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MĂLAI RUNNER - Subway Surfers & Temple Run</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #ffd700;
@@ -28,7 +30,8 @@
       touch-action: manipulation;
     }
 
-    body, html {
+    body,
+    html {
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -99,7 +102,7 @@
       border-radius: 999px;
       padding: 5px;
       margin-top: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
     .mode-tab {
@@ -167,7 +170,7 @@
       transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
     }
 
     .char-card::before {
@@ -228,7 +231,7 @@
       overflow: hidden;
       margin-top: 6px;
       margin-bottom: 10px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6);
       transition: transform 0.3s ease, border-color 0.3s ease;
       background: #0f172a;
     }
@@ -311,7 +314,7 @@
       margin-bottom: 10px;
       font-size: 0.86rem;
       font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .mode-badge {
@@ -362,7 +365,7 @@
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.55), inset 0 2px 0 rgba(255,255,255,0.45);
+      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
       transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       align-items: center;
@@ -432,7 +435,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.35);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     }
 
     .hud-stat-pill .icon {
@@ -482,6 +485,13 @@
     .hud-btn:hover {
       background: rgba(255, 255, 255, 0.25);
       transform: scale(1.08);
+    }
+
+    .top-corner-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 50;
     }
 
     /* TEMPLE RUN CORNER TURN WARNING BANNER */
@@ -568,8 +578,13 @@
     }
 
     @keyframes alertBounce {
-      from { transform: translateX(-50%) scale(0.97); }
-      to { transform: translateX(-50%) scale(1.04); }
+      from {
+        transform: translateX(-50%) scale(0.97);
+      }
+
+      to {
+        transform: translateX(-50%) scale(1.04);
+      }
     }
 
     /* POWERUP ACTIVE BANNER */
@@ -592,7 +607,7 @@
     .p-timer-track {
       width: 130px;
       height: 7px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 4px;
       overflow: hidden;
     }
@@ -629,7 +644,7 @@
       color: white;
       font-size: 1.5rem;
       user-select: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .touch-btn:active {
@@ -655,7 +670,7 @@
       width: 100%;
       max-width: 440px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 35px rgba(239, 68, 68, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(239, 68, 68, 0.25);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -798,51 +813,79 @@
     }
 
     @keyframes recordGlow {
-      from { transform: scale(0.96); filter: brightness(1); }
-      to { transform: scale(1.05); filter: brightness(1.3); }
+      from {
+        transform: scale(0.96);
+        filter: brightness(1);
+      }
+
+      to {
+        transform: scale(1.05);
+        filter: brightness(1.3);
+      }
     }
 
     @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-15px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes zoomIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     @media (max-width: 768px) {
       .character-cards-container {
         gap: 12px;
       }
+
       .char-card {
         padding: 14px 16px;
       }
+
       .char-avatar-frame {
         width: 100px;
         height: 100px;
         margin-top: 4px;
         margin-bottom: 8px;
       }
+
       .char-name {
         font-size: 1.45rem;
       }
+
       .char-role-desc {
         font-size: 0.78rem;
         min-height: auto;
         margin-bottom: 8px;
       }
+
       .char-stats {
         padding: 8px 10px;
         gap: 6px;
       }
+
       #touch-zones {
         display: flex;
       }
     }
   </style>
 </head>
+
 <body>
 
   <!-- THREE.JS CANVAS CONTAINER -->
@@ -850,9 +893,12 @@
 
   <!-- SCREEN 1: CHARACTER & MODE SELECT SCREEN -->
   <div id="screen-select" class="ui-layer interactive">
+    <button class="hud-btn top-corner-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
+      <span class="audio-icon">🔊</span>
+    </button>
     <div class="select-header">
       <h1 class="game-logo">MĂLAI RUNNER</h1>
-      
+
       <!-- MODE SWITCHER TABS -->
       <div class="mode-tabs-container">
         <button class="mode-tab active" data-mode="subway" onclick="setGameMode('subway')">
@@ -863,7 +909,8 @@
         </button>
       </div>
 
-      <p id="mode-tagline" class="game-tagline">Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #fbbf24;">Zannidache</span> pe șinele de metrou!</p>
+      <p id="mode-tagline" class="game-tagline">Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit
+        de <span style="color: #fbbf24;">Zannidache</span> pe șinele de metrou!</p>
     </div>
 
     <div class="character-cards-container">
@@ -874,19 +921,26 @@
           <img id="img-marius" class="char-avatar-img" alt="Marius Matei" src="assets/marius.png">
         </div>
         <h2 class="char-name" style="color: #60a5fa;">Marius Matei</h2>
-        <p id="marius-desc" class="char-role-desc">"Nu stau la discuții, am întâlnire corporate și fuge Zanni după mine!"</p>
+        <p id="marius-desc" class="char-role-desc">"Nu stau la discuții, am întâlnire corporate și fuge Zanni după
+          mine!"</p>
         <div class="char-stats">
           <div class="stat-row">
             <span>Viteză</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 82%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 82%;"></div>
+            </div>
           </div>
           <div class="stat-row">
             <span>Agilitate</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 95%;"></div>
+            </div>
           </div>
           <div class="stat-row">
             <span>Armură Guler Alb</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 88%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 88%;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -898,19 +952,26 @@
           <img id="img-zanni" class="char-avatar-img" alt="Zannidache" src="assets/zanni.png">
         </div>
         <h2 class="char-name" style="color: #f59e0b;">Zannidache</h2>
-        <p id="zanni-desc" class="char-role-desc">"Unde fugi mă cu mălaiul? Nu scapi de lanțurile de aur și tatuajele mele!"</p>
+        <p id="zanni-desc" class="char-role-desc">"Unde fugi mă cu mălaiul? Nu scapi de lanțurile de aur și tatuajele
+          mele!"</p>
         <div class="char-stats">
           <div class="stat-row">
             <span>Viteză</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 95%;"></div>
+            </div>
           </div>
           <div class="stat-row">
             <span>Agilitate</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 85%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 85%;"></div>
+            </div>
           </div>
           <div class="stat-row">
             <span>Magnetism Mălai</span>
-            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
+            <div class="stat-bar-bg">
+              <div class="stat-bar-fill" style="width: 90%;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -974,7 +1035,7 @@
           <span class="val">2X BOOST</span>
         </div>
         <button class="hud-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
-          <span id="audio-icon">🔊</span>
+          <span id="audio-icon" class="audio-icon">🔊</span>
         </button>
         <button class="hud-btn" onclick="togglePause()" title="Pauză">
           <span>⏸</span>
@@ -1054,7 +1115,8 @@
   <div id="screen-pause" class="ui-layer interactive">
     <div class="pause-box">
       <h2 class="pause-title">JOC ÎN PAUZĂ</h2>
-      <button class="btn-start" style="font-size: 1.2rem; padding: 12px 24px; justify-content: center;" onclick="togglePause()">CONTINUĂ ▶</button>
+      <button class="btn-start" style="font-size: 1.2rem; padding: 12px 24px; justify-content: center;"
+        onclick="togglePause()">CONTINUĂ ▶</button>
       <button class="btn-secondary" onclick="restartGame()">RESTART RUNDĂ 🔄</button>
       <button class="btn-secondary" onclick="returnToMenu()">MENIU PRINCIPAL 🏠</button>
     </div>
@@ -1081,8 +1143,18 @@
         this.ctx = null;
         this.enabled = true;
         this.musicPlaying = false;
-        this.musicTimer = null;
-        this.currentStep = 0;
+
+        // Background music on repeat
+        this.bgm = new Audio('assets/bgm.mp3');
+        this.bgm.loop = true;
+        this.bgm.volume = 0.55;
+        this.bgm.preload = 'auto';
+        this.bgm.addEventListener('ended', () => {
+          if (this.enabled) {
+            this.bgm.currentTime = 0;
+            this.bgm.play().catch(() => { });
+          }
+        });
       }
 
       init() {
@@ -1110,7 +1182,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch(e) {}
+        } catch (e) { }
       }
 
       jump() {
@@ -1127,7 +1199,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.2);
-        } catch(e) {}
+        } catch (e) { }
       }
 
       slide() {
@@ -1144,7 +1216,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.3);
-        } catch(e) {}
+        } catch (e) { }
       }
 
       laneSwitch() {
@@ -1186,62 +1258,38 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.5);
-        } catch(e) {}
+        } catch (e) { }
       }
 
       startMusic() {
-        if (!this.enabled || this.musicPlaying) return;
+        if (!this.enabled || !this.bgm) return;
         this.init();
-        this.musicPlaying = true;
-        this.currentStep = 0;
-        
-        const tick = () => {
-          if (!this.musicPlaying || !this.enabled || !this.ctx) return;
-          const step = this.currentStep % 16;
-          
-          if (gameMode === 'subway') {
-            const bassNotes = [65.41, 65.41, 73.42, 65.41, 58.27, 58.27, 65.41, 77.78];
-            const leadNotes = [261.63, 311.13, 392.00, 311.13, 261.63, 349.23, 392.00, 466.16];
-            
-            if (step % 4 === 0) this.playTone(110, 'sine', 0.12, 0.38, 0.01);
-            if (step % 2 === 1) this.playTone(4200 + Math.random() * 1500, 'triangle', 0.04, 0.07, 0.001);
-            if (step % 2 === 0) {
-              const bFreq = bassNotes[(Math.floor(this.currentStep / 2)) % bassNotes.length];
-              this.playTone(bFreq, 'sawtooth', 0.18, 0.12, 0.01);
-            }
-            if (step % 4 === 2) {
-              const lFreq = leadNotes[(Math.floor(this.currentStep / 2)) % leadNotes.length];
-              this.playTone(lFreq, 'square', 0.14, 0.08, 0.01);
-            }
-          } else {
-            // Temple Run Mode: Tribal Jungle Drums & Taiko
-            const djembeNotes = [60, 80, 55, 95];
-            if (step % 4 === 0 || step === 14) {
-              this.playTone(djembeNotes[Math.floor(Math.random() * djembeNotes.length)], 'sine', 0.28, 0.45, 0.005);
-            }
-            if (step % 2 === 1) {
-              this.playTone(1800 + Math.random() * 600, 'triangle', 0.03, 0.1, 0.001);
-            }
-            if (step === 2 || step === 10) {
-              this.playTone(240, 'triangle', 0.09, 0.18, 0.01);
-            }
-            if (step === 6) {
-              this.playTone(130.81, 'sawtooth', 0.3, 0.12, 0.01);
-            }
+        if (this.bgm.paused) {
+          const playPromise = this.bgm.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              this.musicPlaying = true;
+            }).catch(err => {
+              this.musicPlaying = false;
+            });
           }
+        } else {
+          this.musicPlaying = true;
+        }
+      }
 
-          this.currentStep++;
-          this.musicTimer = setTimeout(tick, 125);
-        };
-        tick();
+      pauseMusic() {
+        if (this.bgm && !this.bgm.paused) {
+          this.bgm.pause();
+        }
+        this.musicPlaying = false;
       }
 
       stopMusic() {
-        this.musicPlaying = false;
-        if (this.musicTimer) {
-          clearTimeout(this.musicTimer);
-          this.musicTimer = null;
+        if (this.bgm) {
+          this.bgm.pause();
         }
+        this.musicPlaying = false;
       }
 
       toggle() {
@@ -1303,7 +1351,7 @@
         ctx.clip();
         ctx.drawImage(img, 0, 0, 512, 512);
         ctx.restore();
-        
+
         ctx.beginPath();
         ctx.arc(256, 256, 240, 0, Math.PI * 2);
         ctx.lineWidth = 14;
@@ -1717,7 +1765,7 @@
         chunk.add(road);
 
         for (let lx of [-1.3, 1.3]) {
-          for (let sz = -CHUNK_LENGTH/2 + 2; sz < CHUNK_LENGTH/2; sz += 5) {
+          for (let sz = -CHUNK_LENGTH / 2 + 2; sz < CHUNK_LENGTH / 2; sz += 5) {
             const dashGeo = new THREE.PlaneGeometry(0.14, 2.5);
             const dashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
             const dash = new THREE.Mesh(dashGeo, dashMat);
@@ -1746,7 +1794,7 @@
             color: side === -1 ? 0x0f172a : 0x111827
           });
           const building = new THREE.Mesh(bGeo, bMat);
-          building.position.set(side * (7.5 + bWidth/2), bHeight / 2 - 0.5, 0);
+          building.position.set(side * (7.5 + bWidth / 2), bHeight / 2 - 0.5, 0);
           chunk.add(building);
 
           if (Math.random() > 0.4) {
@@ -1828,7 +1876,7 @@
           chunk.add(rightCurb);
 
           // Moss patches along the road
-          for (let mz = -CHUNK_LENGTH/2 + 3; mz < CHUNK_LENGTH/2; mz += 8) {
+          for (let mz = -CHUNK_LENGTH / 2 + 3; mz < CHUNK_LENGTH / 2; mz += 8) {
             const mossGeo = new THREE.PlaneGeometry(0.6, 1.5);
             const moss = new THREE.Mesh(mossGeo, mossMat);
             moss.rotation.x = -Math.PI / 2;
@@ -1838,7 +1886,7 @@
 
           // Ancient Stone Pillars with Burning Torches along the edges
           for (let side of [-1, 1]) {
-            for (let sz = -CHUNK_LENGTH/2 + 5; sz < CHUNK_LENGTH/2; sz += 12) {
+            for (let sz = -CHUNK_LENGTH / 2 + 5; sz < CHUNK_LENGTH / 2; sz += 12) {
               const pilGeo = new THREE.BoxGeometry(0.6, 3.4, 0.6);
               const pil = new THREE.Mesh(pilGeo, stoneMat);
               pil.position.set(side * 2.9, 1.6, sz);
@@ -2084,7 +2132,7 @@
 
       const coneGeo = new THREE.ConeGeometry(0.35, 0.8, 12);
       const coneMat = new THREE.MeshLambertMaterial({ color: 0xf97316 });
-      
+
       const c1 = new THREE.Mesh(coneGeo, coneMat);
       c1.position.set(-0.5, 0.4, 0);
       rb.add(c1);
@@ -2353,7 +2401,7 @@
             activeTurnChunkZ = chunk.position.z;
             const turnWarn = document.getElementById('turn-warning');
             turnWarn.classList.add('active');
-            document.getElementById('turn-warning-text').innerText = 
+            document.getElementById('turn-warning-text').innerText =
               (activeTurnDirection === 'left') ? 'VIREAZĂ LA STÂNGA! (A / ← / SWIPE)' : 'VIREAZĂ LA DREAPTA! (D / → / SWIPE)';
 
             // Failed to turn before crossing corner: fall into the abyss!
@@ -2410,7 +2458,7 @@
           const dx = playerX - item.position.x;
           const dy = (playerY + 1.0) - item.position.y;
           const dz = 0 - item.position.z;
-          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
           if (dist < 14) {
             item.position.x += dx * 7.5 * dt;
             item.position.y += dy * 7.5 * dt;
@@ -2506,7 +2554,7 @@
       if (isSliding) {
         slideTimer -= dt;
         if (Math.random() < 0.4) {
-          spawnParticles(new THREE.Vector3(playerX + (Math.random()-0.5)*0.4, 0.05, 0.2), 2, 0xf59e0b, 0.15);
+          spawnParticles(new THREE.Vector3(playerX + (Math.random() - 0.5) * 0.4, 0.05, 0.2), 2, 0xf59e0b, 0.15);
         }
         if (slideTimer <= 0) {
           isSliding = false;
@@ -2564,7 +2612,7 @@
       if (isVeryClose && !chaserWarningActive) {
         chaserWarningActive = true;
         chaserWarningEl.classList.add('active');
-        document.getElementById('chaser-warning-text').innerText = 
+        document.getElementById('chaser-warning-text').innerText =
           (chaserType === 'zanni') ? 'ZANNI E EXACT ÎN SPATELE TĂU!' : 'MARIUS TE AJUNGE DIN URMĂ!';
       } else if (!isVeryClose && chaserWarningActive) {
         chaserWarningActive = false;
@@ -2705,12 +2753,12 @@
         document.getElementById('turn-warning').classList.remove('active');
         document.getElementById('edge-warning').classList.remove('active');
         document.getElementById('screen-gameover').style.display = 'flex';
-        
+
         document.getElementById('res-score').innerText = `${score} m`;
         document.getElementById('res-best').innerText = `${currentBest} m`;
         document.getElementById('res-coins').innerText = coins;
         document.getElementById('res-mode-label').innerText = (gameMode === 'subway') ? 'Subway' : 'Temple Run';
-        
+
         const recBadge = document.getElementById('new-record-tag');
         recBadge.style.display = isNewRecord ? 'inline-block' : 'none';
 
@@ -2906,7 +2954,7 @@
 
       const descEl = document.getElementById('chase-desc');
       if (charType === 'marius') {
-        descEl.innerText = (gameMode === 'subway') 
+        descEl.innerText = (gameMode === 'subway')
           ? "Marius aleargă în față, iar Zannidache îl fugărește nervos din spate!"
           : "Marius sprintează pe drumul îngust de piatră cu Zanni pe urmele lui!";
       } else {
@@ -2978,22 +3026,25 @@
       document.getElementById('turn-warning').classList.remove('active');
       document.getElementById('edge-warning').classList.remove('active');
       document.getElementById('screen-select').style.display = 'flex';
-      sound.stopMusic();
     }
 
     function togglePause() {
       if (currentState === STATE.PLAYING) {
         currentState = STATE.PAUSED;
         document.getElementById('screen-pause').style.display = 'flex';
+        sound.pauseMusic();
       } else if (currentState === STATE.PAUSED) {
         currentState = STATE.PLAYING;
         document.getElementById('screen-pause').style.display = 'none';
+        sound.startMusic();
       }
     }
 
     function toggleAudio() {
       const isEnabled = sound.toggle();
-      document.getElementById('audio-icon').innerText = isEnabled ? '🔊' : '🔇';
+      document.querySelectorAll('.audio-icon').forEach(icon => {
+        icon.innerText = isEnabled ? '🔊' : '🔇';
+      });
     }
 
     function showPowerupUI(icon, text, duration) {
@@ -3015,7 +3066,19 @@
     window.onload = () => {
       initThreeScene();
       animate();
+
+      const unlockAndStartBgm = () => {
+        sound.init();
+        if (sound.enabled) {
+          sound.startMusic();
+        }
+        window.removeEventListener('pointerdown', unlockAndStartBgm);
+        window.removeEventListener('keydown', unlockAndStartBgm);
+      };
+      window.addEventListener('pointerdown', unlockAndStartBgm);
+      window.addEventListener('keydown', unlockAndStartBgm);
     };
   </script>
 </body>
+
 </html>
