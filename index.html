@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="ro">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MĂLAI RUNNER - Subway Surfers & Temple Run</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #ffd700;
-      --primary-glow: rgba(255, 215, 0, 0.45);
-      --accent-marius: #2563eb;
-      --accent-zanni: #e11d48;
-      --accent-gold: #f59e0b;
-      --accent-temple: #10b981;
-      --bg-dark: #080c16;
-      --text: #f8fafc;
+      --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --bg-dark: #080c14;
+      --surface-1: rgba(15, 21, 35, 0.7);
+      --surface-2: rgba(22, 30, 48, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --border-active: rgba(255, 255, 255, 0.28);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-marius: #38bdf8;
+      --accent-zanni: #f59e0b;
+      --accent-amber: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
     }
 
     * {
@@ -30,14 +35,15 @@
       touch-action: manipulation;
     }
 
-    body,
-    html {
+    body, html {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background-color: var(--bg-dark);
-      font-family: 'Outfit', sans-serif;
-      color: var(--text);
+      font-family: var(--font-main);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     #canvas-container {
@@ -59,187 +65,181 @@
       display: flex;
       flex-direction: column;
       pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
     .interactive {
       pointer-events: auto;
     }
 
-    /* CHARACTER & MODE SELECT SCREEN */
+    /* SCREEN 1: SELECTION MENU */
     #screen-select {
-      background: linear-gradient(180deg, rgba(8, 12, 22, 0.85) 0%, rgba(10, 16, 30, 0.35) 45%, rgba(8, 12, 22, 0.96) 100%);
+      background: radial-gradient(circle at 50% 30%, rgba(18, 25, 42, 0.45) 0%, rgba(8, 12, 20, 0.94) 85%);
       justify-content: space-between;
       align-items: center;
-      padding: 20px 16px 18px 16px;
+      padding: 24px 20px 20px 20px;
       overflow-y: auto;
     }
 
     .select-header {
       text-align: center;
-      margin-top: 4px;
-      animation: fadeInDown 0.6s ease-out;
+      margin-top: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeInDown 0.4s ease-out;
     }
 
     .game-logo {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(2.3rem, 6vw, 4.2rem);
-      letter-spacing: 2.5px;
+      font-family: var(--font-main);
+      font-size: clamp(2rem, 5.2vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
       text-transform: uppercase;
-      background: linear-gradient(180deg, #ffffff 0%, #ffd700 45%, #f59e0b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 18px rgba(245, 158, 11, 0.6));
+      color: #ffffff;
       line-height: 1;
+      margin-bottom: 2px;
     }
 
-    /* GAME MODE SWITCHER TABS */
+    /* SEGMENTED MODE SWITCHER */
     .mode-tabs-container {
-      display: flex;
-      gap: 12px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 5px;
-      margin-top: 10px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      display: inline-flex;
+      gap: 4px;
+      background: rgba(15, 21, 35, 0.75);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 4px;
+      margin-top: 14px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .mode-tab {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 20px;
-      border-radius: 999px;
-      border: none;
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1px solid transparent;
       background: transparent;
-      color: #94a3b8;
-      font-family: 'Anton', sans-serif;
-      font-size: 1.15rem;
-      letter-spacing: 1px;
+      color: var(--text-secondary);
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       text-transform: uppercase;
     }
 
-    .mode-tab.active[data-mode="subway"] {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0b0f19;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.45);
+    .mode-tab:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    .mode-tab.active[data-mode="temple"] {
-      background: linear-gradient(135deg, #10b981, #059669);
+    .mode-tab.active {
+      background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
     .game-tagline {
-      font-size: clamp(0.82rem, 2vw, 1.05rem);
-      font-weight: 700;
-      color: #94a3b8;
-      letter-spacing: 1.2px;
-      margin-top: 6px;
-      text-transform: uppercase;
+      font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+      margin-top: 10px;
     }
 
+    /* CHARACTER CARDS */
     .character-cards-container {
       display: flex;
       gap: 20px;
       justify-content: center;
       align-items: stretch;
       width: 100%;
-      max-width: 860px;
-      margin: 10px 0;
+      max-width: 820px;
+      margin: 14px 0;
       flex-wrap: wrap;
     }
 
     .char-card {
-      flex: 1 1 300px;
-      max-width: 360px;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      padding: 16px 20px;
+      flex: 1 1 290px;
+      max-width: 350px;
+      background: rgba(14, 20, 34, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      padding: 18px 20px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.5);
     }
 
-    .char-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: #475569;
-      transition: background 0.3s;
+    .char-card:hover {
+      border-color: var(--border-hover);
+      background: rgba(18, 25, 42, 0.75);
+      transform: translateY(-2px);
     }
 
     .char-card.selected {
-      transform: translateY(-5px) scale(1.02);
-      border-color: #ffd700;
-      box-shadow: 0 16px 40px rgba(255, 215, 0, 0.25), 0 0 25px rgba(255, 215, 0, 0.2);
-      background: rgba(26, 36, 56, 0.85);
-    }
-
-    .char-card[data-char="marius"].selected::before {
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-    }
-
-    .char-card[data-char="zanni"].selected::before {
-      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      border-color: rgba(255, 255, 255, 0.32);
+      background: rgba(20, 28, 48, 0.88);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.12);
     }
 
     .char-badge {
       position: absolute;
       top: 14px;
       right: 14px;
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-size: 0.68rem;
+      font-weight: 600;
       text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .badge-fugar {
-      background: rgba(59, 130, 246, 0.25);
-      border: 1px solid #3b82f6;
-      color: #93c5fd;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      color: #38bdf8;
     }
 
     .badge-vanator {
-      background: rgba(245, 158, 11, 0.25);
-      border: 1px solid #f59e0b;
-      color: #fde68a;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.24);
+      color: #f59e0b;
     }
 
     .char-avatar-frame {
-      width: 120px;
-      height: 120px;
+      width: 104px;
+      height: 104px;
       border-radius: 50%;
-      border: 3.5px solid rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.12);
       overflow: hidden;
-      margin-top: 6px;
-      margin-bottom: 10px;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6);
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      margin-top: 4px;
+      margin-bottom: 12px;
       background: #0f172a;
+      transition: all 0.22s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     }
 
     .char-card.selected .char-avatar-frame {
-      border-color: #ffd700;
-      transform: scale(1.06);
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+      border-color: #ffffff;
+      transform: scale(1.04);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
     .char-avatar-img {
@@ -251,21 +251,22 @@
     }
 
     .char-name {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.75rem;
-      letter-spacing: 1px;
-      margin-bottom: 3px;
-      text-transform: uppercase;
+      font-family: var(--font-main);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+      color: #ffffff;
     }
 
     .char-role-desc {
-      font-size: 0.82rem;
-      color: #cbd5e1;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
       text-align: center;
-      margin-bottom: 10px;
-      min-height: 38px;
-      font-style: italic;
-      line-height: 1.35;
+      margin-bottom: 12px;
+      min-height: 36px;
+      font-style: normal;
+      line-height: 1.4;
     }
 
     .char-stats {
@@ -273,142 +274,175 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      background: rgba(10, 15, 28, 0.6);
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(8, 12, 20, 0.5);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .stat-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #94a3b8;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-secondary);
     }
 
     .stat-bar-bg {
-      width: 110px;
-      height: 7px;
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 4px;
+      width: 96px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
       overflow: hidden;
     }
 
     .stat-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #fbbf24, #f59e0b);
-      border-radius: 4px;
+      background: #38bdf8;
+      border-radius: 999px;
+      transition: width 0.3s ease;
     }
 
+    .char-card[data-char="zanni"] .stat-bar-fill {
+      background: #f59e0b;
+    }
+
+    /* SCENARIO BAR */
     .mode-selector {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      padding: 8px 18px;
-      display: flex;
+      background: rgba(15, 21, 35, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 7px 16px;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      max-width: 580px;
-      margin-bottom: 10px;
-      font-size: 0.86rem;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      gap: 10px;
+      max-width: 600px;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .mode-badge {
-      background: #e11d48;
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
       white-space: nowrap;
     }
 
+    /* STYLE TOGGLE */
     .style-toggle-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
+      display: inline-flex;
+      gap: 6px;
       align-items: center;
+      background: rgba(15, 21, 35, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 3px 6px;
+      margin-bottom: 12px;
+    }
+
+    .style-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 0 6px;
     }
 
     .style-btn {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1.5px solid rgba(255, 255, 255, 0.2);
-      color: #cbd5e1;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      padding: 5px 12px;
+      border-radius: 7px;
+      font-family: var(--font-main);
+      font-size: 0.76rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s ease;
+    }
+
+    .style-btn:hover {
+      color: #ffffff;
     }
 
     .style-btn.active {
-      background: #f59e0b;
-      color: #0b0f19;
-      border-color: #ffd700;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     }
 
-    /* START BUTTON */
+    /* PRIMARY CTA BUTTON */
     .btn-start {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
-      color: #080c16;
-      font-family: 'Anton', sans-serif;
-      font-size: 1.85rem;
-      letter-spacing: 1.8px;
-      padding: 14px 48px;
-      border-radius: 999px;
-      border: none;
+      background: #ffffff;
+      color: #080c14;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 13px 36px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       cursor: pointer;
-      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
-      transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      display: flex;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 10px 25px -5px rgba(255, 255, 255, 0.15);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      gap: 10px;
       text-transform: uppercase;
     }
 
     .btn-start:hover {
-      transform: translateY(-3px) scale(1.04);
-      box-shadow: 0 16px 45px rgba(245, 158, 11, 0.75);
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 14px 30px -4px rgba(255, 255, 255, 0.25);
+      filter: brightness(1.02);
     }
 
     .btn-start:active {
-      transform: translateY(2px) scale(0.98);
+      transform: translateY(1px);
+      filter: brightness(0.96);
     }
 
     .controls-hint {
       display: flex;
-      gap: 16px;
-      color: #94a3b8;
-      font-size: 0.78rem;
-      font-weight: 600;
-      margin-top: 8px;
+      gap: 14px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 10px;
       text-align: center;
       flex-wrap: wrap;
       justify-content: center;
     }
 
     .key-badge {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 2px 7px;
-      border-radius: 5px;
-      color: #f8fafc;
-      font-family: monospace;
-      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e2e8f0;
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 600;
     }
 
     /* IN-GAME HUD */
     #screen-hud {
       display: none;
-      padding: 18px 22px;
+      padding: 16px 20px;
       justify-content: space-between;
     }
 
@@ -426,196 +460,202 @@
     }
 
     .hud-stat-pill {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 6px 16px;
-      display: flex;
+      background: rgba(11, 16, 27, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 5px 12px;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
     .hud-stat-pill .icon {
-      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      color: var(--text-secondary);
     }
 
     .hud-stat-pill .val {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.45rem;
-      letter-spacing: 0.6px;
-      color: #fff;
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 1.15rem;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+    }
+
+    .hud-stat-pill.coins .icon {
+      color: #f59e0b;
     }
 
     .hud-stat-pill.coins .val {
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+      color: #fef08a;
     }
 
     .hud-stat-pill.multiplier {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.8), rgba(185, 28, 28, 0.9));
-      border-color: #ef4444;
-      animation: alertBounce 0.8s infinite alternate;
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
     }
 
     .hud-right-group {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
 
     .hud-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      font-size: 1.15rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(15, 21, 35, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      color: #cbd5e1;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 0;
     }
 
     .hud-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-hover);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .hud-btn:active {
+      transform: translateY(1px);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .top-corner-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 18px;
+      right: 18px;
       z-index: 50;
     }
 
-    /* TEMPLE RUN CORNER TURN WARNING BANNER */
+    /* IN-GAME ALERTS */
     #turn-warning {
       position: absolute;
-      top: 130px;
+      top: 110px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(16, 185, 129, 0.94);
-      border: 2px solid #a7f3d0;
-      padding: 10px 26px;
+      background: rgba(16, 185, 129, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(167, 243, 208, 0.3);
+      padding: 8px 20px;
       border-radius: 999px;
-      font-family: 'Anton', sans-serif;
-      font-size: 1.35rem;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
       color: white;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 0.02em;
       opacity: 0;
       transition: all 0.2s ease;
-      box-shadow: 0 0 35px rgba(16, 185, 129, 0.85);
       pointer-events: none;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
     }
 
     #turn-warning.active {
       opacity: 1;
-      animation: alertBounce 0.5s infinite alternate;
     }
 
-    /* EDGE FALL WARNING (TEMPLE RUN) */
     #edge-warning {
       position: absolute;
-      top: 190px;
+      top: 155px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(239, 68, 68, 0.9);
-      border: 1.5px solid #fca5a5;
-      padding: 6px 18px;
+      background: rgba(239, 68, 68, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(254, 202, 202, 0.25);
+      padding: 6px 16px;
       border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 800;
+      font-size: 0.76rem;
+      font-weight: 700;
       color: white;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.03em;
       opacity: 0;
       transition: opacity 0.15s ease;
       pointer-events: none;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
     }
 
     #edge-warning.active {
       opacity: 1;
     }
 
-    /* CHASER WARNING BANNER */
     #chaser-warning {
       position: absolute;
-      top: 86px;
+      top: 76px;
       left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: rgba(225, 29, 72, 0.92);
-      border: 2px solid #fda4af;
-      padding: 7px 22px;
+      transform: translateX(-50%);
+      background: rgba(225, 29, 72, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(254, 205, 211, 0.25);
+      padding: 6px 18px;
       border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 800;
+      font-size: 0.78rem;
+      font-weight: 700;
       color: white;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.02em;
       opacity: 0;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 25px rgba(225, 29, 72, 0.7);
+      transition: all 0.25s ease;
       pointer-events: none;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 18px rgba(225, 29, 72, 0.35);
     }
 
     #chaser-warning.active {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
-      animation: alertBounce 0.6s infinite alternate;
     }
 
-    @keyframes alertBounce {
-      from {
-        transform: translateX(-50%) scale(0.97);
-      }
-
-      to {
-        transform: translateX(-50%) scale(1.04);
-      }
-    }
-
-    /* POWERUP ACTIVE BANNER */
+    /* POWERUP BAR */
     #powerup-bar {
       position: absolute;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid #fbbf24;
-      padding: 8px 22px;
+      background: rgba(15, 21, 35, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 7px 18px;
       border-radius: 999px;
       display: none;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.45);
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
     }
 
     .p-timer-track {
-      width: 130px;
-      height: 7px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
+      width: 110px;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
       overflow: hidden;
     }
 
     .p-timer-fill {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      background: #f59e0b;
       transition: width 0.1s linear;
     }
 
@@ -632,260 +672,262 @@
     }
 
     .touch-btn {
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.14);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(6px);
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: rgba(15, 21, 35, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 1.5rem;
+      color: #ffffff;
       user-select: none;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.12s ease;
     }
 
     .touch-btn:active {
-      background: rgba(255, 215, 0, 0.45);
-      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: scale(0.95);
     }
 
-    /* GAME OVER SCREEN */
+    /* GAME OVER MODAL */
     #screen-gameover {
       display: none;
-      background: radial-gradient(circle at center, rgba(30, 20, 30, 0.85) 0%, rgba(8, 4, 12, 0.96) 100%);
+      background: rgba(8, 12, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       justify-content: center;
       align-items: center;
       padding: 20px;
     }
 
     .gameover-box {
-      background: rgba(30, 41, 59, 0.85);
-      backdrop-filter: blur(16px);
-      border: 2px solid rgba(239, 68, 68, 0.45);
-      border-radius: 24px;
+      background: rgba(15, 21, 35, 0.9);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
       padding: 32px 28px;
       width: 100%;
-      max-width: 440px;
+      max-width: 420px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(239, 68, 68, 0.25);
+      box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.75);
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: zoomIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .gameover-title {
-      font-family: 'Anton', sans-serif;
-      font-size: clamp(2.3rem, 6.5vw, 3.4rem);
-      color: #ef4444;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
+      font-family: var(--font-main);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      text-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
     }
 
     .gameover-quote {
-      font-size: 0.95rem;
-      font-style: italic;
-      color: #cbd5e1;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
       margin-bottom: 20px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .gameover-results {
       width: 100%;
-      background: rgba(15, 23, 42, 0.75);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 22px;
+      background: rgba(8, 12, 20, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .res-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
     }
 
     .res-row .val {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.55rem;
-      color: #fff;
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 1.25rem;
+      font-variant-numeric: tabular-nums;
+      color: #ffffff;
     }
 
     .res-row.best .val {
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+      color: #fef08a;
     }
 
     .res-row.coins .val {
-      color: #fbbf24;
+      color: #f59e0b;
     }
 
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       width: 100%;
     }
 
     .btn-restart {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: white;
-      font-family: 'Anton', sans-serif;
-      font-size: 1.5rem;
-      padding: 13px 24px;
-      border-radius: 999px;
-      border: none;
+      background: #ffffff;
+      color: #080c14;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.45);
-      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .btn-restart:hover {
-      transform: scale(1.03);
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.65);
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-restart:active {
+      transform: translateY(1px);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 12px 24px;
-      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 0.86rem;
+      padding: 11px 18px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    .btn-secondary:active {
+      transform: translateY(1px);
     }
 
     /* PAUSE MODAL */
     #screen-pause {
       display: none;
-      background: rgba(8, 12, 22, 0.88);
-      backdrop-filter: blur(10px);
+      background: rgba(8, 12, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       justify-content: center;
       align-items: center;
     }
 
     .pause-box {
-      background: rgba(30, 41, 59, 0.9);
-      border-radius: 20px;
-      padding: 32px;
-      width: 320px;
+      background: rgba(15, 21, 35, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 28px 24px;
+      width: 300px;
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      gap: 10px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
     }
 
     .pause-title {
-      font-family: 'Anton', sans-serif;
-      font-size: 2.2rem;
-      letter-spacing: 1px;
+      font-family: var(--font-main);
+      font-weight: 800;
+      font-size: 1.45rem;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      margin-bottom: 6px;
+      text-transform: uppercase;
     }
 
     .record-badge {
       display: inline-block;
-      background: linear-gradient(90deg, #f59e0b, #ef4444);
-      color: white;
-      font-size: 0.75rem;
-      font-weight: 900;
-      padding: 4px 12px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
       border-radius: 999px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-      animation: recordGlow 1s infinite alternate;
-    }
-
-    @keyframes recordGlow {
-      from {
-        transform: scale(0.96);
-        filter: brightness(1);
-      }
-
-      to {
-        transform: scale(1.05);
-        filter: brightness(1.3);
-      }
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
     }
 
     @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes zoomIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @media (max-width: 768px) {
       .character-cards-container {
         gap: 12px;
       }
-
       .char-card {
         padding: 14px 16px;
       }
-
       .char-avatar-frame {
-        width: 100px;
-        height: 100px;
-        margin-top: 4px;
+        width: 88px;
+        height: 88px;
+        margin-top: 2px;
         margin-bottom: 8px;
       }
-
       .char-name {
-        font-size: 1.45rem;
+        font-size: 1.25rem;
       }
-
       .char-role-desc {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         min-height: auto;
         margin-bottom: 8px;
       }
-
       .char-stats {
         padding: 8px 10px;
         gap: 6px;
       }
-
       #touch-zones {
         display: flex;
       }
     }
   </style>
 </head>
-
 <body>
 
   <!-- THREE.JS CANVAS CONTAINER -->
@@ -894,23 +936,24 @@
   <!-- SCREEN 1: CHARACTER & MODE SELECT SCREEN -->
   <div id="screen-select" class="ui-layer interactive">
     <button class="hud-btn top-corner-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
-      <span class="audio-icon">🔊</span>
+      <span class="audio-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></span>
     </button>
     <div class="select-header">
       <h1 class="game-logo">MĂLAI RUNNER</h1>
-
+      
       <!-- MODE SWITCHER TABS -->
       <div class="mode-tabs-container">
         <button class="mode-tab active" data-mode="subway" onclick="setGameMode('subway')">
-          <span>🚇</span> SUBWAY SURFERS
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
+          <span>Subway Surfers</span>
         </button>
         <button class="mode-tab" data-mode="temple" onclick="setGameMode('temple')">
-          <span>🗿</span> TEMPLE RUN
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 10-16 10 16H2Z"/><path d="m7 18 5-8 5 8H7Z"/></svg>
+          <span>Temple Run</span>
         </button>
       </div>
 
-      <p id="mode-tagline" class="game-tagline">Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit
-        de <span style="color: #fbbf24;">Zannidache</span> pe șinele de metrou!</p>
+      <p id="mode-tagline" class="game-tagline">Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #fbbf24;">Zannidache</span> pe șinele de metrou!</p>
     </div>
 
     <div class="character-cards-container">
@@ -920,27 +963,20 @@
         <div class="char-avatar-frame">
           <img id="img-marius" class="char-avatar-img" alt="Marius Matei" src="assets/marius.png">
         </div>
-        <h2 class="char-name" style="color: #60a5fa;">Marius Matei</h2>
-        <p id="marius-desc" class="char-role-desc">"Nu stau la discuții, am întâlnire corporate și fuge Zanni după
-          mine!"</p>
+        <h2 class="char-name">Marius Matei</h2>
+        <p id="marius-desc" class="char-role-desc">"Nu stau la discuții, am întâlnire corporate și fuge Zanni după mine!"</p>
         <div class="char-stats">
           <div class="stat-row">
             <span>Viteză</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 82%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 82%;"></div></div>
           </div>
           <div class="stat-row">
             <span>Agilitate</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 95%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
           </div>
           <div class="stat-row">
             <span>Armură Guler Alb</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 88%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 88%;"></div></div>
           </div>
         </div>
       </div>
@@ -951,27 +987,20 @@
         <div class="char-avatar-frame">
           <img id="img-zanni" class="char-avatar-img" alt="Zannidache" src="assets/zanni.png">
         </div>
-        <h2 class="char-name" style="color: #f59e0b;">Zannidache</h2>
-        <p id="zanni-desc" class="char-role-desc">"Unde fugi mă cu mălaiul? Nu scapi de lanțurile de aur și tatuajele
-          mele!"</p>
+        <h2 class="char-name">Zannidache</h2>
+        <p id="zanni-desc" class="char-role-desc">"Unde fugi mă cu mălaiul? Nu scapi de lanțurile de aur și tatuajele mele!"</p>
         <div class="char-stats">
           <div class="stat-row">
             <span>Viteză</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 95%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
           </div>
           <div class="stat-row">
             <span>Agilitate</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 85%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 85%;"></div></div>
           </div>
           <div class="stat-row">
             <span>Magnetism Mălai</span>
-            <div class="stat-bar-bg">
-              <div class="stat-bar-fill" style="width: 90%;"></div>
-            </div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
           </div>
         </div>
       </div>
@@ -985,29 +1014,29 @@
 
     <!-- GRAPHICS STYLE TOGGLE -->
     <div class="style-toggle-bar">
-      <span style="font-size: 0.8rem; font-weight: 700; color: #94a3b8;">STIL MODEL:</span>
-      <button id="btn-style-3d" class="style-btn active" onclick="setRenderStyle('3d')">3D Stylized Pro</button>
-      <button id="btn-style-25d" class="style-btn" onclick="setRenderStyle('25d')">✨ 2.5D HD Foto-Cutout</button>
+      <span class="style-label">Model:</span>
+      <button id="btn-style-3d" class="style-btn active" onclick="setRenderStyle('3d')">3D Stylized</button>
+      <button id="btn-style-25d" class="style-btn" onclick="setRenderStyle('25d')">Foto Cutout</button>
     </div>
 
     <!-- START RUN BUTTON -->
     <button class="btn-start" onclick="startGame()">
-      <span id="btn-start-label">ÎNCEPE GOANA!</span>
-      <span>🏃💨</span>
+      <span id="btn-start-label">ÎNCEPE GOANA</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
     </button>
 
     <!-- KEYBOARD / MOBILE CONTROLS HINT -->
     <div id="controls-hint-subway" class="controls-hint">
       <div>Benzi 3 Coloane: <span class="key-badge">A / D</span> sau <span class="key-badge">← / →</span></div>
       <div>Săritură: <span class="key-badge">W / ↑ / SPACE</span></div>
-      <div>Alunecare (Slide): <span class="key-badge">S / ↓</span></div>
-      <div>Pe mobil: <span class="key-badge">Swipe pe ecran</span></div>
+      <div>Alunecare: <span class="key-badge">S / ↓</span></div>
+      <div>Mobil: <span class="key-badge">Swipe pe ecran</span></div>
     </div>
 
     <div id="controls-hint-temple" class="controls-hint" style="display: none;">
-      <div>Direcție pe Drum: <span class="key-badge">Ține apăsat A / D sau ← / →</span> (Atenție la Margini!)</div>
-      <div>Viraje 90°: <span class="key-badge">Apasă A / D sau Swipe la Intersecții</span></div>
-      <div>Săritură peste Găuri: <span class="key-badge">W / SPACE / ↑</span></div>
+      <div>Direcție pe Drum: <span class="key-badge">Ține apăsat A / D sau ← / →</span></div>
+      <div>Viraje 90°: <span class="key-badge">Apasă A / D la Intersecții</span></div>
+      <div>Săritură: <span class="key-badge">W / SPACE / ↑</span></div>
       <div>Alunecare: <span class="key-badge">S / ↓</span></div>
     </div>
   </div>
@@ -1017,55 +1046,53 @@
     <div class="hud-top">
       <div class="hud-stats-group">
         <div class="hud-stat-pill">
-          <span class="icon">🏃</span>
+          <span class="icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
           <span id="hud-score" class="val">0 m</span>
         </div>
         <div class="hud-stat-pill coins">
-          <span class="icon" id="hud-coin-icon">🪙</span>
+          <span class="icon" id="hud-coin-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M9 9.5h5a1.5 1.5 0 0 1 0 3H10a1.5 1.5 0 0 0 0 3h5"/></svg></span>
           <span id="hud-coins" class="val">0</span>
         </div>
-        <div class="hud-stat-pill" style="border-color: #38bdf8;">
-          <span class="icon">⚡</span>
+        <div class="hud-stat-pill">
+          <span class="icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
           <span id="hud-speed" class="val">25 km/h</span>
         </div>
       </div>
 
       <div class="hud-right-group interactive">
         <div id="hud-multiplier" class="hud-stat-pill multiplier" style="display: none;">
-          <span class="val">2X BOOST</span>
+          <span class="val" style="font-size: 0.85rem;">2X BOOST</span>
         </div>
         <button class="hud-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
-          <span id="audio-icon" class="audio-icon">🔊</span>
+          <span id="audio-icon" class="audio-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></span>
         </button>
         <button class="hud-btn" onclick="togglePause()" title="Pauză">
-          <span>⏸</span>
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.2"></rect><rect x="14" y="4" width="4" height="16" rx="1.2"></rect></svg></span>
         </button>
       </div>
     </div>
 
     <!-- TEMPLE RUN 90 DEGREE TURN WARNING -->
     <div id="turn-warning">
-      <span>↩️</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
       <span id="turn-warning-text">VIREAZĂ LA STÂNGA! (A / ←)</span>
-      <span>↩️</span>
     </div>
 
     <!-- EDGE WARNING (TEMPLE RUN) -->
     <div id="edge-warning">
-      <span>⚠️ ATENȚIE LA MARGINE! CADI ÎN PRĂPASTIE!</span>
+      <span>ATENȚIE LA MARGINE! CADI ÎN PRĂPASTIE!</span>
     </div>
 
     <!-- CHASER ALERT -->
     <div id="chaser-warning">
-      <span>⚠️</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span id="chaser-warning-text">ZANNI E EXACT ÎN SPATELE TĂU!</span>
-      <span>⚠️</span>
     </div>
 
     <!-- ACTIVE POWERUP PROGRESS -->
     <div id="powerup-bar">
-      <span id="powerup-icon">🧲</span>
-      <span id="powerup-label" style="font-size: 0.85rem; font-weight: 700;">MAGNET ACTIV</span>
+      <span id="powerup-icon" style="display: inline-flex; align-items: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15-3-3 6.7-6.7a4 4 0 0 1 5.6 0l2.4 2.4a4 4 0 0 1 0 5.6L11 21l-3-3"/><line x1="9" y1="9" x2="5" y2="13"/><line x1="15" y1="15" x2="11" y2="19"/></svg></span>
+      <span id="powerup-label" style="font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em;">MAGNET ACTIV</span>
       <div class="p-timer-track">
         <div id="powerup-progress" class="p-timer-fill"></div>
       </div>
@@ -1073,40 +1100,55 @@
 
     <!-- MOBILE TOUCH BUTTONS -->
     <div id="touch-zones">
-      <div class="touch-btn" id="btn-touch-left">◀</div>
-      <div style="display: flex; gap: 12px;">
-        <div class="touch-btn" id="btn-touch-jump">▲</div>
-        <div class="touch-btn" id="btn-touch-slide">▼</div>
+      <div class="touch-btn" id="btn-touch-left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </div>
-      <div class="touch-btn" id="btn-touch-right">▶</div>
+      <div style="display: flex; gap: 10px;">
+        <div class="touch-btn" id="btn-touch-jump">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        </div>
+        <div class="touch-btn" id="btn-touch-slide">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="touch-btn" id="btn-touch-right">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
     </div>
   </div>
 
   <!-- SCREEN 3: GAME OVER -->
   <div id="screen-gameover" class="ui-layer interactive">
     <div class="gameover-box">
-      <div id="new-record-tag" class="record-badge" style="display: none;">🏆 NOU RECORD PERSONAL!</div>
-      <h2 id="gameover-title" class="gameover-title">TE-A PRINS!</h2>
+      <div id="new-record-tag" class="record-badge" style="display: none;">NOU RECORD PERSONAL</div>
+      <h2 id="gameover-title" class="gameover-title">TE-A PRINS</h2>
       <p id="gameover-quote" class="gameover-quote">"N-ai avut destulă viteză pentru goana după mălai!"</p>
 
       <div class="gameover-results">
         <div class="res-row">
-          <span>Distanță Parcursă:</span>
+          <span>Distanță Parcursă</span>
           <span id="res-score" class="val">0 m</span>
         </div>
         <div class="res-row best">
-          <span>Cel Mai Bun Scor (<span id="res-mode-label">Subway</span>):</span>
+          <span>Cel Mai Bun Scor (<span id="res-mode-label">Subway</span>)</span>
           <span id="res-best" class="val">0 m</span>
         </div>
         <div class="res-row coins">
-          <span id="res-coin-label">Mălai Colectat:</span>
+          <span id="res-coin-label">Mălai Colectat</span>
           <span id="res-coins" class="val">0</span>
         </div>
       </div>
 
       <div class="btn-group">
-        <button class="btn-restart" onclick="restartGame()">REJOACĂ (SPACE) 🔄</button>
-        <button class="btn-secondary" onclick="returnToMenu()">SCHIMBĂ PERSONAJUL / MODUL 🎭</button>
+        <button class="btn-restart" onclick="restartGame()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          <span>Rejoacă runda</span>
+          <span class="key-badge" style="margin-left: 4px; background: rgba(0,0,0,0.08); color: #080c14; border-color: rgba(0,0,0,0.12);">SPACE</span>
+        </button>
+        <button class="btn-secondary" onclick="returnToMenu()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Meniu & Personaje</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1114,11 +1156,19 @@
   <!-- SCREEN 4: PAUSE -->
   <div id="screen-pause" class="ui-layer interactive">
     <div class="pause-box">
-      <h2 class="pause-title">JOC ÎN PAUZĂ</h2>
-      <button class="btn-start" style="font-size: 1.2rem; padding: 12px 24px; justify-content: center;"
-        onclick="togglePause()">CONTINUĂ ▶</button>
-      <button class="btn-secondary" onclick="restartGame()">RESTART RUNDĂ 🔄</button>
-      <button class="btn-secondary" onclick="returnToMenu()">MENIU PRINCIPAL 🏠</button>
+      <h2 class="pause-title">Pauză</h2>
+      <button class="btn-start" style="width: 100%; padding: 11px 20px; font-size: 0.88rem;" onclick="togglePause()">
+        <span>Continuă</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      </button>
+      <button class="btn-secondary" onclick="restartGame()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        <span>Reîncepe runda</span>
+      </button>
+      <button class="btn-secondary" onclick="returnToMenu()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Meniu principal</span>
+      </button>
     </div>
   </div>
 
@@ -1143,7 +1193,7 @@
         this.ctx = null;
         this.enabled = true;
         this.musicPlaying = false;
-
+        
         // Background music on repeat
         this.bgm = new Audio('assets/bgm.mp3');
         this.bgm.loop = true;
@@ -1152,7 +1202,7 @@
         this.bgm.addEventListener('ended', () => {
           if (this.enabled) {
             this.bgm.currentTime = 0;
-            this.bgm.play().catch(() => { });
+            this.bgm.play().catch(() => {});
           }
         });
       }
@@ -1182,7 +1232,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch (e) { }
+        } catch(e) {}
       }
 
       jump() {
@@ -1199,7 +1249,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.2);
-        } catch (e) { }
+        } catch(e) {}
       }
 
       slide() {
@@ -1216,7 +1266,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.3);
-        } catch (e) { }
+        } catch(e) {}
       }
 
       laneSwitch() {
@@ -1258,7 +1308,7 @@
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.5);
-        } catch (e) { }
+        } catch(e) {}
       }
 
       startMusic() {
@@ -1351,7 +1401,7 @@
         ctx.clip();
         ctx.drawImage(img, 0, 0, 512, 512);
         ctx.restore();
-
+        
         ctx.beginPath();
         ctx.arc(256, 256, 240, 0, Math.PI * 2);
         ctx.lineWidth = 14;
@@ -1407,16 +1457,16 @@
 
       if (mode === 'subway') {
         tagline.innerHTML = 'Goana Urbană: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #fbbf24;">Zannidache</span> pe cele 3 benzi de metrou!';
-        startBtnLabel.innerText = 'ÎNCEPE GOANA!';
-        coinIcon.innerText = '🪙';
+        startBtnLabel.innerText = 'ÎNCEPE GOANA';
+        coinIcon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M9 9.5h5a1.5 1.5 0 0 1 0 3H10a1.5 1.5 0 0 0 0 3h5"/></svg>`;
         coinLabel.innerText = 'Mălai Colectat:';
         modeLabel.innerText = 'Subway Surfers';
         hintSubway.style.display = 'flex';
         hintTemple.style.display = 'none';
       } else {
-        tagline.innerHTML = 'Ruinele Străvechi: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #f59e0b;">Zannidache</span> pe un singur drum îngust de piatră cu margini și prăpăstii!';
-        startBtnLabel.innerText = 'EXPLOREAZĂ TEMPLUL! 🗿';
-        coinIcon.innerText = '💎';
+        tagline.innerHTML = 'Ruinele Străvechi: <span style="color: #60a5fa;">Marius</span> este fugărit de <span style="color: #f59e0b;">Zannidache</span> pe un drum îngust de piatră!';
+        startBtnLabel.innerText = 'EXPLOREAZĂ TEMPLUL';
+        coinIcon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/><path d="m10 3 2 6 2-6"/></svg>`;
         coinLabel.innerText = 'Nestemate & Idoli:';
         modeLabel.innerText = 'Temple Run';
         hintSubway.style.display = 'none';
@@ -1765,7 +1815,7 @@
         chunk.add(road);
 
         for (let lx of [-1.3, 1.3]) {
-          for (let sz = -CHUNK_LENGTH / 2 + 2; sz < CHUNK_LENGTH / 2; sz += 5) {
+          for (let sz = -CHUNK_LENGTH/2 + 2; sz < CHUNK_LENGTH/2; sz += 5) {
             const dashGeo = new THREE.PlaneGeometry(0.14, 2.5);
             const dashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
             const dash = new THREE.Mesh(dashGeo, dashMat);
@@ -1794,7 +1844,7 @@
             color: side === -1 ? 0x0f172a : 0x111827
           });
           const building = new THREE.Mesh(bGeo, bMat);
-          building.position.set(side * (7.5 + bWidth / 2), bHeight / 2 - 0.5, 0);
+          building.position.set(side * (7.5 + bWidth/2), bHeight / 2 - 0.5, 0);
           chunk.add(building);
 
           if (Math.random() > 0.4) {
@@ -1876,7 +1926,7 @@
           chunk.add(rightCurb);
 
           // Moss patches along the road
-          for (let mz = -CHUNK_LENGTH / 2 + 3; mz < CHUNK_LENGTH / 2; mz += 8) {
+          for (let mz = -CHUNK_LENGTH/2 + 3; mz < CHUNK_LENGTH/2; mz += 8) {
             const mossGeo = new THREE.PlaneGeometry(0.6, 1.5);
             const moss = new THREE.Mesh(mossGeo, mossMat);
             moss.rotation.x = -Math.PI / 2;
@@ -1886,7 +1936,7 @@
 
           // Ancient Stone Pillars with Burning Torches along the edges
           for (let side of [-1, 1]) {
-            for (let sz = -CHUNK_LENGTH / 2 + 5; sz < CHUNK_LENGTH / 2; sz += 12) {
+            for (let sz = -CHUNK_LENGTH/2 + 5; sz < CHUNK_LENGTH/2; sz += 12) {
               const pilGeo = new THREE.BoxGeometry(0.6, 3.4, 0.6);
               const pil = new THREE.Mesh(pilGeo, stoneMat);
               pil.position.set(side * 2.9, 1.6, sz);
@@ -2132,7 +2182,7 @@
 
       const coneGeo = new THREE.ConeGeometry(0.35, 0.8, 12);
       const coneMat = new THREE.MeshLambertMaterial({ color: 0xf97316 });
-
+      
       const c1 = new THREE.Mesh(coneGeo, coneMat);
       c1.position.set(-0.5, 0.4, 0);
       rb.add(c1);
@@ -2401,7 +2451,7 @@
             activeTurnChunkZ = chunk.position.z;
             const turnWarn = document.getElementById('turn-warning');
             turnWarn.classList.add('active');
-            document.getElementById('turn-warning-text').innerText =
+            document.getElementById('turn-warning-text').innerText = 
               (activeTurnDirection === 'left') ? 'VIREAZĂ LA STÂNGA! (A / ← / SWIPE)' : 'VIREAZĂ LA DREAPTA! (D / → / SWIPE)';
 
             // Failed to turn before crossing corner: fall into the abyss!
@@ -2458,7 +2508,7 @@
           const dx = playerX - item.position.x;
           const dy = (playerY + 1.0) - item.position.y;
           const dz = 0 - item.position.z;
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
           if (dist < 14) {
             item.position.x += dx * 7.5 * dt;
             item.position.y += dy * 7.5 * dt;
@@ -2477,10 +2527,10 @@
             sound.powerup();
             if (item.pType === 'magnet') {
               magnetTimer = 10.0;
-              showPowerupUI('🧲', 'MAGNET ACTIV', 10.0);
+              showPowerupUI('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15-3-3 6.7-6.7a4 4 0 0 1 5.6 0l2.4 2.4a4 4 0 0 1 0 5.6L11 21l-3-3"/><line x1="9" y1="9" x2="5" y2="13"/><line x1="15" y1="15" x2="11" y2="19"/></svg>', 'MAGNET ACTIV', 10.0);
             } else {
               multiplierTimer = 12.0;
-              showPowerupUI('⚡', '2X MULTIPLICATOR', 12.0);
+              showPowerupUI('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', '2X MULTIPLICATOR', 12.0);
               document.getElementById('hud-multiplier').style.display = 'flex';
             }
           }
@@ -2554,7 +2604,7 @@
       if (isSliding) {
         slideTimer -= dt;
         if (Math.random() < 0.4) {
-          spawnParticles(new THREE.Vector3(playerX + (Math.random() - 0.5) * 0.4, 0.05, 0.2), 2, 0xf59e0b, 0.15);
+          spawnParticles(new THREE.Vector3(playerX + (Math.random()-0.5)*0.4, 0.05, 0.2), 2, 0xf59e0b, 0.15);
         }
         if (slideTimer <= 0) {
           isSliding = false;
@@ -2612,7 +2662,7 @@
       if (isVeryClose && !chaserWarningActive) {
         chaserWarningActive = true;
         chaserWarningEl.classList.add('active');
-        document.getElementById('chaser-warning-text').innerText =
+        document.getElementById('chaser-warning-text').innerText = 
           (chaserType === 'zanni') ? 'ZANNI E EXACT ÎN SPATELE TĂU!' : 'MARIUS TE AJUNGE DIN URMĂ!';
       } else if (!isVeryClose && chaserWarningActive) {
         chaserWarningActive = false;
@@ -2753,12 +2803,12 @@
         document.getElementById('turn-warning').classList.remove('active');
         document.getElementById('edge-warning').classList.remove('active');
         document.getElementById('screen-gameover').style.display = 'flex';
-
+        
         document.getElementById('res-score').innerText = `${score} m`;
         document.getElementById('res-best').innerText = `${currentBest} m`;
         document.getElementById('res-coins').innerText = coins;
         document.getElementById('res-mode-label').innerText = (gameMode === 'subway') ? 'Subway' : 'Temple Run';
-
+        
         const recBadge = document.getElementById('new-record-tag');
         recBadge.style.display = isNewRecord ? 'inline-block' : 'none';
 
@@ -2954,7 +3004,7 @@
 
       const descEl = document.getElementById('chase-desc');
       if (charType === 'marius') {
-        descEl.innerText = (gameMode === 'subway')
+        descEl.innerText = (gameMode === 'subway') 
           ? "Marius aleargă în față, iar Zannidache îl fugărește nervos din spate!"
           : "Marius sprintează pe drumul îngust de piatră cu Zanni pe urmele lui!";
       } else {
@@ -3040,16 +3090,19 @@
       }
     }
 
+    const SVG_AUDIO_ON = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`;
+    const SVG_AUDIO_OFF = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+
     function toggleAudio() {
       const isEnabled = sound.toggle();
       document.querySelectorAll('.audio-icon').forEach(icon => {
-        icon.innerText = isEnabled ? '🔊' : '🔇';
+        icon.innerHTML = isEnabled ? SVG_AUDIO_ON : SVG_AUDIO_OFF;
       });
     }
 
-    function showPowerupUI(icon, text, duration) {
+    function showPowerupUI(iconHtml, text, duration) {
       const bar = document.getElementById('powerup-bar');
-      document.getElementById('powerup-icon').innerText = icon;
+      document.getElementById('powerup-icon').innerHTML = iconHtml;
       document.getElementById('powerup-label').innerText = text;
       bar.style.display = 'flex';
     }
@@ -3080,5 +3133,4 @@
     };
   </script>
 </body>
-
 </html>
