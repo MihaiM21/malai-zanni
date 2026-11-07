@@ -1,65 +1,57 @@
-# 🏃 MĂLAI RUNNER: Subway Surfers & Temple Run 🐆
-**Endless Runner 3D Web Game (2 Moduri de Joc Distincte)**
+# 🕹️ MĂLAI CLUB: Retro Arcade & Runners
+**Colecție Retro-Arcade 3D (Stil Minimalist Puddle Club)**
 
-Un joc complet 3D construit de la zero în Three.js și HTML5/CSS3/JavaScript, optimizat pentru 60 FPS atât pe Desktop cât și pe Dispozitive Mobile.
-
----
-
-## 🎮 Diferențele dintre cele 2 Moduri de Joc
-
-### 1. 🚇 MODUL SUBWAY SURFERS („Goana Urbană”)
-- **Sistem de Coloane Fixe**: 3 benzi paralele de metrou (`Stânga - Centru - Dreapta`).
-- **Comenzi**: Schimbare discretă de bandă cu `A` / `D` sau `←` / `→` (salt direct între cele 3 coloane).
-- **Decor**: Șine de tren, vagoane de metrou albastre, bariere rutiere roșu-alb, conuri de trafic și clădiri urbane neon.
-- **Muzică**: Beat alert Trap / Electro cu 808 kick și hi-hats.
-
-### 2. 🗿 MODUL TEMPLE RUN („Templul Străbun”)
-- **UN SINGUR DRUM CONTINUU**: Fără 3 coloane! Este o singură potecă îngustă de piatră sculptată, suspendată peste o prăpastie fără fund.
-- **Control Analogic Fin pe Lățimea Drumului**:
-  - Te miști lin la stânga și la dreapta pe suprafața drumului (`Ține apăsat A / D` sau `← / →` sau drag cu degetul pe ecran).
-  - **Atenție la Margini**: Dacă virezi prea mult în exterior (`X > 2.6`), personajul **cade de pe marginea drumului în prăpastie**!
-- **Viraje la 90 de Grade la Intersecții (Cornering)**:
-  - Drumul cotește brusc la 90° spre stânga sau spre dreapta!
-  - Când ajungi la viraj, apare o săgeată mare verde sculptată în dale (`↩️ VIREAZĂ ACUM!`).
-  - Apasă `A` / `←` sau `D` / `→` (sau swipe) exact la colț pentru a lua curba la 90° cu rotire dinamică de cameră!
-  - Dacă mergi înainte și ratezi virajul, cazi în abis!
-- **Obstacole pe tot Drumul**:
-  - Goluri în podea (prăpăstii rupte în piatră) peste care trebuie să sari.
-  - Trunchiuri groase de copac și rădăcini peste care trebuie să sari.
-  - Arcade joase de piatră pe sub care trebuie să aluneci (`S` / `↓`).
-- **Colectabile**: Idoli de smarald (💎) plasați în curbe line de-a lungul drumului, necesitând virare fină pentru a fi culeși.
-- **Muzică**: Percuții tribale africane/Taiko și tobe adânci de junglă.
+Aplicație completă retro-arcade construită de la zero în Three.js și HTML5/CSS3/JavaScript, cu o paletă minimalistă **Pool Blue (`#72E6FF`)**, **Arcade Ink (`#182644`)** și **Bubblegum Pink (`#FF5276`)**, fără elemente generice (zero glassmorphism sau degradé-uri mov).
 
 ---
 
-## 🎭 Personaje & Asemănare cu Pozele
-- **Marius Matei**:
-  - Sacou bleumarin croit elegant (*navy blazer*).
-  - Guler înalt alb (*white turtleneck*) modelat 3D.
-  - Portretul real decupat HD cu zâmbetul cald și tunsoarea din poză.
-- **Zannidache**:
-  - Părul emblematic 3D bicolour (jumătate blond decolorat, jumătate negru intens).
-  - Lanț gros cubanez de aur + lanț masiv de argint în jurul gâtului.
-  - Tatuaje faciale (*MCMXCI*, hexagramă pe tâmplă, *under* pe pomete) și tatuaje de gât.
-- **Selector de Stil Grafic**:
-  - `3D Stylized Pro`: Model 3D articulat, cu unghi dinamic 3/4 pentru a vedea fața în timp ce aleargă.
-  - `✨ 2.5D HD Foto-Cutout`: Decupaj din fotografiile reale în format billboard animat, 100% fidel pozelor!
+## 🕹️ Cartușe / Jocuri Disponibile în Hub
+
+### 1. 🏃 Cartridge 01: MĂLAI RUNNER (Subway Surfers & Temple Run)
+- **Subway Surfers**: 3 benzi paralele de metrou (`Stânga - Centru - Dreapta`), vagoane de metrou, bariere rutiere, monede de aur și mălai.
+- **Temple Run**: O singură potecă îngustă suspendată peste abis, ghidare analogică fină, viraje la 90° la intersecții cu rotire de cameră, și idoli de smarald.
+- Personaje: **Marius Matei** (costum bleumarin, guler înalt alb) & **Zannidache** (tatuaje faciale, păr bicolor, lanțuri de aur).
 
 ---
 
-## 🕹️ Controale
-| Mod Joc | Mișcare Orizontală | Săritură | Alunecare | Viraj 90° la Intersecție |
-| :--- | :--- | :--- | :--- | :--- |
-| **Subway Surfers** | `A` / `D` (schimbă banda) | `W` / `↑` / `Space` | `S` / `↓` | N/A |
-| **Temple Run** | Ține apăsat `A` / `D` (ghidare fină) | `W` / `↑` / `Space` | `S` / `↓` | `A` / `D` sau Swipe la colț |
+### 2. 🚓 Cartridge 02: ANDI LA IESC - CORPUL V (Marea Evadare)
+- **Gameplay Urmărire pe Holurile Facultății IESC (UniTBv Brașov - Corpul V)**:
+  - **Andi** sprintează pe gresia lustruită a Corpului V cu sacul de mălai și subiectele de examen în spate!
+  - **Poliția (3D Police Cruiser)** a intrat direct pe holurile etajului 1 printre laboratoare, cu **sirenele roșu-albastru aprinse la 14Hz** și reflectoare în ecou pe pereți.
+  - **Decor Autentic Corpul V IESC (Str. Mihai Viteazul 5)**:
+    - Săli și laboratoare de calculatoare cu plăcuțe specifice: `LAB V.I.1 CALCULATOARE`, `AMFITEATRUL V.I.2`, `LAB V.I.3 REȚELE`, `DECANAT IESC`, `SECRETARIAT`.
+    - Lambriu lavabil albastru UniTBv, tavan casetat cu neoane lungi fluorescente și jgheaburi cu cabluri de rețea.
+    - Aviziere pe pereți cu liste de restanțe („SDA - Colocviu: Andi PICAT”), orare și anunțuri de licență.
+  - **Obstacole Universitare Specifice**:
+    - **Bănci de hol din lemn cu ghiozdane și cursuri de calculatoare** (Sari peste ele cu `W` / `Space`).
+    - **Cabluri de rețea UTP suspendate & Banner IESC** (Alunecă pe sub ele cu `S` / `↓`).
+    - **Faimoasele automate de cafea de 2 lei de la Corpul V** (Blocaj complet de bandă - schimbă banda rapid).
+    - **Cărucioare de curățenie cu mop & con galben „Podea Umedă Corpul V”** (Sari peste ele).
+    - **Credite ECTS & Mălai (`🎓`)** colectabile de pe hol.
+  - **Suport Foto Drop-In**:
+    - Sistemul este 100% pregătit pentru fotografii reale cu Andi! Adaugă `assets/andi.png` sau setează `window.CHARACTER_ASSETS.andi` și fața lui reală va fi decupată și aplicată instant.
+
+---
+
+### 3. 🥊 Cartridge 03: MĂLAI ARENA (În Lucru)
+- Dueluri comice 1 la 1 între celebrități, replici vocale legendare și atacuri speciale cu mălai.
+
+---
+
+## 🎮 Controale
+| Acțiune | Tastatură Desktop | Dispozitive Mobile / Touch |
+| :--- | :--- | :--- |
+| **Schimbare Bandă (Stânga / Dreapta)** | `A` / `D` sau `←` / `→` | Swipe Stânga / Dreapta sau Butoane Touch |
+| **Săritură (Jump)** | `W` / `↑` / `Space` | Swipe Sus sau Buton Salt |
+| **Alunecare (Slide)** | `S` / `↓` | Swipe Jos sau Buton Alunecare |
+| **Pauză** | `Escape` | Buton Pauză (dreapta-sus) |
 
 ---
 
 ## 🚀 Cum se pornește
-Deschide direct fișierul `index.html` în browser sau pornește serverul local:
-
+Pornește serverul local din terminal:
 ```bash
-cd d:\Programming\malai-zanni
 node server.js
 ```
-Apoi accesează: **`http://localhost:8080/`**
+Apoi deschide în browser:
+👉 **`http://localhost:8080/`**

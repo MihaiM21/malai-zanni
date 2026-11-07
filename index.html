@@ -6,11 +6,33 @@
   <title>MĂLAI RUNNER - Subway Surfers & Temple Run</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --bg-dark: #080c14;
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-mono: 'Space Mono', monospace;
+
+      /* EXACT PALETTE FROM USER SCREENSHOT */
+      --pool-blue: #72E6FF;
+      --pool-blue-dark: #3FD2F2;
+      --pool-blue-light: #C4F4FE;
+      --pool-blue-tint: #EEFAFD;
+      --arcade-ink: #182644;
+      --arcade-ink-light: #26385E;
+      --arcade-ink-muted: #566D97;
+      --bubblegum: #FF5276;
+      --bubblegum-hover: #FF6C8C;
+      --bubblegum-tint: #FFEBF0;
+      --pure-white: #FFFFFF;
+
+      --bg-dark: #182644;
+      --border-ink: 2.5px solid var(--arcade-ink);
+      --border-ink-sm: 1.5px solid var(--arcade-ink);
+      --shadow-ink: 4px 4px 0px var(--arcade-ink);
+      --shadow-ink-sm: 2px 2px 0px var(--arcade-ink);
+      --shadow-ink-lg: 6px 6px 0px var(--arcade-ink);
+
       --surface-1: rgba(15, 21, 35, 0.7);
       --surface-2: rgba(22, 30, 48, 0.85);
       --border-subtle: rgba(255, 255, 255, 0.08);
@@ -19,11 +41,11 @@
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
-      --accent-marius: #38bdf8;
-      --accent-zanni: #f59e0b;
+      --accent-marius: #72E6FF;
+      --accent-zanni: #FF5276;
       --accent-amber: #f59e0b;
       --accent-emerald: #10b981;
-      --accent-rose: #f43f5e;
+      --accent-rose: #FF5276;
     }
 
     * {
@@ -72,82 +94,84 @@
       pointer-events: auto;
     }
 
-    /* SCREEN 1: SELECTION MENU */
+    /* =========================================================================
+       SCREEN 1: RUNNER LOBBY (PUDDLE CLUB / RETRO ARCADE STYLE)
+       ========================================================================= */
     #screen-select {
-      background: radial-gradient(circle at 50% 30%, rgba(18, 25, 42, 0.45) 0%, rgba(8, 12, 20, 0.94) 85%);
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
       justify-content: space-between;
       align-items: center;
-      padding: 24px 20px 20px 20px;
+      padding: 20px 20px 16px 20px;
       overflow-y: auto;
     }
 
     .select-header {
       text-align: center;
-      margin-top: 2px;
+      margin-top: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: fadeInDown 0.4s ease-out;
+      animation: fadeInDown 0.3s ease-out;
     }
 
     .game-logo {
-      font-family: var(--font-main);
-      font-size: clamp(2rem, 5.2vw, 3.2rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
+      font-family: var(--font-pixel);
+      font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
-      color: #ffffff;
-      line-height: 1;
-      margin-bottom: 2px;
+      color: var(--arcade-ink);
+      line-height: 1.2;
+      margin-bottom: 8px;
     }
 
     /* SEGMENTED MODE SWITCHER */
     .mode-tabs-container {
       display: inline-flex;
-      gap: 4px;
-      background: rgba(15, 21, 35, 0.75);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 2.5px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      border-radius: 4px;
       padding: 4px;
-      margin-top: 14px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      margin-top: 8px;
     }
 
     .mode-tab {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 18px;
-      border-radius: 8px;
-      border: 1px solid transparent;
+      padding: 8px 18px;
+      border-radius: 2px;
+      border: 1.5px solid transparent;
       background: transparent;
-      color: var(--text-secondary);
-      font-family: var(--font-main);
-      font-size: 0.82rem;
-      font-weight: 600;
+      color: var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
       letter-spacing: 0.02em;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s ease;
       text-transform: uppercase;
     }
 
     .mode-tab:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--pool-blue-light);
     }
 
     .mode-tab.active {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.14);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      border-color: var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
     }
 
     .game-tagline {
-      font-size: clamp(0.78rem, 1.8vw, 0.88rem);
-      font-weight: 500;
-      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: clamp(0.75rem, 1.6vw, 0.82rem);
+      font-weight: 700;
+      color: var(--arcade-ink);
       letter-spacing: 0.01em;
       margin-top: 10px;
     }
@@ -159,87 +183,80 @@
       justify-content: center;
       align-items: stretch;
       width: 100%;
-      max-width: 820px;
-      margin: 14px 0;
+      max-width: 780px;
+      margin: 12px 0;
       flex-wrap: wrap;
     }
 
     .char-card {
-      flex: 1 1 290px;
-      max-width: 350px;
-      background: rgba(14, 20, 34, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 18px;
-      border: 1px solid var(--border-subtle);
+      flex: 1 1 280px;
+      max-width: 340px;
+      background: #FFFFFF;
+      border-radius: 4px;
+      border: 2.5px solid var(--arcade-ink);
+      box-shadow: 4px 4px 0 var(--arcade-ink);
       padding: 18px 20px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s ease;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.5);
     }
 
     .char-card:hover {
-      border-color: var(--border-hover);
-      background: rgba(18, 25, 42, 0.75);
-      transform: translateY(-2px);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--arcade-ink);
     }
 
     .char-card.selected {
-      border-color: rgba(255, 255, 255, 0.32);
-      background: rgba(20, 28, 48, 0.88);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.12);
+      background: var(--pool-blue-tint);
+      border-color: var(--arcade-ink);
+      box-shadow: 6px 6px 0 var(--arcade-ink);
     }
 
     .char-badge {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      font-size: 0.68rem;
-      font-weight: 600;
+      top: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
       text-transform: uppercase;
-      padding: 3px 9px;
-      border-radius: 6px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      border: 1.5px solid var(--arcade-ink);
       letter-spacing: 0.04em;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .badge-fugar {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.24);
-      color: #38bdf8;
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
     }
 
     .badge-vanator {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.24);
-      color: #f59e0b;
+      background: var(--bubblegum);
+      color: #FFFFFF;
     }
 
     .char-avatar-frame {
-      width: 104px;
-      height: 104px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.12);
+      width: 96px;
+      height: 96px;
+      border-radius: 4px;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
       overflow: hidden;
       margin-top: 4px;
       margin-bottom: 12px;
-      background: #0f172a;
-      transition: all 0.22s ease;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      background: var(--pool-blue-light);
+      transition: all 0.15s ease;
     }
 
     .char-card.selected .char-avatar-frame {
-      border-color: #ffffff;
+      border-color: var(--arcade-ink);
       transform: scale(1.04);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: 4px 4px 0 var(--arcade-ink);
     }
 
     .char-avatar-img {
@@ -251,21 +268,21 @@
     }
 
     .char-name {
-      font-family: var(--font-main);
-      font-size: 1.35rem;
+      font-family: var(--font-pixel);
+      font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 4px;
-      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      color: var(--arcade-ink);
     }
 
     .char-role-desc {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      color: var(--arcade-ink-muted);
       text-align: center;
       margin-bottom: 12px;
-      min-height: 36px;
-      font-style: normal;
+      min-height: 38px;
       line-height: 1.4;
     }
 
@@ -274,66 +291,69 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      background: rgba(8, 12, 20, 0.5);
+      background: var(--pool-blue-light);
       padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 3px;
+      border: 1.5px solid var(--arcade-ink);
     }
 
     .stat-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
     }
 
     .stat-bar-bg {
       width: 96px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 999px;
+      height: 8px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      border-radius: 2px;
       overflow: hidden;
     }
 
     .stat-bar-fill {
       height: 100%;
-      background: #38bdf8;
-      border-radius: 999px;
+      background: var(--pool-blue-dark);
+      border-radius: 0;
       transition: width 0.3s ease;
     }
 
     .char-card[data-char="zanni"] .stat-bar-fill {
-      background: #f59e0b;
+      background: var(--bubblegum);
     }
 
     /* SCENARIO BAR */
     .mode-selector {
-      background: rgba(15, 21, 35, 0.65);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 7px 16px;
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      border-radius: 4px;
+      padding: 6px 14px;
       display: inline-flex;
       align-items: center;
       gap: 10px;
       max-width: 600px;
       margin-bottom: 8px;
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: #cbd5e1;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
     }
 
     .mode-badge {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #f1f5f9;
+      background: var(--arcade-ink);
+      border: 1px solid var(--arcade-ink);
+      color: var(--pool-blue);
+      font-family: var(--font-mono);
       font-size: 0.68rem;
       font-weight: 700;
       padding: 2px 7px;
-      border-radius: 5px;
+      border-radius: 2px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       white-space: nowrap;
@@ -344,60 +364,61 @@
       display: inline-flex;
       gap: 6px;
       align-items: center;
-      background: rgba(15, 21, 35, 0.65);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 3px 6px;
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      border-radius: 4px;
+      padding: 4px 8px;
       margin-bottom: 12px;
     }
 
     .style-label {
+      font-family: var(--font-mono);
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.04em;
-      color: var(--text-muted);
+      color: var(--arcade-ink);
       text-transform: uppercase;
-      padding: 0 6px;
+      padding: 0 4px;
     }
 
     .style-btn {
       background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-secondary);
+      border: 1.5px solid transparent;
+      color: var(--arcade-ink);
       padding: 5px 12px;
-      border-radius: 7px;
-      font-family: var(--font-main);
-      font-size: 0.76rem;
-      font-weight: 600;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.18s ease;
+      transition: all 0.15s ease;
     }
 
     .style-btn:hover {
-      color: #ffffff;
+      background: var(--pool-blue-light);
     }
 
     .style-btn.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      background: var(--arcade-ink);
+      color: #FFFFFF;
+      border-color: var(--arcade-ink);
     }
 
-    /* PRIMARY CTA BUTTON */
+    /* PRIMARY CTA BUTTON (PRESS START) */
     .btn-start {
-      background: #ffffff;
-      color: #080c14;
-      font-family: var(--font-main);
-      font-size: 0.95rem;
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 13px 36px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.04em;
+      padding: 13px 34px;
+      border-radius: 4px;
+      border: 2.5px solid var(--arcade-ink);
+      box-shadow: 4px 4px 0 var(--arcade-ink);
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 10px 25px -5px rgba(255, 255, 255, 0.15);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.12s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -406,22 +427,23 @@
     }
 
     .btn-start:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 14px 30px -4px rgba(255, 255, 255, 0.25);
-      filter: brightness(1.02);
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      background: var(--bubblegum-hover);
     }
 
     .btn-start:active {
-      transform: translateY(1px);
-      filter: brightness(0.96);
+      transform: translate(4px, 4px);
+      box-shadow: 0 0 0 var(--arcade-ink);
     }
 
     .controls-hint {
       display: flex;
       gap: 14px;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      font-weight: 500;
+      color: var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
       margin-top: 10px;
       text-align: center;
       flex-wrap: wrap;
@@ -429,14 +451,14 @@
     }
 
     .key-badge {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
       padding: 2px 6px;
-      border-radius: 4px;
-      color: #e2e8f0;
-      font-family: var(--font-main);
-      font-size: 0.72rem;
-      font-weight: 600;
+      border-radius: 2px;
+      color: var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
     }
 
     /* IN-GAME HUD */
@@ -926,6 +948,1393 @@
         display: flex;
       }
     }
+
+    /* =========================================================================
+       SCREEN 0: PUDDLE CLUB STYLE ARCADE HUB (MINIMALIST & RETRO)
+       ========================================================================= */
+    #screen-hub {
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    /* PUDDLE TOP NAVBAR */
+    .puddle-navbar {
+      width: 100%;
+      background: var(--pool-blue);
+      border-bottom: var(--border-ink);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .puddle-star {
+      color: var(--bubblegum);
+      font-size: 0.95rem;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-center {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      padding: 4px 14px;
+      border-radius: 3px;
+    }
+
+    .nav-stat b {
+      color: var(--bubblegum);
+    }
+
+    .nav-sep {
+      color: var(--arcade-ink-muted);
+    }
+
+    .nav-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cartridge-badge {
+      background: var(--arcade-ink);
+      color: var(--pool-blue);
+      padding: 4px 10px;
+      border-radius: 2px;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    .pixel-audio-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      border-radius: 2px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--arcade-ink);
+      transition: all 0.1s ease;
+    }
+
+    .pixel-audio-btn:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    /* PUDDLE HERO TITLE */
+    .puddle-hero {
+      width: 100%;
+      max-width: 1120px;
+      padding: 24px 24px 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .puddle-title {
+      font-family: var(--font-pixel);
+      font-size: clamp(1.8rem, 4.2vw, 3rem);
+      font-weight: 700;
+      color: var(--arcade-ink);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0 var(--pool-blue-dark);
+    }
+
+    .hero-right {
+      text-align: right;
+      font-family: var(--font-mono);
+      color: var(--arcade-ink);
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--arcade-ink);
+      margin-bottom: 2px;
+    }
+
+    .hero-desc {
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--arcade-ink-muted);
+    }
+
+    /* PUDDLE GAMES GRID */
+    .puddle-games-grid {
+      display: flex;
+      gap: 22px;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1120px;
+      padding: 10px 24px 18px 24px;
+      flex-wrap: wrap;
+      margin: auto 0;
+    }
+
+    .puddle-card {
+      flex: 1 1 310px;
+      max-width: 345px;
+      background: #FFFFFF;
+      border: var(--border-ink);
+      box-shadow: var(--shadow-ink);
+      border-radius: 4px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .puddle-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--arcade-ink);
+    }
+
+    .card-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--arcade-ink);
+      margin-bottom: 12px;
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      letter-spacing: 0.04em;
+    }
+
+    .card-pill {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1.5px solid var(--arcade-ink);
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-pill.pink {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+    }
+
+    .card-pill.dark {
+      background: var(--arcade-ink);
+      color: var(--pool-blue);
+    }
+
+    .card-pill.light {
+      background: var(--pool-blue-light);
+      color: var(--arcade-ink);
+    }
+
+    /* SCREEN FRAME INSIDE CARD (PUDDLE CLUB RETRO SCREEN) */
+    .card-screen-frame {
+      background: var(--pool-blue-light);
+      border: 2px solid var(--arcade-ink);
+      padding: 14px 12px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 230px;
+      margin-bottom: 12px;
+    }
+
+    .screen-inner-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .pixel-vs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+
+    .char-chip {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    .char-chip.blue {
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
+    }
+
+    .char-chip.pink {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+    }
+
+    .vs-text {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      color: var(--arcade-ink);
+    }
+
+    .pixel-game-title {
+      font-family: var(--font-pixel);
+      font-size: 0.82rem;
+      color: var(--arcade-ink);
+      line-height: 1.35;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .pixel-subtext {
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--arcade-ink-muted);
+      line-height: 1.35;
+    }
+
+    /* RETRO SIREN STRIP */
+    .siren-strip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+
+    .siren-light {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--arcade-ink);
+      border-radius: 50%;
+    }
+
+    .siren-light.red {
+      background: #ef4444;
+      animation: sirenFlashRed 0.6s infinite;
+    }
+
+    .siren-light.blue {
+      background: #3b82f6;
+      animation: sirenFlashBlue 0.6s infinite;
+    }
+
+    .siren-text {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      text-transform: uppercase;
+    }
+
+    .pixel-arena-icon {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    /* PUDDLE BUTTONS (MATCHING USER SCREENSHOT) */
+    .puddle-btn-start, .puddle-btn-andi, .puddle-btn-muted {
+      align-self: flex-end;
+      font-family: var(--font-pixel);
+      font-size: 0.68rem;
+      padding: 10px 14px;
+      border-radius: 2px;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      transition: all 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .puddle-btn-start {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+    }
+
+    .puddle-btn-start:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+      background: var(--bubblegum-hover);
+    }
+
+    .puddle-btn-andi {
+      background: var(--arcade-ink);
+      color: var(--pool-blue);
+    }
+
+    .puddle-btn-andi:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .puddle-btn-muted {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+    }
+
+    .puddle-btn-muted:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .card-footer-info {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: var(--arcade-ink-muted);
+      padding-top: 8px;
+      border-top: 1.5px dashed var(--arcade-ink-light);
+    }
+
+    /* PUDDLE FOOTER BAR */
+    .puddle-footer {
+      width: 100%;
+      background: var(--pool-blue);
+      border-top: var(--border-ink);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* BACK TO HUB BUTTON */
+    .btn-back-hub {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 2px;
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      color: var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+
+    .btn-back-hub:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      background: var(--pool-blue-light);
+    }
+
+    /* ANDI DOSSIER MODAL (RETRO CLEAN) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(24, 38, 68, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-dossier-box {
+      width: 100%;
+      max-width: 540px;
+      background: #FFFFFF;
+      border: 3px solid var(--arcade-ink);
+      box-shadow: 7px 7px 0 var(--arcade-ink);
+      border-radius: 4px;
+      padding: 22px 22px;
+      position: relative;
+      color: var(--arcade-ink);
+    }
+
+    .dossier-tape {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border: 1.5px solid var(--arcade-ink);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .dossier-code {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bubblegum);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .dossier-title {
+      font-family: var(--font-pixel);
+      font-size: 1.15rem;
+      color: var(--arcade-ink);
+      margin: 6px 0 10px 0;
+      line-height: 1.3;
+    }
+
+    .dossier-body {
+      font-family: var(--font-main);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: var(--arcade-ink);
+      margin-bottom: 14px;
+    }
+
+    .dossier-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .dossier-spec-card {
+      background: var(--pool-blue-light);
+      border: 1.5px solid var(--arcade-ink);
+      border-radius: 2px;
+      padding: 8px;
+    }
+
+    .dossier-spec-card h4 {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+
+    .dossier-spec-card p {
+      font-family: var(--font-main);
+      font-size: 0.76rem;
+      color: var(--arcade-ink-muted);
+      line-height: 1.3;
+    }
+
+    .dossier-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .dossier-actions .card-btn {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 10px 14px;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.1s ease;
+    }
+
+    .dossier-actions .card-btn:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+    }
+
+    .dossier-actions .card-btn.police {
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
+    }
+
+    .dossier-actions .card-btn.primary {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+    }
+
+    .dossier-actions .card-btn.ghost {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+    }
+
+    /* TOAST NOTIFICATION (RETRO ARCADE) */
+    .toast-notification {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--arcade-ink);
+      color: var(--pool-blue);
+      border: 2px solid var(--pool-blue);
+      box-shadow: 4px 4px 0 var(--arcade-ink);
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+    }
+
+    .toast-notification.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* GAME OVER & PAUSE BOXES (RETRO ARCADE) */
+    .gameover-box, .pause-box {
+      background: #FFFFFF;
+      border: 3px solid var(--arcade-ink);
+      box-shadow: 6px 6px 0 var(--arcade-ink);
+      border-radius: 4px;
+      color: var(--arcade-ink);
+    }
+
+    .gameover-title, .pause-title {
+      font-family: var(--font-pixel);
+      font-size: 1.25rem;
+      color: var(--arcade-ink);
+    }
+
+    .gameover-quote {
+      color: var(--arcade-ink-muted);
+      font-family: var(--font-main);
+    }
+
+    .gameover-results {
+      background: var(--pool-blue-light);
+      border: 2px solid var(--arcade-ink);
+      border-radius: 2px;
+    }
+
+    .res-row {
+      color: var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
+    .res-row .val {
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      color: var(--arcade-ink);
+    }
+
+    .btn-restart {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      font-family: var(--font-pixel);
+      font-size: 0.72rem;
+      border-radius: 2px;
+    }
+
+    .btn-restart:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .btn-secondary {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.76rem;
+      border-radius: 2px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--pool-blue-light);
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+    }
+
+    /* =========================================================================
+       LEADERBOARD & PLAYER PROFILE RETRO STYLES
+       ========================================================================= */
+    .nav-player-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      padding: 3px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      transition: all 0.1s ease;
+      user-select: none;
+    }
+
+    .nav-player-pill:hover {
+      background: var(--pool-blue-light);
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .nav-player-icon {
+      font-size: 0.85rem;
+    }
+
+    .nav-player-lbl {
+      color: var(--arcade-ink-muted);
+      font-size: 0.65rem;
+    }
+
+    .nav-player-name {
+      color: var(--bubblegum);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-edit-pen {
+      font-size: 0.7rem;
+      color: var(--arcade-ink-muted);
+      margin-left: 2px;
+    }
+
+    .nav-lb-btn {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      padding: 4px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      letter-spacing: 0.04em;
+      transition: all 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-lb-btn:hover {
+      background: var(--bubblegum-dark);
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .puddle-btn-subtle {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 3px 3px 0 var(--arcade-ink);
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      padding: 7px 12px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .puddle-btn-subtle:hover {
+      background: var(--pool-blue-light);
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+    }
+
+    /* LEADERBOARD MODAL CONTAINER */
+    .modal-lb-box {
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      border: 3px solid var(--arcade-ink);
+      box-shadow: 7px 7px 0 var(--arcade-ink);
+      border-radius: 4px;
+      padding: 20px 22px;
+      position: relative;
+      color: var(--arcade-ink);
+      overflow: hidden;
+      animation: zoomIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lb-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      width: 28px;
+      height: 28px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--arcade-ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      transition: all 0.1s ease;
+      z-index: 5;
+    }
+
+    .lb-close-btn:hover {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .lb-top-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding-right: 36px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .lb-strip-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--bubblegum);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .lb-player-active-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--pool-blue-light);
+      border: 1.5px solid var(--arcade-ink);
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      cursor: pointer;
+    }
+
+    .lb-player-active-pill b {
+      color: var(--bubblegum);
+    }
+
+    .lb-player-active-pill:hover {
+      background: #FFFFFF;
+    }
+
+    .lb-main-title {
+      font-family: var(--font-pixel);
+      font-size: 1.15rem;
+      color: var(--arcade-ink);
+      margin: 0 0 4px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .lb-subtitle {
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      color: var(--arcade-ink-muted);
+      margin: 0 0 12px 0;
+    }
+
+    /* GAME TABS */
+    .lb-game-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--arcade-ink);
+      padding-bottom: 10px;
+    }
+
+    .lb-game-tab {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 6px 11px;
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.1s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .lb-game-tab:hover {
+      background: var(--pool-blue-light);
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .lb-game-tab.active {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      border-color: var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      transform: translate(1px, 1px);
+    }
+
+    .tab-badge {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 2px;
+      background: var(--arcade-ink);
+      color: #FFFFFF;
+    }
+
+    .lb-game-tab.active .tab-badge {
+      background: #FFFFFF;
+      color: var(--bubblegum);
+    }
+
+    /* FILTER BAR */
+    .lb-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .lb-sort-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .lb-sort-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--arcade-ink-muted);
+    }
+
+    .lb-sort-pill {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 1.5px 1.5px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .lb-sort-pill:hover {
+      background: var(--pool-blue-light);
+    }
+
+    .lb-sort-pill.active {
+      background: var(--pool-blue);
+      color: var(--arcade-ink);
+      font-weight: 800;
+      border-color: var(--arcade-ink);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+      transform: translate(1px, 1px);
+    }
+
+    .lb-refresh-btn {
+      background: #FFFFFF;
+      color: var(--arcade-ink);
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 1.5px 1.5px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.1s ease;
+    }
+
+    .lb-refresh-btn:hover {
+      background: var(--pool-blue-light);
+    }
+
+    /* TABLE STYLES */
+    .lb-table-wrapper {
+      width: 100%;
+      flex: 1 1 auto;
+      max-height: 330px;
+      overflow-y: auto;
+      border: 2px solid var(--arcade-ink);
+      border-radius: 2px;
+      background: #FFFFFF;
+      position: relative;
+    }
+
+    .lb-table-wrapper::-webkit-scrollbar {
+      width: 7px;
+    }
+    .lb-table-wrapper::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .lb-table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--arcade-ink);
+      border-radius: 2px;
+    }
+
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .lb-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .lb-table th {
+      background: var(--arcade-ink);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 7px 10px;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .lb-table td {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--arcade-ink);
+      padding: 7px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .lb-table tbody tr:nth-child(even) {
+      background: #FAFCFE;
+    }
+
+    .lb-table tbody tr:hover {
+      background: #EFF9FC;
+    }
+
+    .lb-row-self {
+      background: #FFF1F4 !important;
+      border-left: 4px solid var(--bubblegum) !important;
+    }
+
+    .lb-self-badge {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 800;
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      padding: 1px 4px;
+      border-radius: 2px;
+      margin-left: 5px;
+      letter-spacing: 0.04em;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      border: 1.5px solid var(--arcade-ink);
+      border-radius: 2px;
+      background: #f1f5f9;
+      color: var(--arcade-ink);
+    }
+
+    .rank-badge.rank-1 {
+      background: #FFD700;
+      color: #182644;
+      font-weight: 800;
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .rank-badge.rank-2 {
+      background: #E2E8F0;
+      color: #182644;
+      font-weight: 800;
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .rank-badge.rank-3 {
+      background: #FED7AA;
+      color: #182644;
+      font-weight: 800;
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .col-meters-val {
+      font-family: var(--font-pixel);
+      font-size: 0.68rem;
+      color: var(--arcade-ink);
+    }
+
+    .col-coins-val {
+      font-weight: 800;
+      color: #0284c7;
+    }
+
+    .col-date-val {
+      font-size: 0.65rem;
+      color: var(--arcade-ink-muted);
+    }
+
+    .game-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 2px;
+      border: 1px solid var(--arcade-ink);
+      text-transform: uppercase;
+    }
+
+    .game-badge.andi {
+      background: #FFE4EC;
+      color: #be123c;
+    }
+
+    .game-badge.subway {
+      background: #E0F2FE;
+      color: #0369a1;
+    }
+
+    .game-badge.temple {
+      background: #DCFCE7;
+      color: #15803d;
+    }
+
+    .lb-empty-state, .lb-loading-state {
+      padding: 30px 16px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--arcade-ink-muted);
+    }
+
+    /* LEADERBOARD FOOTER */
+    .lb-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 2px solid var(--arcade-ink);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lb-user-summary {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--arcade-ink);
+    }
+
+    .user-summary-label {
+      color: var(--arcade-ink-muted);
+      margin-right: 4px;
+    }
+
+    .lb-user-summary b {
+      color: var(--bubblegum);
+    }
+
+    .lb-footer-btns {
+      display: inline-flex;
+      gap: 8px;
+    }
+
+    /* GAMEOVER LEADERBOARD CARD */
+    .lb-gameover-card {
+      width: 100%;
+      background: #FFFFFF;
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .lb-gameover-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .lb-gameover-title {
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: var(--arcade-ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lb-input-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .lb-input-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--arcade-ink-muted);
+    }
+
+    .lb-name-input {
+      flex: 1 1 auto;
+      background: var(--pool-blue-light);
+      border: 1.5px solid var(--arcade-ink);
+      padding: 6px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      text-transform: uppercase;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .lb-name-input:focus {
+      background: #FFFFFF;
+      border-color: var(--bubblegum);
+      box-shadow: 0 0 0 1px var(--bubblegum);
+    }
+
+    .btn-save-score {
+      background: var(--bubblegum);
+      color: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      padding: 7px 10px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .btn-save-score:hover {
+      background: var(--bubblegum-dark);
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
+
+    .lb-feedback-msg {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 6px;
+      color: #059669;
+      display: none;
+    }
+
+    /* PLAYER NAME MODAL */
+    .player-name-box {
+      max-width: 440px;
+    }
+
+    .player-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-right: 125px;
+    }
+
+    .player-avatar-badge {
+      font-size: 1.4rem;
+    }
+
+    .name-entry-field {
+      margin-bottom: 12px;
+    }
+
+    .name-input-lbl {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      margin-bottom: 4px;
+    }
+
+    .retro-big-input {
+      width: 100%;
+      background: var(--pool-blue-light);
+      border: 2px solid var(--arcade-ink);
+      box-shadow: 2px 2px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--arcade-ink);
+      text-transform: uppercase;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .retro-big-input:focus {
+      background: #FFFFFF;
+      border-color: var(--bubblegum);
+    }
+
+    .preset-names-container {
+      margin-top: 10px;
+    }
+
+    .preset-lbl {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--arcade-ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .preset-chip {
+      background: #FFFFFF;
+      border: 1.5px solid var(--arcade-ink);
+      box-shadow: 1.5px 1.5px 0 var(--arcade-ink);
+      border-radius: 2px;
+      padding: 3px 7px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--arcade-ink);
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .preset-chip:hover {
+      background: var(--pool-blue-light);
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--arcade-ink);
+    }
   </style>
 </head>
 <body>
@@ -933,8 +2342,164 @@
   <!-- THREE.JS CANVAS CONTAINER -->
   <div id="canvas-container"></div>
 
+  <!-- SCREEN 0: PUDDLE CLUB RETRO ARCADE HUB -->
+  <div id="screen-hub" class="ui-layer interactive">
+    <!-- TOP ARCADE NAVBAR -->
+    <header class="puddle-navbar">
+      <div class="nav-left">
+        <span class="puddle-star">✦</span>
+        <span class="nav-brand">MĂLAI CLUB / ARCADE</span>
+      </div>
+      <div class="nav-center">
+        <span class="nav-stat">SUBWAY: <b id="hub-best-subway">0m</b></span>
+        <span class="nav-sep">/</span>
+        <span class="nav-stat">TEMPLE: <b id="hub-best-temple">0m</b></span>
+        <span class="nav-sep">/</span>
+        <span class="nav-stat">IESC CORP V: <b id="hub-best-andi">0m</b></span>
+        <span class="nav-sep">/</span>
+        <span class="nav-stat">MĂLAI: <b id="hub-total-coins">0</b></span>
+      </div>
+      <div class="nav-right">
+        <div class="nav-player-pill" onclick="openPlayerNameModal()" title="Apasă pentru a schimba numele de jucător">
+          <span class="nav-player-icon">🕹️</span>
+          <span class="nav-player-lbl">JUCĂTOR:</span>
+          <span id="nav-player-display" class="nav-player-name">PLAYER_01</span>
+          <span class="nav-edit-pen">✎</span>
+        </div>
+        <button class="nav-lb-btn" onclick="openLeaderboard()" title="Deschide Clasamentul Arcade">
+          <span>🏆 HIGH SCORES</span>
+        </button>
+        <button class="pixel-audio-btn" onclick="toggleAudio()" title="Sound On/Off">
+          <span class="audio-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO HEADER -->
+    <div class="puddle-hero">
+      <div class="hero-left">
+        <h1 class="puddle-title">MĂLAI CLUB</h1>
+      </div>
+      <div class="hero-right">
+        <div class="hero-tag">A ROMANIAN ARCADE.</div>
+        <div class="hero-desc">Run from Zanni.<br>Escape the police.</div>
+      </div>
+    </div>
+
+    <!-- CARTRIDGES / GAMES CONTAINER -->
+    <div class="puddle-games-grid">
+      <!-- GAME 1: MALAI RUNNER (PLAYABLE) -->
+      <div class="puddle-card active-game">
+        <div class="card-topbar">
+          <span class="card-num">01 / MĂLAI RUNNER</span>
+          <span class="card-pill pink">PLAYABLE</span>
+        </div>
+
+        <div class="card-screen-frame">
+          <div class="screen-inner-content">
+            <div class="pixel-vs-badge">
+              <span class="char-chip blue">MARIUS</span>
+              <span class="vs-text">VS</span>
+              <span class="char-chip pink">ZANNI</span>
+            </div>
+            <div class="pixel-game-title">SUBWAY & TEMPLE RUN</div>
+            <p class="pixel-subtext">3D Endless Runner • 3 Benzi Metrou sau Potecă peste Prăpastie cu Viraje la 90°</p>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-self: flex-end; flex-wrap: wrap;">
+            <button class="puddle-btn-start" onclick="openRunnerLobby()">
+              <span>PRESS START ▶</span>
+            </button>
+            <button class="puddle-btn-subtle" onclick="openLeaderboard('subway')" title="Vezi clasamentul Mălai Runner">
+              <span>🏆 SCORES</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-footer-info">
+          <span>MODE: 3D PRO & 2.5D</span>
+          <span>FPS: 60</span>
+        </div>
+      </div>
+
+      <!-- GAME 2: ANDI LA IESC - CORPUL V (PLAYABLE NOW) -->
+      <div class="puddle-card active-game andi-game-card">
+        <div class="card-topbar">
+          <span class="card-num">02 / ANDI LA IESC (CORPUL V)</span>
+          <span class="card-pill pink">PLAYABLE</span>
+        </div>
+
+        <div class="card-screen-frame andi-frame">
+          <div class="screen-inner-content">
+            <div class="siren-strip">
+              <span class="siren-light red"></span>
+              <span class="siren-text">UNITBV BRAȘOV • CORPUL V IESC • ALERTĂ 112</span>
+              <span class="siren-light blue"></span>
+            </div>
+            <div class="pixel-game-title" style="color: var(--bubblegum);">EVADARE DIN CORPUL V</div>
+            <p class="pixel-subtext">Poliția a intrat pe holurile Corpului V (IESC Brașov)! Fugi printre laboratoarele de calculatoare, sari peste bănci, evită automatele de cafea și listele de restanțe!</p>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-self: flex-end; flex-wrap: wrap;">
+            <button class="puddle-btn-start" onclick="startAndiGame()" title="Pornește goana pe holurile Corpului V IESC!">
+              <span>PRESS START ▶</span>
+            </button>
+            <button class="puddle-btn-subtle" onclick="openLeaderboard('andi')" title="Vezi clasamentul Corpul V IESC">
+              <span>🏆 SCORES IESC</span>
+            </button>
+            <button class="puddle-btn-andi" onclick="openAndiTeaser()" title="Deschide dosarul IESC">
+              <span>DOSAR IESC ℹ</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-footer-info">
+          <span>CORPUL V IESC</span>
+          <span>UNITBV BRAȘOV 🏛️</span>
+        </div>
+      </div>
+
+      <!-- GAME 3: MALAI ARENA (PROTOTYPE) -->
+      <div class="puddle-card coming-arena">
+        <div class="card-topbar">
+          <span class="card-num">03 / MĂLAI ARENA</span>
+          <span class="card-pill light">PROTOTYPE</span>
+        </div>
+
+        <div class="card-screen-frame arena-frame">
+          <div class="screen-inner-content">
+            <div class="pixel-arena-icon">🥊 ⚡ 🥊</div>
+            <div class="pixel-game-title">1v1 BATTLEGROUNDS</div>
+            <p class="pixel-subtext">Dueluri comice 1 la 1 între celebrități, replici vocale legendare și atacuri speciale cu mălai.</p>
+          </div>
+
+          <button class="puddle-btn-muted" onclick="showToast('Mălai Arena este în stadiu de prototip!')">
+            <span>DETALII ▶</span>
+          </button>
+        </div>
+
+        <div class="card-footer-info">
+          <span>GENRE: 1v1 ARCADE</span>
+          <span>SLOT: 03</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ARCADE BAR -->
+    <footer class="puddle-footer">
+      <div class="foot-left">PLAYER 01 / READY</div>
+      <div class="foot-center">THE POND IS YOUR PLAYGROUND. ALEGE JOCUL TĂU.</div>
+      <div class="foot-right">✦ MĂLAI CLUB</div>
+    </footer>
+  </div>
+
   <!-- SCREEN 1: CHARACTER & MODE SELECT SCREEN -->
-  <div id="screen-select" class="ui-layer interactive">
+  <div id="screen-select" class="ui-layer interactive" style="display: none;">
+    <!-- BACK TO HUB BUTTON -->
+    <button class="btn-back-hub" onclick="returnToHub()" title="Înapoi la Portalul de Jocuri">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span>Portal Jocuri</span>
+    </button>
     <button class="hud-btn top-corner-btn" onclick="toggleAudio()" title="Mute/Unmute Audio">
       <span class="audio-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></span>
     </button>
@@ -1041,6 +2606,8 @@
     </div>
   </div>
 
+
+
   <!-- SCREEN 2: IN-GAME HUD -->
   <div id="screen-hud" class="ui-layer">
     <div class="hud-top">
@@ -1117,6 +2684,8 @@
     </div>
   </div>
 
+
+
   <!-- SCREEN 3: GAME OVER -->
   <div id="screen-gameover" class="ui-layer interactive">
     <div class="gameover-box">
@@ -1139,19 +2708,48 @@
         </div>
       </div>
 
+      <!-- LEADERBOARD SUBMISSION / PLAYER NAME REGISTRATION -->
+      <div class="lb-gameover-card">
+        <div class="lb-gameover-head">
+          <div class="lb-gameover-title">
+            <span>🏆</span>
+            <span>ÎNREGISTRARE ÎN CLASAMENT</span>
+          </div>
+          <span id="lb-gameover-status-badge" style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--arcade-ink-muted);">AUTO-SALVARE ON</span>
+        </div>
+        <div class="lb-input-group">
+          <label for="player-name-input" class="lb-input-label">NUME:</label>
+          <input type="text" id="player-name-input" class="lb-name-input" maxlength="16" placeholder="NUME JUCĂTOR..." />
+          <button id="btn-save-score" class="btn-save-score" onclick="submitCurrentScoreFromGameOver()">
+            <span>SALVEAZĂ 💾</span>
+          </button>
+        </div>
+        <div id="gameover-lb-feedback" class="lb-feedback-msg"></div>
+      </div>
+
       <div class="btn-group">
         <button class="btn-restart" onclick="restartGame()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
           <span>Rejoacă runda</span>
           <span class="key-badge" style="margin-left: 4px; background: rgba(0,0,0,0.08); color: #080c14; border-color: rgba(0,0,0,0.12);">SPACE</span>
         </button>
+        <button class="btn-secondary" onclick="openLeaderboard(gameMode)" title="Vezi clasamentul complet">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <span>Clasament 🏆</span>
+        </button>
         <button class="btn-secondary" onclick="returnToMenu()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          <span>Meniu & Personaje</span>
+          <span>Lobby Runner</span>
+        </button>
+        <button class="btn-secondary" onclick="returnToHub()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Portal Jocuri</span>
         </button>
       </div>
     </div>
   </div>
+
+
 
   <!-- SCREEN 4: PAUSE -->
   <div id="screen-pause" class="ui-layer interactive">
@@ -1166,10 +2764,226 @@
         <span>Reîncepe runda</span>
       </button>
       <button class="btn-secondary" onclick="returnToMenu()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Lobby Runner</span>
+      </button>
+      <button class="btn-secondary" onclick="returnToHub()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Meniu principal</span>
+        <span>Portal Jocuri</span>
       </button>
     </div>
+  </div>
+
+
+
+  <!-- MODAL: ANDI LA IESC DOSSIER & TEASER -->
+  <div id="modal-andi-teaser" class="modal-overlay" onclick="handleModalOverlayClick(event)">
+    <div class="modal-dossier-box">
+      <div class="dossier-tape">CORPUL V // IESC BRAȘOV</div>
+      
+      <div class="siren-strip" style="margin-bottom: 12px;">
+        <span class="siren-light red"></span>
+        <span class="siren-text">DISPECERATUL 112 • ALARMĂ ÎN CORPUL V IESC</span>
+        <span class="siren-light blue"></span>
+      </div>
+
+      <div class="dossier-header">
+        <div class="dossier-code">DOSAR SPECIAL #112-IESC // FACULTATEA DE INGINERIE ELECTRICĂ & CALCULATOARE</div>
+        <h2 class="dossier-title">ANDI VS POLIȚIA: GOANA PE HOLURILE CORPULUI V</h2>
+      </div>
+
+      <p class="dossier-body">
+        <b>RAPORT OPERATIV:</b> Suspectul <b>Andi</b> a fost reperat fugind pe coridoarele principale ale <b>Corpului V (Facultatea IESC - Str. Mihai Viteazul 5, Brașov)</b> cu un sac masiv de mălai și subiectele de examen! Echipajul de poliție a pătruns direct pe holurile etajului 1 cu girofarurile aprinse. Andi trebuie să sprinteze pe gresie, să sară peste băncile de hol, să evite automatele de cafea de 2 lei și să nu fie prins de portar sau de echipajul 112!
+      </p>
+
+      <div class="dossier-specs-grid">
+        <div class="dossier-spec-card">
+          <h4>🏛️ Corpul V IESC</h4>
+          <p>Holurile lungi de la Calculatoare: sălile V.I.1, V.I.2, Amfiteatre și Decanatul IESC.</p>
+        </div>
+        <div class="dossier-spec-card">
+          <h4>☕ Automate de Cafea</h4>
+          <p>Faimoasele automate de cafea de 2 lei de la parter — evită coliziunea frontală!</p>
+        </div>
+        <div class="dossier-spec-card">
+          <h4>📋 Aviziere & Cabluri</h4>
+          <p>Liste de restanțe pe pereți și cabluri UTP atârnate; alunecă pe sub cabluri la timp!</p>
+        </div>
+        <div class="dossier-spec-card">
+          <h4>🚨 Poliția pe Hol</h4>
+          <p>Sirenele răsună în ecou pe gresie; mașina de intervenție îl ajunge din urmă!</p>
+        </div>
+      </div>
+
+      <div class="dossier-actions">
+        <button class="card-btn primary" style="flex: 1 1 200px;" onclick="closeAndiTeaser(); startAndiGame();">
+          <span>JOACĂ ACUM ▶</span>
+        </button>
+
+        <button class="card-btn police" style="flex: 1 1 180px;" onclick="playPoliceSirenPreview()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <span>ASCULTĂ SIRENA (AUDIO FX)</span>
+        </button>
+
+        <button id="btn-andi-wishlist" class="card-btn ghost" style="flex: 1 1 160px;" onclick="toggleAndiWishlist()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span id="wishlist-btn-text">ADAUGĂ PE WISHLIST</span>
+        </button>
+
+        <button class="card-btn ghost" style="flex: 1 1 100px;" onclick="closeAndiTeaser()">
+          <span>ÎNCHIDE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ARCADE LEADERBOARD (SEPARAT PENTRU FIECARE GAME & SORTARE METRI/COINS) -->
+  <div id="modal-leaderboard" class="modal-overlay" onclick="handleLeaderboardOverlayClick(event)">
+    <div class="modal-lb-box">
+      <!-- Close button -->
+      <button class="lb-close-btn" onclick="closeLeaderboard()" title="Închide clasamentul">✕</button>
+
+      <div class="lb-top-strip">
+        <span class="lb-strip-tag">ARCADE RECORDS // ALL-TIME</span>
+        <div class="lb-player-active-pill" onclick="openPlayerNameModal()" title="Schimbă numele de jucător">
+          <span>JUCĂTOR:</span>
+          <b id="lb-active-player-name">PLAYER_01</b>
+          <span class="edit-glyph">✎</span>
+        </div>
+      </div>
+
+      <h2 class="lb-main-title">✦ ARCADE LEADERBOARD ✦</h2>
+      <p class="lb-subtitle">Clasamentul oficial: distanță parcursă (metri) și mălai / credite ECTS colectate</p>
+
+      <!-- GAME SELECT TABS (Separat pentru fiecare game) -->
+      <div class="lb-game-tabs">
+        <button id="lb-tab-andi" class="lb-game-tab active" data-game="andi" onclick="setLeaderboardGame('andi')">
+          <span class="tab-badge red">02</span>
+          <span>ANDI LA IESC (CORP V)</span>
+        </button>
+        <button id="lb-tab-subway" class="lb-game-tab" data-game="subway" onclick="setLeaderboardGame('subway')">
+          <span class="tab-badge blue">01</span>
+          <span>MĂLAI: SUBWAY</span>
+        </button>
+        <button id="lb-tab-temple" class="lb-game-tab" data-game="temple" onclick="setLeaderboardGame('temple')">
+          <span class="tab-badge green">01</span>
+          <span>MĂLAI: TEMPLE RUN</span>
+        </button>
+        <button id="lb-tab-all" class="lb-game-tab" data-game="all" onclick="setLeaderboardGame('all')">
+          <span class="tab-badge ink">✦</span>
+          <span>TOATE JOCURILE</span>
+        </button>
+      </div>
+
+      <!-- SORT & STATS BAR (vizibil în funcție de metri parcurși și coins colectat) -->
+      <div class="lb-filter-bar">
+        <div class="lb-sort-group">
+          <span class="lb-sort-label">CLASAT DUPĂ:</span>
+          <button id="lb-sort-meters-btn" class="lb-sort-pill active" onclick="setLeaderboardSort('meters')">
+            <span>🏃 METRI PARCURȘI</span>
+          </button>
+          <button id="lb-sort-coins-btn" class="lb-sort-pill" onclick="setLeaderboardSort('coins')">
+            <span id="lb-sort-coins-label">🪙 MĂLAI / CREDITE</span>
+          </button>
+        </div>
+
+        <div class="lb-actions-group">
+          <button class="lb-refresh-btn" onclick="fetchLeaderboardData()" title="Reîmprospătează datele din server">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span>REFRESH</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLE CONTAINER -->
+      <div class="lb-table-wrapper">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th class="col-rank">#</th>
+              <th class="col-name">JUCĂTOR</th>
+              <th class="col-game">JOC</th>
+              <th class="col-meters">DISTANȚĂ</th>
+              <th class="col-coins" id="lb-th-coins">COLECTAT</th>
+              <th class="col-date">DATA</th>
+            </tr>
+          </thead>
+          <tbody id="lb-table-body">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+        <div id="lb-loading" class="lb-loading-state" style="display: none;">
+          <span>Se încarcă clasamentul...</span>
+        </div>
+        <div id="lb-empty" class="lb-empty-state" style="display: none;">
+          <span>Nu există încă scoruri înregistrate în această categorie. Fii primul!</span>
+        </div>
+      </div>
+
+      <!-- FOOTER WITH USER BEST & CTAS -->
+      <div class="lb-footer">
+        <div class="lb-user-summary">
+          <span class="user-summary-label">STATISTICA TA ÎN ACEST MOD:</span>
+          <b id="lb-user-summary-stats">0 m • 0 coins</b>
+        </div>
+        <div class="lb-footer-btns">
+          <button class="card-btn primary" onclick="playSelectedLeaderboardGame()">
+            <span id="lb-play-btn-label">JOACĂ ACEST MOD ▶</span>
+          </button>
+          <button class="card-btn ghost" onclick="closeLeaderboard()">
+            <span>ÎNCHIDE</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SET / CHANGE PLAYER NAME -->
+  <div id="modal-player-name" class="modal-overlay" onclick="handlePlayerNameOverlayClick(event)">
+    <div class="modal-dossier-box player-name-box">
+      <div class="dossier-tape">ARCADE ID // PROFIL</div>
+      
+      <div class="player-modal-header">
+        <span class="player-avatar-badge">🕹️</span>
+        <h3 class="dossier-title" style="margin: 0; font-size: 1.05rem;">ALEGE NUMELE DE JUCĂTOR</h3>
+      </div>
+      
+      <p class="dossier-body" style="margin-bottom: 14px; font-size: 0.8rem;">
+        Numele tău va apărea în <b>Clasamentul Oficial</b> al fiecărui joc când stabilești recorduri de metri și monede!
+      </p>
+
+      <div class="name-entry-field">
+        <label for="custom-player-name-input" class="name-input-lbl">CALLSIGN / PSEUDONIM (MAX 16 CARACTERE):</label>
+        <input type="text" id="custom-player-name-input" class="retro-big-input" maxlength="16" placeholder="EX: ANDI_IESC" autofocus />
+      </div>
+
+      <div class="preset-names-container">
+        <span class="preset-lbl">SUGESTII RAPIDE DE NUME:</span>
+        <div class="preset-chips">
+          <button class="preset-chip" onclick="setQuickName('ANDI_IESC')">ANDI_IESC</button>
+          <button class="preset-chip" onclick="setQuickName('STUDENT_V')">STUDENT_V</button>
+          <button class="preset-chip" onclick="setQuickName('ZANNI_CHAMP')">ZANNI_CHAMP</button>
+          <button class="preset-chip" onclick="setQuickName('MARIUS_MALAI')">MARIUS_MALAI</button>
+          <button class="preset-chip" onclick="setQuickName('PORTAR_CORPV')">PORTAR_CORPV</button>
+          <button class="preset-chip" onclick="setQuickName('RESTANTIER_AN3')">RESTANTIER_AN3</button>
+        </div>
+      </div>
+
+      <div class="modal-btns-row" style="display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;">
+        <button class="card-btn primary" onclick="savePlayerNameFromModal()">
+          <span>SALVEAZĂ NUMELE ✓</span>
+        </button>
+        <button class="card-btn ghost" onclick="closePlayerNameModal()">
+          <span>ANULEAZĂ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-notify" class="toast-notification">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-text">Notificare salvată!</span>
   </div>
 
   <!-- LOAD EMBEDDED BASE64 TEXTURES -->
@@ -1271,6 +3085,50 @@
 
       laneSwitch() {
         this.playTone(320, 'sine', 0.09, 0.22, 0.01);
+      }
+
+      uiClick() {
+        if (!this.enabled || !this.ctx) return;
+        this.playTone(600, 'sine', 0.04, 0.16, 0.005);
+      }
+
+      policeSiren() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+
+          osc.frequency.setValueAtTime(650, now);
+          osc.frequency.linearRampToValueAtTime(950, now + 0.35);
+          osc.frequency.linearRampToValueAtTime(650, now + 0.7);
+          osc.frequency.linearRampToValueAtTime(950, now + 1.05);
+          osc.frequency.linearRampToValueAtTime(650, now + 1.4);
+          osc.frequency.linearRampToValueAtTime(950, now + 1.75);
+          osc.frequency.linearRampToValueAtTime(650, now + 2.1);
+
+          gain.gain.setValueAtTime(0.01, now);
+          gain.gain.linearRampToValueAtTime(0.24, now + 0.05);
+          gain.gain.setValueAtTime(0.24, now + 1.9);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 2.2);
+        } catch(e) {}
+      }
+
+      wishlistSuccess() {
+        if (!this.enabled || !this.ctx) return;
+        [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, idx) => {
+          setTimeout(() => {
+            this.playTone(freq, 'triangle', 0.16, 0.24, 0.01);
+          }, idx * 50);
+        });
       }
 
       turn90() {
@@ -1416,12 +3274,23 @@
 
     const mariusSrc = (window.CHARACTER_ASSETS && window.CHARACTER_ASSETS.marius) ? window.CHARACTER_ASSETS.marius : 'assets/marius.png';
     const zanniSrc = (window.CHARACTER_ASSETS && window.CHARACTER_ASSETS.zanni) ? window.CHARACTER_ASSETS.zanni : 'assets/zanni.png';
+    const andiSrc = (window.CHARACTER_ASSETS && window.CHARACTER_ASSETS.andi) ? window.CHARACTER_ASSETS.andi : 'assets/andi.png';
 
     const mariusFaceTexture = createCroppedFaceTexture(mariusSrc, 180, 40, 280, 290);
     const mariusPortraitTexture = createFullPortraitCutoutTexture(mariusSrc);
 
     const zanniFaceTexture = createCroppedFaceTexture(zanniSrc, 170, 30, 330, 330);
     const zanniPortraitTexture = createFullPortraitCutoutTexture(zanniSrc);
+
+    let andiPhotoAvailable = false;
+    const andiPhotoImg = new Image();
+    andiPhotoImg.onload = () => {
+      andiPhotoAvailable = true;
+      if (typeof buildCharacters === 'function') buildCharacters();
+    };
+    andiPhotoImg.src = andiSrc;
+    const andiFaceTexture = createCroppedFaceTexture(andiSrc, 160, 40, 300, 300);
+    const andiPortraitTexture = createFullPortraitCutoutTexture(andiSrc);
 
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('img-marius').src = mariusSrc;
@@ -1625,7 +3494,7 @@
         charGroup.rightArm = rightArm;
         charGroup.headGroup = headGroup;
 
-      } else {
+      } else if (type === 'zanni') {
         const streetMat = new THREE.MeshLambertMaterial({ color: 0x1f1f23 });
         const zanniPantsMat = new THREE.MeshLambertMaterial({ color: 0x111318 });
         const goldChainMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.9, roughness: 0.18 });
@@ -1724,6 +3593,258 @@
         charGroup.leftArm = leftArm;
         charGroup.rightArm = rightArm;
         charGroup.headGroup = headGroup;
+      } else if (type === 'andi') {
+        const hoodieMat = new THREE.MeshLambertMaterial({ color: 0xFF5276 }); // Bubblegum Pink Hoodie
+        const hoodieAccentMat = new THREE.MeshLambertMaterial({ color: 0x182644 });
+        const cargoPantsMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+        const sneakerMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+        const hairMat = new THREE.MeshLambertMaterial({ color: 0x271c19 });
+        const bagMat = new THREE.MeshLambertMaterial({ color: 0xd97706 }); // Golden loot bag
+
+        // Hips
+        const hipsGeo = new THREE.BoxGeometry(0.68, 0.32, 0.42);
+        const hips = new THREE.Mesh(hipsGeo, cargoPantsMat);
+        hips.position.y = 0.95;
+        bodyGroup.add(hips);
+
+        // Hoodie Torso
+        const torsoGeo = new THREE.BoxGeometry(0.78, 0.82, 0.46);
+        const torso = new THREE.Mesh(torsoGeo, hoodieMat);
+        torso.position.y = 1.48;
+        bodyGroup.add(torso);
+
+        // Front hoodie pocket
+        const pocketGeo = new THREE.BoxGeometry(0.5, 0.3, 0.1);
+        const pocket = new THREE.Mesh(pocketGeo, hoodieAccentMat);
+        pocket.position.set(0, 1.35, -0.24);
+        bodyGroup.add(pocket);
+
+        // Loot Bag on Back
+        const bagGeo = new THREE.BoxGeometry(0.68, 0.58, 0.34);
+        const bag = new THREE.Mesh(bagGeo, bagMat);
+        bag.position.set(0, 1.45, 0.34);
+        bodyGroup.add(bag);
+
+        // Dollar sign / Malai badge on bag
+        const badgeGeo = new THREE.PlaneGeometry(0.32, 0.32);
+        const badgeCanvas = document.createElement('canvas');
+        badgeCanvas.width = 128; badgeCanvas.height = 128;
+        const bCtx = badgeCanvas.getContext('2d');
+        bCtx.fillStyle = '#f59e0b'; bCtx.fillRect(0, 0, 128, 128);
+        bCtx.fillStyle = '#182644'; bCtx.font = 'bold 80px monospace';
+        bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle';
+        bCtx.fillText('$', 64, 64);
+        const badgeTex = new THREE.CanvasTexture(badgeCanvas);
+        const badgeMat = new THREE.MeshBasicMaterial({ map: badgeTex });
+        const badgeMesh = new THREE.Mesh(badgeGeo, badgeMat);
+        badgeMesh.position.set(0, 1.45, 0.52);
+        bodyGroup.add(badgeMesh);
+
+        // Head Group
+        const headGroup = new THREE.Group();
+        headGroup.position.y = 2.25;
+        bodyGroup.add(headGroup);
+
+        // Stylized Andi Head
+        const headGeo = new THREE.BoxGeometry(0.58, 0.6, 0.52);
+        const headFaceCanvas = document.createElement('canvas');
+        headFaceCanvas.width = 256; headFaceCanvas.height = 256;
+        const fCtx = headFaceCanvas.getContext('2d');
+        fCtx.fillStyle = '#ffdfc4'; fCtx.fillRect(0, 0, 256, 256);
+        // Cool sunglasses / eyes
+        fCtx.fillStyle = '#182644';
+        fCtx.fillRect(45, 85, 65, 35);
+        fCtx.fillRect(145, 85, 65, 35);
+        fCtx.fillRect(110, 95, 35, 12);
+        // Smirk mouth
+        fCtx.beginPath();
+        fCtx.arc(135, 175, 45, 0.2, Math.PI * 0.85);
+        fCtx.lineWidth = 10;
+        fCtx.strokeStyle = '#831843';
+        fCtx.stroke();
+        const andiFaceTex = andiPhotoAvailable ? andiFaceTexture : new THREE.CanvasTexture(headFaceCanvas);
+        const andiFaceMat = new THREE.MeshLambertMaterial({ map: andiFaceTex });
+
+        const headMaterials = [
+          skinMat,       // right
+          skinMat,       // left
+          hairMat,       // top
+          skinMat,       // bottom
+          hairMat,       // back
+          andiFaceMat    // front
+        ];
+        const headMesh = new THREE.Mesh(headGeo, headMaterials);
+        headGroup.add(headMesh);
+
+        // Cool cap / hair
+        const capGeo = new THREE.BoxGeometry(0.64, 0.16, 0.56);
+        const cap = new THREE.Mesh(capGeo, hoodieAccentMat);
+        cap.position.set(0, 0.28, 0);
+        headGroup.add(cap);
+
+        const visorGeo = new THREE.BoxGeometry(0.5, 0.06, 0.28);
+        const visor = new THREE.Mesh(visorGeo, hoodieAccentMat);
+        visor.position.set(0, 0.24, -0.38);
+        headGroup.add(visor);
+
+        // Legs
+        const legGeo = new THREE.BoxGeometry(0.24, 0.85, 0.26);
+        const leftLeg = new THREE.Mesh(legGeo, cargoPantsMat);
+        leftLeg.position.set(-0.22, 0.45, 0);
+        bodyGroup.add(leftLeg);
+
+        const rightLeg = new THREE.Mesh(legGeo, cargoPantsMat);
+        rightLeg.position.set(0.22, 0.45, 0);
+        bodyGroup.add(rightLeg);
+
+        // High-top sneakers
+        const shoeGeo = new THREE.BoxGeometry(0.25, 0.16, 0.38);
+        const leftShoe = new THREE.Mesh(shoeGeo, sneakerMat);
+        leftShoe.position.set(-0.22, 0.08, -0.06);
+        bodyGroup.add(leftShoe);
+
+        const rightShoe = new THREE.Mesh(shoeGeo, sneakerMat);
+        rightShoe.position.set(0.22, 0.08, -0.06);
+        bodyGroup.add(rightShoe);
+
+        // Arms
+        const armGeo = new THREE.BoxGeometry(0.22, 0.72, 0.22);
+        const leftArm = new THREE.Mesh(armGeo, hoodieMat);
+        leftArm.position.set(-0.52, 1.45, 0);
+        bodyGroup.add(leftArm);
+
+        const rightArm = new THREE.Mesh(armGeo, hoodieMat);
+        rightArm.position.set(0.52, 1.45, 0);
+        bodyGroup.add(rightArm);
+
+        charGroup.leftLeg = leftLeg;
+        charGroup.rightLeg = rightLeg;
+        charGroup.leftShoe = leftShoe;
+        charGroup.rightShoe = rightShoe;
+        charGroup.leftArm = leftArm;
+        charGroup.rightArm = rightArm;
+        charGroup.headGroup = headGroup;
+      } else if (type === 'police') {
+        const carGroup = new THREE.Group();
+        bodyGroup.add(carGroup);
+
+        const policeNavyMat = new THREE.MeshLambertMaterial({ color: 0x121d33 });
+        const policeWhiteMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+        const glassMat = new THREE.MeshLambertMaterial({ color: 0x1e293b, transparent: true, opacity: 0.85 });
+        const wheelMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+        const hubcapMat = new THREE.MeshLambertMaterial({ color: 0x94a3b8 });
+        const bumperMat = new THREE.MeshLambertMaterial({ color: 0x05080f });
+        const sirenBarMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+        const sirenRedMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+        const sirenBlueMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 });
+        const headlightMat = new THREE.MeshBasicMaterial({ color: 0xfffbeb });
+        const taillightMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+
+        // Lower Chassis
+        const chassisGeo = new THREE.BoxGeometry(1.8, 0.55, 3.4);
+        const chassis = new THREE.Mesh(chassisGeo, policeNavyMat);
+        chassis.position.y = 0.55;
+        carGroup.add(chassis);
+
+        // White Door / Side Wrap
+        const sideWrapGeo = new THREE.BoxGeometry(1.82, 0.42, 1.6);
+        const sideWrap = new THREE.Mesh(sideWrapGeo, policeWhiteMat);
+        sideWrap.position.set(0, 0.58, 0.1);
+        carGroup.add(sideWrap);
+
+        // Front Hood (White)
+        const hoodGeo = new THREE.BoxGeometry(1.68, 0.22, 1.1);
+        const hood = new THREE.Mesh(hoodGeo, policeWhiteMat);
+        hood.position.set(0, 0.72, -1.05);
+        carGroup.add(hood);
+
+        // Cabin / Greenhouse
+        const cabinGeo = new THREE.BoxGeometry(1.5, 0.52, 1.6);
+        const cabin = new THREE.Mesh(cabinGeo, glassMat);
+        cabin.position.set(0, 1.05, 0.15);
+        carGroup.add(cabin);
+
+        // Cabin Roof (Navy)
+        const roofGeo = new THREE.BoxGeometry(1.45, 0.08, 1.45);
+        const roof = new THREE.Mesh(roofGeo, policeNavyMat);
+        roof.position.set(0, 1.33, 0.15);
+        carGroup.add(roof);
+
+        // Front Pushbar / Bullbar
+        const bullbarGeo = new THREE.BoxGeometry(1.6, 0.45, 0.15);
+        const bullbar = new THREE.Mesh(bullbarGeo, bumperMat);
+        bullbar.position.set(0, 0.55, -1.78);
+        carGroup.add(bullbar);
+
+        // Headlights
+        for (let side of [-0.65, 0.65]) {
+          const hlGeo = new THREE.BoxGeometry(0.3, 0.18, 0.08);
+          const hl = new THREE.Mesh(hlGeo, headlightMat);
+          hl.position.set(side, 0.62, -1.72);
+          carGroup.add(hl);
+        }
+
+        // Taillights
+        for (let side of [-0.65, 0.65]) {
+          const tlGeo = new THREE.BoxGeometry(0.3, 0.16, 0.08);
+          const tl = new THREE.Mesh(tlGeo, taillightMat);
+          tl.position.set(side, 0.65, 1.72);
+          carGroup.add(tl);
+        }
+
+        // 4 Wheels
+        const wheelGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.24, 16);
+        wheelGeo.rotateZ(Math.PI / 2);
+        const wheelPositions = [
+          [-0.92, 0.32, -1.0],
+          [0.92, 0.32, -1.0],
+          [-0.92, 0.32, 1.1],
+          [0.92, 0.32, 1.1]
+        ];
+        wheelPositions.forEach(pos => {
+          const w = new THREE.Mesh(wheelGeo, wheelMat);
+          w.position.set(...pos);
+          carGroup.add(w);
+
+          const rimGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.25, 12);
+          rimGeo.rotateZ(Math.PI / 2);
+          const rim = new THREE.Mesh(rimGeo, hubcapMat);
+          rim.position.set(...pos);
+          carGroup.add(rim);
+        });
+
+        // Rooftop Siren Bar
+        const barFrameGeo = new THREE.BoxGeometry(1.1, 0.06, 0.22);
+        const barFrame = new THREE.Mesh(barFrameGeo, sirenBarMat);
+        barFrame.position.set(0, 1.4, 0.15);
+        carGroup.add(barFrame);
+
+        // Red Light (Left) & Blue Light (Right)
+        const sirenRedGeo = new THREE.BoxGeometry(0.42, 0.12, 0.18);
+        const sirenRed = new THREE.Mesh(sirenRedGeo, sirenRedMat);
+        sirenRed.position.set(-0.32, 1.48, 0.15);
+        carGroup.add(sirenRed);
+
+        const sirenBlueGeo = new THREE.BoxGeometry(0.42, 0.12, 0.18);
+        const sirenBlue = new THREE.Mesh(sirenBlueGeo, sirenBlueMat);
+        sirenBlue.position.set(0.32, 1.48, 0.15);
+        carGroup.add(sirenBlue);
+
+        // Flashing Point Lights for Sirens
+        const lightRed = new THREE.PointLight(0xef4444, 2.5, 15);
+        lightRed.position.set(-0.35, 1.6, 0.15);
+        carGroup.add(lightRed);
+
+        const lightBlue = new THREE.PointLight(0x3b82f6, 2.5, 15);
+        lightBlue.position.set(0.35, 1.6, 0.15);
+        carGroup.add(lightBlue);
+
+        charGroup.sirenRed = sirenRed;
+        charGroup.sirenBlue = sirenBlue;
+        charGroup.lightRed = lightRed;
+        charGroup.lightBlue = lightBlue;
+        charGroup.carBody = carGroup;
+        charGroup.isPoliceCar = true;
       }
 
       return charGroup;
@@ -1738,13 +3859,14 @@
     const JUMP_FORCE = 15.5;
 
     const STATE = {
+      HUB: -1,
       MENU: 0,
       PLAYING: 1,
       PAUSED: 2,
       GAMEOVER: 3
     };
 
-    let currentState = STATE.MENU;
+    let currentState = STATE.HUB;
     let selectedPlayerType = 'marius';
     let chaserType = 'zanni';
 
@@ -1805,7 +3927,191 @@
       chunk.isTurnChunk = isTurn;
       chunk.turnDir = turnDir;
 
-      if (gameMode === 'subway') {
+      if (gameMode === 'andi') {
+        /* ================= ANDI LA IESC - CORPUL V BRAȘOV (HALLWAY PURSUIT) ================= */
+        // 1. Hallway Floor (Gresie lustruită de facultate cu benzi decorative)
+        const floorGeo = new THREE.PlaneGeometry(9.6, CHUNK_LENGTH);
+        const floorMat = new THREE.MeshLambertMaterial({ color: 0xdde5ed }); // Polished institutional hallway tiles
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        chunk.add(floor);
+
+        // UniTBv navy floor border trims
+        for (let fx of [-4.65, 4.65]) {
+          const trimGeo = new THREE.PlaneGeometry(0.35, CHUNK_LENGTH);
+          const trimMat = new THREE.MeshLambertMaterial({ color: 0x1e3a5f });
+          const trim = new THREE.Mesh(trimGeo, trimMat);
+          trim.rotation.x = -Math.PI / 2;
+          trim.position.set(fx, 0.01, 0);
+          chunk.add(trim);
+        }
+
+        // 3-lane demarcation runners on the hallway floor
+        for (let lx of [-1.35, 1.35]) {
+          for (let sz = -CHUNK_LENGTH/2 + 2; sz < CHUNK_LENGTH/2; sz += 5) {
+            const runnerGeo = new THREE.PlaneGeometry(0.14, 2.8);
+            const runnerMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.6 });
+            const runner = new THREE.Mesh(runnerGeo, runnerMat);
+            runner.rotation.x = -Math.PI / 2;
+            runner.position.set(lx, 0.012, sz);
+            chunk.add(runner);
+          }
+        }
+
+        // 2. Suspended Ceiling (Tavan casetat de facultate cu lămpi fluorescente / neoane)
+        const ceilGeo = new THREE.PlaneGeometry(9.6, CHUNK_LENGTH);
+        const ceilMat = new THREE.MeshLambertMaterial({ color: 0xf1f5f9 });
+        const ceiling = new THREE.Mesh(ceilGeo, ceilMat);
+        ceiling.rotation.x = Math.PI / 2;
+        ceiling.position.y = 4.8;
+        chunk.add(ceiling);
+
+        // Overhead fluorescent fixtures (Neoane lungi de laborator IESC)
+        for (let zOffset of [-CHUNK_LENGTH * 0.35, 0, CHUNK_LENGTH * 0.35]) {
+          const fixture = new THREE.Mesh(
+            new THREE.BoxGeometry(2.6, 0.1, 0.6),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          fixture.position.set(0, 4.75, zOffset);
+          chunk.add(fixture);
+
+          const neonPoint = new THREE.PointLight(0xf8fafc, 0.6, 14);
+          neonPoint.position.set(0, 4.45, zOffset);
+          chunk.add(neonPoint);
+        }
+
+        // Cable Trays (Paturi de cabluri UTP specifice calculatoarelor la IESC)
+        for (let side of [-1, 1]) {
+          const tray = new THREE.Mesh(
+            new THREE.BoxGeometry(0.3, 0.15, CHUNK_LENGTH),
+            new THREE.MeshLambertMaterial({ color: 0x475569 })
+          );
+          tray.position.set(side * 4.65, 4.3, 0);
+          chunk.add(tray);
+        }
+
+        // 3. Hallway Walls (Pereții Corpului V)
+        const labNames = [
+          'LAB V.I.1\nCALCULATOARE',
+          'AMFITEATRUL V.I.2\nIESC BRAȘOV',
+          'LAB V.I.3\nREȚELE & CISCO',
+          'SALA V.II.1\nELECTRONICĂ',
+          'DECANAT IESC\nCORPUL V',
+          'SECRETARIAT\nCORP V',
+          'LAB ROBOTICĂ\nV.I.8'
+        ];
+
+        for (let side of [-1, 1]) {
+          // Upper cream wall
+          const wall = new THREE.Mesh(
+            new THREE.PlaneGeometry(CHUNK_LENGTH, 4.8),
+            new THREE.MeshLambertMaterial({ color: 0xf8fafc, side: THREE.DoubleSide })
+          );
+          wall.position.set(side * 4.8, 2.4, 0);
+          wall.rotation.y = (side === -1) ? Math.PI / 2 : -Math.PI / 2;
+          chunk.add(wall);
+
+          // Lower wainscot stripe (Lambriu lavabil albastru IESC)
+          const wainscot = new THREE.Mesh(
+            new THREE.PlaneGeometry(CHUNK_LENGTH, 1.4),
+            new THREE.MeshLambertMaterial({ color: 0x1e3a5f, side: THREE.DoubleSide })
+          );
+          wainscot.position.set(side * 4.78, 0.7, 0);
+          wainscot.rotation.y = (side === -1) ? Math.PI / 2 : -Math.PI / 2;
+          chunk.add(wainscot);
+
+          // Doors to classrooms and labs (Uși spre laboratoarele Corpului V)
+          const doorPositions = [-CHUNK_LENGTH * 0.3, CHUNK_LENGTH * 0.2];
+          doorPositions.forEach((doorZ, dIdx) => {
+            const door = new THREE.Mesh(
+              new THREE.BoxGeometry(0.12, 2.7, 1.45),
+              new THREE.MeshLambertMaterial({ color: 0x64748b })
+            );
+            door.position.set(side * 4.74, 1.35, doorZ);
+            chunk.add(door);
+
+            const handle = new THREE.Mesh(
+              new THREE.BoxGeometry(0.08, 0.08, 0.18),
+              new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8 })
+            );
+            handle.position.set(side * 4.68, 1.25, doorZ + side * 0.45);
+            chunk.add(handle);
+
+            // Blue laboratory plate above door ("V.I.1 - Calculatoare")
+            const plateCanvas = document.createElement('canvas');
+            plateCanvas.width = 256; plateCanvas.height = 80;
+            const pCtx = plateCanvas.getContext('2d');
+            pCtx.fillStyle = '#1e3a5f';
+            pCtx.fillRect(0, 0, 256, 80);
+            pCtx.fillStyle = '#f8fafc';
+            pCtx.font = 'bold 22px monospace';
+            pCtx.textAlign = 'center';
+            const randomLab = labNames[(Math.abs(Math.floor(doorZ * 7 + side * 13)) + dIdx) % labNames.length];
+            const lines = randomLab.split('\n');
+            pCtx.fillText(lines[0], 128, 34);
+            if (lines[1]) {
+              pCtx.font = '16px monospace';
+              pCtx.fillStyle = '#93c5fd';
+              pCtx.fillText(lines[1], 128, 62);
+            }
+            const plateTex = new THREE.CanvasTexture(plateCanvas);
+            const plate = new THREE.Mesh(
+              new THREE.PlaneGeometry(1.4, 0.45),
+              new THREE.MeshBasicMaterial({ map: plateTex, side: THREE.DoubleSide })
+            );
+            plate.position.set(side * 4.72, 2.95, doorZ);
+            plate.rotation.y = (side === -1) ? Math.PI / 2 : -Math.PI / 2;
+            chunk.add(plate);
+          });
+
+          // Avizier pe hol (Notice boards with Exam results / Restanțe)
+          const boardCanvas = document.createElement('canvas');
+          boardCanvas.width = 256; boardCanvas.height = 160;
+          const bCtx = boardCanvas.getContext('2d');
+          bCtx.fillStyle = '#b45309';
+          bCtx.fillRect(0, 0, 256, 160);
+          bCtx.fillStyle = '#d97706';
+          bCtx.fillRect(6, 6, 244, 148);
+          bCtx.fillStyle = '#ffffff';
+          bCtx.fillRect(16, 20, 100, 120);
+          bCtx.fillRect(130, 20, 110, 120);
+          bCtx.fillStyle = '#dc2626';
+          bCtx.font = 'bold 15px sans-serif';
+          bCtx.fillText('RESTANȚE', 22, 38);
+          bCtx.fillStyle = '#0f172a';
+          bCtx.font = '10px monospace';
+          bCtx.fillText('SDA - Colocviu', 22, 54);
+          bCtx.fillText('Andi: PICAT', 22, 68);
+          bCtx.fillText('Matematici Spec.', 22, 82);
+          bCtx.fillStyle = '#1e3a5f';
+          bCtx.font = 'bold 14px sans-serif';
+          bCtx.fillText('IESC CORP V', 136, 38);
+          bCtx.font = '10px sans-serif';
+          bCtx.fillText('Orar Sem. II', 136, 54);
+          bCtx.fillText('Licență 2026', 136, 68);
+          bCtx.fillText('Nu fumați pe hol!', 136, 95);
+
+          const boardTex = new THREE.CanvasTexture(boardCanvas);
+          const noticeBoard = new THREE.Mesh(
+            new THREE.PlaneGeometry(1.8, 1.1),
+            new THREE.MeshBasicMaterial({ map: boardTex, side: THREE.DoubleSide })
+          );
+          noticeBoard.position.set(side * 4.73, 2.2, 0);
+          noticeBoard.rotation.y = (side === -1) ? Math.PI / 2 : -Math.PI / 2;
+          chunk.add(noticeBoard);
+
+          // Red Fire Extinguisher mounted on wall
+          const extGroup = new THREE.Group();
+          extGroup.position.set(side * 4.65, 1.8, CHUNK_LENGTH * 0.4);
+          const cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.55, 12), new THREE.MeshLambertMaterial({ color: 0xef4444 }));
+          extGroup.add(cyl);
+          const nozzle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.08), new THREE.MeshLambertMaterial({ color: 0x111827 }));
+          nozzle.position.y = 0.32;
+          extGroup.add(nozzle);
+          chunk.add(extGroup);
+        }
+      } else if (gameMode === 'subway') {
         /* ================= SUBWAY SURFERS (3 LANES) ================= */
         const roadGeo = new THREE.PlaneGeometry(9.2, CHUNK_LENGTH);
         const roadMat = new THREE.MeshLambertMaterial({ color: 0x181e29 });
@@ -1965,6 +4271,17 @@
       collectibleCoins.forEach(c => scene.remove(c));
       collectibleCoins = [];
 
+      if (gameMode === 'andi') {
+        scene.background = new THREE.Color(0xdbeafe); // Bright interior university hallway light
+        scene.fog = new THREE.FogExp2(0xdbeafe, 0.01);
+      } else if (gameMode === 'temple') {
+        scene.background = new THREE.Color(0x1c1917);
+        scene.fog = new THREE.FogExp2(0x1c1917, 0.016);
+      } else {
+        scene.background = new THREE.Color(0x080c16);
+        scene.fog = new THREE.FogExp2(0x080c16, 0.016);
+      }
+
       for (let i = 0; i < ACTIVE_CHUNKS; i++) {
         const chunk = createTrackChunk(-i * CHUNK_LENGTH);
         trackChunks.push(chunk);
@@ -1980,6 +4297,43 @@
        ========================================================================= */
     function spawnObstaclePattern(zPos) {
       if (zPos > -25) return;
+
+      if (gameMode === 'andi') {
+        // ANDI LA IESC (CORPUL V BRAȘOV): Obstacole pe holurile facultății
+        const patternType = Math.floor(Math.random() * 5);
+        const freeLane = Math.floor(Math.random() * 3);
+
+        for (let l = 0; l < 3; l++) {
+          if (l === freeLane && patternType !== 4) {
+            spawnSubwayCoinLine(l, zPos + 4, 3);
+            continue;
+          }
+
+          const laneX = SUBWAY_LANES[l];
+
+          if (patternType === 0) {
+            // Bancă de hol universitară IESC (SARI PESTE EA)
+            createUniversityBenchObstacle(laneX, zPos);
+            spawnCoinArc(l, zPos);
+          } else if (patternType === 1) {
+            // Cabluri suspendate de rețea / Panou IESC (ALUNECĂ PE SUB EL)
+            createSuspendedCableObstacle(laneX, zPos);
+          } else if (patternType === 2) {
+            // Automatul de cafea de 2 lei de la Corpul V (BLOCAJ TOTAL DE BANDĂ)
+            createVendingMachineObstacle(laneX, zPos);
+          } else if (patternType === 3) {
+            // Cărucior de curățenie & Semn galben „Podea Umedă Corpul V” (SARI PESTE)
+            createWetFloorCartObstacle(laneX, zPos);
+          } else if (patternType === 4) {
+            if (l === 1 && Math.random() < 0.3) {
+              spawnPowerup(laneX, zPos);
+            } else {
+              spawnSubwayCoinLine(l, zPos + 3, 2);
+            }
+          }
+        }
+        return;
+      }
 
       if (gameMode === 'temple') {
         // TEMPLE RUN: Obstacles placed across the single road!
@@ -2195,6 +4549,180 @@
       obstacles.push(rb);
     }
 
+    /* CORPUL V IESC - BRAȘOV OBSTACLES */
+    function createUniversityBenchObstacle(x, z) {
+      const bench = new THREE.Group();
+      bench.position.set(x, 0, z);
+      bench.obsType = 'low'; // Jump over
+
+      // Wooden seat and backrest
+      const woodMat = new THREE.MeshLambertMaterial({ color: 0xb45309 });
+      const steelMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.08, 0.55), woodMat);
+      seat.position.y = 0.48;
+      bench.add(seat);
+
+      const back = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.28, 0.06), woodMat);
+      back.position.set(0, 0.72, -0.22);
+      bench.add(back);
+
+      // Steel legs
+      for (let lx of [-0.95, 0.95]) {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.48, 0.5), steelMat);
+        leg.position.set(lx, 0.24, 0);
+        bench.add(leg);
+      }
+
+      // Student backpack on bench
+      const bagMat = new THREE.MeshLambertMaterial({ color: 0x2563eb });
+      const bag = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.32, 0.32), bagMat);
+      bag.position.set(-0.55, 0.68, 0.05);
+      bench.add(bag);
+
+      // Student Course Notes / Exam folder ("CURS IESC")
+      const notesMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+      const notes = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.04, 0.3), notesMat);
+      notes.position.set(0.45, 0.54, 0.02);
+      bench.add(notes);
+
+      // Coffee paper cup
+      const cupMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+      const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.045, 0.16, 8), cupMat);
+      cup.position.set(0.18, 0.58, 0.08);
+      bench.add(cup);
+
+      scene.add(bench);
+      obstacles.push(bench);
+    }
+
+    function createSuspendedCableObstacle(x, z) {
+      const bannerGroup = new THREE.Group();
+      bannerGroup.position.set(x, 0, z);
+      bannerGroup.obsType = 'high'; // Slide under
+
+      // Vertical steel supports hanging from ceiling
+      const postMat = new THREE.MeshLambertMaterial({ color: 0x475569 });
+      const postGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.7);
+
+      const p1 = new THREE.Mesh(postGeo, postMat);
+      p1.position.set(-1.12, 3.45, 0);
+      bannerGroup.add(p1);
+
+      const p2 = new THREE.Mesh(postGeo, postMat);
+      p2.position.set(1.12, 3.45, 0);
+      bannerGroup.add(p2);
+
+      // Cable bundle droop (Cabluri albastre & gri atârnând)
+      const cableMat = new THREE.MeshLambertMaterial({ color: 0x0284c7 });
+      const cable = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.05, 6, 16, Math.PI), cableMat);
+      cable.position.set(0, 2.7, 0);
+      bannerGroup.add(cable);
+
+      // Warning banner canvas
+      const bCanvas = document.createElement('canvas');
+      bCanvas.width = 256; bCanvas.height = 64;
+      const bCtx = bCanvas.getContext('2d');
+      bCtx.fillStyle = '#facc15';
+      bCtx.fillRect(0, 0, 256, 64);
+      bCtx.fillStyle = '#0f172a';
+      for (let sx = -64; sx < 320; sx += 32) {
+        bCtx.beginPath();
+        bCtx.moveTo(sx, 0);
+        bCtx.lineTo(sx + 16, 0);
+        bCtx.lineTo(sx, 64);
+        bCtx.lineTo(sx - 16, 64);
+        bCtx.fill();
+      }
+      bCtx.font = 'bold 16px monospace';
+      bCtx.fillText('ATENTIE CABLURI IESC', 30, 40);
+
+      const bTex = new THREE.CanvasTexture(bCanvas);
+      const bMat = new THREE.MeshBasicMaterial({ map: bTex, side: THREE.DoubleSide });
+      const banner = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 0.45), bMat);
+      banner.position.set(0, 2.15, 0);
+      bannerGroup.add(banner);
+
+      scene.add(bannerGroup);
+      obstacles.push(bannerGroup);
+    }
+
+    function createVendingMachineObstacle(x, z) {
+      const machine = new THREE.Group();
+      machine.position.set(x, 0, z);
+      machine.obsType = 'full'; // Full lane blocker
+
+      const bodyMat = new THREE.MeshLambertMaterial({ color: 0x991b1b }); // Corpul V Red Vending Machine
+      const darkMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+
+      // Main cabinet
+      const cab = new THREE.Mesh(new THREE.BoxGeometry(1.7, 2.4, 1.2), bodyMat);
+      cab.position.y = 1.2;
+      machine.add(cab);
+
+      // Front display recess
+      const display = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.2, 0.1), darkMat);
+      display.position.set(0, 1.45, 0.58);
+      machine.add(display);
+
+      // Coffee dispenser window canvas
+      const vCanvas = document.createElement('canvas');
+      vCanvas.width = 128; vCanvas.height = 128;
+      const vCtx = vCanvas.getContext('2d');
+      vCtx.fillStyle = '#1e293b'; vCtx.fillRect(0, 0, 128, 128);
+      vCtx.fillStyle = '#fbbf24'; vCtx.font = 'bold 16px sans-serif';
+      vCtx.fillText('CAFEA 2 LEI', 12, 35);
+      vCtx.fillStyle = '#38bdf8'; vCtx.font = '12px sans-serif';
+      vCtx.fillText('CORPUL V IESC', 14, 60);
+      vCtx.fillText('• ESPRESSO', 14, 85);
+      vCtx.fillText('• CAPPUCCINO', 14, 105);
+      const vTex = new THREE.CanvasTexture(vCanvas);
+      const sign = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.9), new THREE.MeshBasicMaterial({ map: vTex }));
+      sign.position.set(0, 1.45, 0.64);
+      machine.add(sign);
+
+      // Cup dispenser tray at bottom
+      const tray = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.35, 0.25), darkMat);
+      tray.position.set(0, 0.45, 0.6);
+      machine.add(tray);
+
+      scene.add(machine);
+      obstacles.push(machine);
+    }
+
+    function createWetFloorCartObstacle(x, z) {
+      const cartGroup = new THREE.Group();
+      cartGroup.position.set(x, 0, z);
+      cartGroup.obsType = 'low'; // Jump over
+
+      // Cleaning cart base
+      const cartMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+      const cart = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.15, 0.8), cartMat);
+      cart.position.y = 0.15;
+      cartGroup.add(cart);
+
+      // Yellow mop bucket
+      const bucketMat = new THREE.MeshLambertMaterial({ color: 0xfacc15 });
+      const bucket = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.45, 0.45), bucketMat);
+      bucket.position.set(-0.35, 0.42, 0);
+      cartGroup.add(bucket);
+
+      // Yellow Caution Cone / Pyramid "PODEA UMEDĂ CORP V"
+      const coneMat = new THREE.MeshLambertMaterial({ color: 0xf59e0b });
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.75, 4), coneMat);
+      cone.position.set(0.45, 0.4, 0);
+      cartGroup.add(cone);
+
+      // Mop handle leaning
+      const mopHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.3), new THREE.MeshLambertMaterial({ color: 0x94a3b8 }));
+      mopHandle.position.set(-0.35, 0.85, 0);
+      mopHandle.rotation.z = -0.25;
+      cartGroup.add(mopHandle);
+
+      scene.add(cartGroup);
+      obstacles.push(cartGroup);
+    }
+
     // COLLECTIBLES: COINS & TEMPLE GEMS
     const coinGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.08, 16);
     const gemGeo = new THREE.OctahedronGeometry(0.35);
@@ -2210,6 +4738,18 @@
           emissiveIntensity: 0.2
         });
         coinMesh = new THREE.Mesh(coinGeo, coinMat);
+        coinMesh.rotation.z = Math.PI / 2;
+      } else if (gameMode === 'andi') {
+        // ECTS Credit Token (UniTBv Cyan / Gold)
+        const ectsGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.1, 16);
+        const ectsMat = new THREE.MeshStandardMaterial({
+          color: 0x38bdf8,
+          metalness: 0.85,
+          roughness: 0.2,
+          emissive: 0x0284c7,
+          emissiveIntensity: 0.4
+        });
+        coinMesh = new THREE.Mesh(ectsGeo, ectsMat);
         coinMesh.rotation.z = Math.PI / 2;
       } else {
         const gemMat = new THREE.MeshStandardMaterial({
@@ -2401,7 +4941,7 @@
 
       if (currentState === STATE.PLAYING) {
         updateGameplay(dt);
-      } else if (currentState === STATE.MENU) {
+      } else if (currentState === STATE.MENU || currentState === STATE.HUB) {
         updateMenuPreview(dt);
       } else if (currentState === STATE.GAMEOVER) {
         updateGameOverCamera(dt);
@@ -2546,9 +5086,9 @@
       }
 
       // 5. MOVEMENT LOGIC:
-      // In Subway Mode: Discrete 3-lane lerp
+      // In Subway & Andi Mode: Discrete 3-lane lerp
       // In Temple Run Mode: Continuous smooth analog steering across the single stone path!
-      if (gameMode === 'subway') {
+      if (gameMode === 'subway' || gameMode === 'andi') {
         targetX = SUBWAY_LANES[currentLane];
         playerX += (targetX - playerX) * 14 * dt;
         document.getElementById('edge-warning').classList.remove('active');
@@ -2636,7 +5176,7 @@
 
       // 10. Camera Follow
       camera.position.x += (playerX * 0.45 - camera.position.x) * 10 * dt;
-      const bankAngle = (gameMode === 'subway') ? (playerX - targetX) * 0.06 : (keysDown['ArrowLeft'] || keysDown['KeyA'] ? -0.06 : (keysDown['ArrowRight'] || keysDown['KeyD'] ? 0.06 : 0));
+      const bankAngle = (gameMode === 'subway' || gameMode === 'andi') ? (playerX - targetX) * 0.06 : (keysDown['ArrowLeft'] || keysDown['KeyA'] ? -0.06 : (keysDown['ArrowRight'] || keysDown['KeyD'] ? 0.06 : 0));
       camera.rotation.z += (bankAngle - camera.rotation.z) * 8 * dt;
 
       const targetCamY = isSliding ? 3.3 : (4.0 + playerY * 0.4);
@@ -2644,7 +5184,7 @@
     }
 
     function updateChaserAI(dt) {
-      if (gameMode === 'subway') {
+      if (gameMode === 'subway' || gameMode === 'andi') {
         const chaserTargetX = SUBWAY_LANES[chaserLane];
         chaserX += (chaserTargetX - chaserX) * 7.5 * dt;
       } else {
@@ -2662,8 +5202,12 @@
       if (isVeryClose && !chaserWarningActive) {
         chaserWarningActive = true;
         chaserWarningEl.classList.add('active');
-        document.getElementById('chaser-warning-text').innerText = 
-          (chaserType === 'zanni') ? 'ZANNI E EXACT ÎN SPATELE TĂU!' : 'MARIUS TE AJUNGE DIN URMĂ!';
+        if (gameMode === 'andi') {
+          document.getElementById('chaser-warning-text').innerText = 'POLIȚIA E PE URMELE TALE PE HOLUL CORPULUI V IESC!';
+        } else {
+          document.getElementById('chaser-warning-text').innerText = 
+            (chaserType === 'zanni') ? 'ZANNI E EXACT ÎN SPATELE TĂU!' : 'MARIUS TE AJUNGE DIN URMĂ!';
+        }
       } else if (!isVeryClose && chaserWarningActive) {
         chaserWarningActive = false;
         chaserWarningEl.classList.remove('active');
@@ -2717,7 +5261,7 @@
         }
 
         // Body tilt when steering or changing lanes
-        const tiltAmount = (gameMode === 'subway') ? (targetX - playerX) * -0.12 : ((keysDown['ArrowLeft'] || keysDown['KeyA']) ? -0.15 : ((keysDown['ArrowRight'] || keysDown['KeyD']) ? 0.15 : 0));
+        const tiltAmount = (gameMode === 'subway' || gameMode === 'andi') ? (targetX - playerX) * -0.12 : ((keysDown['ArrowLeft'] || keysDown['KeyA']) ? -0.15 : ((keysDown['ArrowRight'] || keysDown['KeyD']) ? 0.15 : 0));
         body.rotation.z += (tiltAmount - body.rotation.z) * 10 * dt;
 
         if (playerGroup.headGroup) {
@@ -2730,18 +5274,41 @@
       }
 
       if (chaserGroup && currentState === STATE.PLAYING) {
-        const cBody = chaserGroup.bodyGroup;
-        const cRunPhase = animTime * runFrequency * 1.05;
-        cBody.position.y = Math.abs(Math.sin(cRunPhase)) * 0.15;
-        cBody.rotation.x = -0.22;
+        if (chaserGroup.isPoliceCar) {
+          // Flashing Red & Blue Police Cruiser Rooftop Sirens (~14Hz alternating)
+          const flashPhase = animTime * 14.0;
+          const isRedActive = Math.sin(flashPhase) > 0;
 
-        const cLegSwing = Math.sin(cRunPhase) * 0.95;
-        if (chaserGroup.leftLeg) chaserGroup.leftLeg.rotation.x = cLegSwing;
-        if (chaserGroup.rightLeg) chaserGroup.rightLeg.rotation.x = -cLegSwing;
+          if (chaserGroup.lightRed) chaserGroup.lightRed.intensity = isRedActive ? 3.5 : 0.2;
+          if (chaserGroup.lightBlue) chaserGroup.lightBlue.intensity = isRedActive ? 0.2 : 3.5;
+          if (chaserGroup.sirenRed) {
+            chaserGroup.sirenRed.material.color.setHex(isRedActive ? 0xff2222 : 0x440000);
+          }
+          if (chaserGroup.sirenBlue) {
+            chaserGroup.sirenBlue.material.color.setHex(isRedActive ? 0x001144 : 0x2288ff);
+          }
 
-        const armGrab = Math.PI / 2.6 + Math.sin(cRunPhase * 2) * 0.15;
-        if (chaserGroup.leftArm) chaserGroup.leftArm.rotation.x = armGrab;
-        if (chaserGroup.rightArm) chaserGroup.rightArm.rotation.x = armGrab;
+          // Patrol car suspension vibration & lane-change banking tilt
+          if (chaserGroup.carBody) {
+            chaserGroup.carBody.position.y = Math.sin(animTime * 28.0) * 0.02;
+            const targetChaserX = SUBWAY_LANES[chaserLane];
+            const steerTilt = (targetChaserX - chaserX) * 0.08;
+            chaserGroup.carBody.rotation.z += (steerTilt - chaserGroup.carBody.rotation.z) * 10 * dt;
+          }
+        } else {
+          const cBody = chaserGroup.bodyGroup;
+          const cRunPhase = animTime * runFrequency * 1.05;
+          cBody.position.y = Math.abs(Math.sin(cRunPhase)) * 0.15;
+          cBody.rotation.x = -0.22;
+
+          const cLegSwing = Math.sin(cRunPhase) * 0.95;
+          if (chaserGroup.leftLeg) chaserGroup.leftLeg.rotation.x = cLegSwing;
+          if (chaserGroup.rightLeg) chaserGroup.rightLeg.rotation.x = -cLegSwing;
+
+          const armGrab = Math.PI / 2.6 + Math.sin(cRunPhase * 2) * 0.15;
+          if (chaserGroup.leftArm) chaserGroup.leftArm.rotation.x = armGrab;
+          if (chaserGroup.rightArm) chaserGroup.rightArm.rotation.x = armGrab;
+        }
       }
     }
 
@@ -2768,7 +5335,7 @@
       if (dz > 1.3) return;
 
       const dx = Math.abs(obs.position.x - playerX);
-      if (dx > (gameMode === 'subway' ? 0.95 : 2.0)) return;
+      if (dx > ((gameMode === 'subway' || gameMode === 'andi') ? 0.95 : 2.0)) return;
 
       if (obs.obsType === 'low') {
         if (playerY > 1.15) return;
@@ -2788,7 +5355,10 @@
 
       chaserTargetZ = 0.4;
 
-      const storageKey = (gameMode === 'subway') ? 'malai_best_score' : 'temple_best_score';
+      let storageKey = 'malai_best_score';
+      if (gameMode === 'andi') storageKey = 'andi_best_score';
+      else if (gameMode === 'temple') storageKey = 'temple_best_score';
+
       let currentBest = parseInt(localStorage.getItem(storageKey) || '0', 10);
       let isNewRecord = false;
 
@@ -2796,6 +5366,12 @@
         currentBest = score;
         localStorage.setItem(storageKey, currentBest.toString());
         isNewRecord = true;
+      }
+
+      // Accumulate total coins collected
+      if (coins > 0) {
+        const prevTotalCoins = parseInt(localStorage.getItem('malai_total_coins') || '0', 10);
+        localStorage.setItem('malai_total_coins', (prevTotalCoins + coins).toString());
       }
 
       setTimeout(() => {
@@ -2807,13 +5383,34 @@
         document.getElementById('res-score').innerText = `${score} m`;
         document.getElementById('res-best').innerText = `${currentBest} m`;
         document.getElementById('res-coins').innerText = coins;
-        document.getElementById('res-mode-label').innerText = (gameMode === 'subway') ? 'Subway' : 'Temple Run';
+
+        // Auto-register in Arcade Leaderboard & setup UI
+        setupGameOverLeaderboard(gameMode, score, coins);
+
+        const gameoverTitle = document.querySelector('.gameover-title');
+        if (gameMode === 'andi') {
+          if (gameoverTitle) gameoverTitle.innerText = 'TE-A PRINS POLIȚIA LA CORPUL V!';
+          document.getElementById('res-mode-label').innerText = 'IESC Corp V Brașov';
+        } else {
+          if (gameoverTitle) gameoverTitle.innerText = 'AI FOST PRINS!';
+          document.getElementById('res-mode-label').innerText = (gameMode === 'subway') ? 'Subway' : 'Temple Run';
+        }
         
         const recBadge = document.getElementById('new-record-tag');
         recBadge.style.display = isNewRecord ? 'inline-block' : 'none';
 
         if (customQuote) {
           document.getElementById('gameover-quote').innerText = customQuote;
+        } else if (gameMode === 'andi') {
+          const andiQuotes = [
+            "Portarul de la Corp V: 'Băiatu\', legitimația de student la control! Nu se aleargă cu mălai pe holurile IESC!'",
+            "Profesorul de SDA: 'Andi, ai picat colocviul și te-a prins și poliția la ușa sălii V.I.1!'",
+            "Poliția Brașov: 'Blocați ieșirea din Corpul V spre Mihai Viteazul! Suspectul a trecut de Decanat!'",
+            "Decanul IESC: 'Dacă mai răsturnați băncile de la etajul 1, vă trimit direct în comisia de etică!'",
+            "Andi: 'Dacă nu alunecam pe gresia proaspăt spălată de la parter, scăpam pe scările de incendiu spre cantină!'",
+            "Secretariatul IESC: 'Programul cu publicul s-a încheiat! Predă sacul de mălai și revino în toamnă la măriri!'"
+          ];
+          document.getElementById('gameover-quote').innerText = andiQuotes[Math.floor(Math.random() * andiQuotes.length)];
         } else {
           const quotes = (chaserType === 'zanni') ? [
             "Zannidache: 'Ai crezut că scapi cu mălaiul meu? Niciodată!'",
@@ -2852,7 +5449,7 @@
       }
 
       if (action === 'left') {
-        if (gameMode === 'subway') {
+        if (gameMode === 'subway' || gameMode === 'andi') {
           if (currentLane > 0) {
             currentLane--;
             sound.laneSwitch();
@@ -2863,7 +5460,7 @@
           sound.laneSwitch();
         }
       } else if (action === 'right') {
-        if (gameMode === 'subway') {
+        if (gameMode === 'subway' || gameMode === 'andi') {
           if (currentLane < 2) {
             currentLane++;
             sound.laneSwitch();
@@ -2910,11 +5507,11 @@
       }
 
       if (code === 'ArrowLeft' || code === 'KeyA') {
-        if (gameMode === 'subway' || (gameMode === 'temple' && activeTurnDirection !== null)) {
+        if (gameMode === 'subway' || gameMode === 'andi' || (gameMode === 'temple' && activeTurnDirection !== null)) {
           handleInput('left');
         }
       } else if (code === 'ArrowRight' || code === 'KeyD') {
-        if (gameMode === 'subway' || (gameMode === 'temple' && activeTurnDirection !== null)) {
+        if (gameMode === 'subway' || gameMode === 'andi' || (gameMode === 'temple' && activeTurnDirection !== null)) {
           handleInput('right');
         }
       } else if (code === 'ArrowUp' || code === 'KeyW' || code === 'Space') {
@@ -3048,6 +5645,7 @@
       rebuildTracks();
       buildCharacters();
 
+      document.getElementById('screen-hub').style.display = 'none';
       document.getElementById('screen-select').style.display = 'none';
       document.getElementById('screen-gameover').style.display = 'none';
       document.getElementById('screen-pause').style.display = 'none';
@@ -3064,18 +5662,153 @@
       startGame();
     }
 
-    function returnToMenu() {
+    function startAndiGame() {
+      sound.uiClick();
+      sound.init();
+      sound.policeSiren();
+
+      gameMode = 'andi';
+      selectedPlayerType = 'andi';
+      chaserType = 'police';
+
+      // Update HUD display labels
+      const coinIcon = document.getElementById('hud-coin-icon');
+      const coinLabel = document.getElementById('res-coin-label');
+      const modeLabel = document.getElementById('res-mode-label');
+      if (coinIcon) coinIcon.innerHTML = '🎓';
+      if (coinLabel) coinLabel.innerText = 'Credite ECTS & Mălai:';
+      if (modeLabel) modeLabel.innerText = 'Andi la IESC (Corpul V Brașov)';
+
+      const hintSubway = document.getElementById('controls-hint-subway');
+      const hintTemple = document.getElementById('controls-hint-temple');
+      if (hintSubway) hintSubway.style.display = 'flex';
+      if (hintTemple) hintTemple.style.display = 'none';
+
+      startGame();
+    }
+
+    function openRunnerLobby() {
+      sound.uiClick();
       currentState = STATE.MENU;
+      gameMode = 'subway';
+      selectedPlayerType = 'marius';
+      chaserType = 'zanni';
+      setCameraMenuMode();
+      setGameMode('subway');
+      selectCharacter('marius');
+      rebuildTracks();
+      buildCharacters();
+
+      document.getElementById('screen-hub').style.display = 'none';
+      document.getElementById('screen-select').style.display = 'flex';
+      document.getElementById('screen-gameover').style.display = 'none';
+      document.getElementById('screen-pause').style.display = 'none';
+      document.getElementById('screen-hud').style.display = 'none';
+    }
+
+    function returnToHub() {
+      sound.uiClick();
+      currentState = STATE.HUB;
       setCameraMenuMode();
       rebuildTracks();
       buildCharacters();
 
+      document.getElementById('screen-select').style.display = 'none';
       document.getElementById('screen-hud').style.display = 'none';
       document.getElementById('screen-gameover').style.display = 'none';
       document.getElementById('screen-pause').style.display = 'none';
       document.getElementById('turn-warning').classList.remove('active');
       document.getElementById('edge-warning').classList.remove('active');
-      document.getElementById('screen-select').style.display = 'flex';
+      document.getElementById('screen-hub').style.display = 'flex';
+
+      updateHubStats();
+    }
+
+    function returnToMenu() {
+      openRunnerLobby();
+    }
+
+    function openAndiTeaser() {
+      sound.uiClick();
+      document.getElementById('modal-andi-teaser').style.display = 'flex';
+      updateWishlistUI();
+    }
+
+    function closeAndiTeaser() {
+      sound.uiClick();
+      document.getElementById('modal-andi-teaser').style.display = 'none';
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target.id === 'modal-andi-teaser') {
+        closeAndiTeaser();
+      }
+    }
+
+    function playPoliceSirenPreview() {
+      sound.policeSiren();
+      showToast('🚨 Sirenele răsună în ecou pe holurile Corpului V IESC!');
+    }
+
+    function toggleAndiWishlist() {
+      const isWishlisted = localStorage.getItem('andi_wishlist') === 'true';
+      const newState = !isWishlisted;
+      localStorage.setItem('andi_wishlist', newState ? 'true' : 'false');
+
+      if (newState) {
+        sound.wishlistSuccess();
+        showToast('🔔 Ai adăugat jocul pe Wishlist! Vei fi notificat primul la lansare.');
+      } else {
+        sound.uiClick();
+        showToast('Ai eliminat jocul din Wishlist.');
+      }
+      updateWishlistUI();
+    }
+
+    function updateWishlistUI() {
+      const isWishlisted = localStorage.getItem('andi_wishlist') === 'true';
+      const btn = document.getElementById('btn-andi-wishlist');
+      const label = document.getElementById('wishlist-btn-text');
+      if (btn && label) {
+        if (isWishlisted) {
+          btn.style.background = '#10b981';
+          btn.style.color = '#ffffff';
+          label.innerText = 'PE WISHLIST ✓';
+        } else {
+          btn.style.background = '#ffffff';
+          btn.style.color = '#080c14';
+          label.innerText = 'ADAUGĂ PE WISHLIST';
+        }
+      }
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast-notify');
+      if (!toast) return;
+      document.getElementById('toast-text').innerText = message;
+      toast.classList.add('active');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3200);
+    }
+
+    function updateHubStats() {
+      const subwayBest = localStorage.getItem('malai_best_score') || '0';
+      const templeBest = localStorage.getItem('temple_best_score') || '0';
+      const andiBest = localStorage.getItem('andi_best_score') || '0';
+      const totalCoins = localStorage.getItem('malai_total_coins') || '0';
+
+      const elSubway = document.getElementById('hub-best-subway');
+      const elTemple = document.getElementById('hub-best-temple');
+      const elAndi = document.getElementById('hub-best-andi');
+      const elCoins = document.getElementById('hub-total-coins');
+
+      if (elSubway) elSubway.innerText = `${subwayBest} m`;
+      if (elTemple) elTemple.innerText = `${templeBest} m`;
+      if (elAndi) elAndi.innerText = `${andiBest} m`;
+      if (elCoins) elCoins.innerText = totalCoins;
     }
 
     function togglePause() {
@@ -3116,9 +5849,461 @@
       document.getElementById('powerup-bar').style.display = 'none';
     }
 
+    /* =========================================================================
+       13. REAL ARCADE LEADERBOARD & PLAYER PROFILE SYSTEM
+       ========================================================================= */
+    let activePlayerName = localStorage.getItem('arcade_player_name') || 'PLAYER_01';
+    let currentLbGame = 'andi'; // 'andi', 'subway', 'temple', 'all'
+    let currentLbSort = 'meters'; // 'meters' or 'coins'
+    let leaderboardCache = [];
+    let lastSubmittedScore = null;
+
+    const SEED_FALLBACK_SCORES = [
+      { id: 'fb-andi-1', name: 'Andi [IESC Master]', game: 'andi', meters: 2480, coins: 185, date: '2026-11-06 18:30' },
+      { id: 'fb-andi-2', name: 'Decanul IESC', game: 'andi', meters: 1940, coins: 142, date: '2026-11-06 17:15' },
+      { id: 'fb-andi-3', name: 'Prof. de SDA', game: 'andi', meters: 1420, coins: 96, date: '2026-11-06 16:40' },
+      { id: 'fb-andi-4', name: 'Student Restanțier', game: 'andi', meters: 980, coins: 68, date: '2026-11-06 15:10' },
+      { id: 'fb-andi-5', name: 'Portarul Corp V', game: 'andi', meters: 650, coins: 45, date: '2026-11-06 14:00' },
+      { id: 'fb-andi-6', name: 'Poliția Brașov', game: 'andi', meters: 410, coins: 28, date: '2026-11-06 12:20' },
+
+      { id: 'fb-sub-1', name: 'Marius Mălai', game: 'subway', meters: 3120, coins: 240, date: '2026-11-06 17:50' },
+      { id: 'fb-sub-2', name: 'Zannidache', game: 'subway', meters: 2850, coins: 215, date: '2026-11-06 16:20' },
+      { id: 'fb-sub-3', name: 'Speedy_Bucharest', game: 'subway', meters: 1760, coins: 130, date: '2026-11-06 15:45' },
+      { id: 'fb-sub-4', name: 'Metroul Pantelimon', game: 'subway', meters: 1150, coins: 82, date: '2026-11-06 13:10' },
+      { id: 'fb-sub-5', name: 'Inspector RATB', game: 'subway', meters: 720, coins: 50, date: '2026-11-06 11:05' },
+
+      { id: 'fb-tmp-1', name: 'Zanni Campionul', game: 'temple', meters: 2940, coins: 195, date: '2026-11-06 18:10' },
+      { id: 'fb-tmp-2', name: 'Marius Cazador', game: 'temple', meters: 2210, coins: 160, date: '2026-11-06 16:55' },
+      { id: 'fb-tmp-3', name: 'Aventurier Carpați', game: 'temple', meters: 1580, coins: 110, date: '2026-11-06 14:30' },
+      { id: 'fb-tmp-4', name: 'Explorator Brașov', game: 'temple', meters: 890, coins: 65, date: '2026-11-06 12:00' }
+    ];
+
+    function initPlayerProfile() {
+      const saved = localStorage.getItem('arcade_player_name');
+      if (saved) activePlayerName = saved;
+      updatePlayerNameDisplays();
+      fetchLeaderboardData();
+    }
+
+    function updatePlayerNameDisplays() {
+      const elNav = document.getElementById('nav-player-display');
+      const elLb = document.getElementById('lb-active-player-name');
+      const elInp = document.getElementById('player-name-input');
+      const elModalInp = document.getElementById('custom-player-name-input');
+
+      if (elNav) elNav.innerText = activePlayerName;
+      if (elLb) elLb.innerText = activePlayerName;
+      if (elInp && !elInp.value) elInp.value = activePlayerName;
+      if (elModalInp && !elModalInp.value) elModalInp.value = activePlayerName;
+    }
+
+    function openPlayerNameModal() {
+      sound.uiClick();
+      const modal = document.getElementById('modal-player-name');
+      const input = document.getElementById('custom-player-name-input');
+      if (input) input.value = activePlayerName;
+      if (modal) modal.style.display = 'flex';
+      setTimeout(() => { if (input) input.focus(); }, 100);
+    }
+
+    function closePlayerNameModal() {
+      sound.uiClick();
+      const modal = document.getElementById('modal-player-name');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handlePlayerNameOverlayClick(e) {
+      if (e.target.id === 'modal-player-name') {
+        closePlayerNameModal();
+      }
+    }
+
+    function setQuickName(name) {
+      sound.uiClick();
+      const input = document.getElementById('custom-player-name-input');
+      if (input) input.value = name;
+    }
+
+    function savePlayerNameFromModal() {
+      const input = document.getElementById('custom-player-name-input');
+      let val = (input ? input.value : '').trim().replace(/[<>]/g, '');
+      if (!val) val = 'PLAYER_01';
+      if (val.length > 16) val = val.substring(0, 16);
+
+      activePlayerName = val;
+      localStorage.setItem('arcade_player_name', activePlayerName);
+      updatePlayerNameDisplays();
+      closePlayerNameModal();
+      showToast(`Nume jucător salvat: ${activePlayerName}`);
+
+      // If leaderboard is open, re-render to update self-highlights
+      const lbModal = document.getElementById('modal-leaderboard');
+      if (lbModal && lbModal.style.display === 'flex') {
+        renderLeaderboard();
+      }
+    }
+
+    function openLeaderboard(targetGame = null) {
+      sound.uiClick();
+      if (targetGame) {
+        currentLbGame = targetGame;
+      }
+      const modal = document.getElementById('modal-leaderboard');
+      if (modal) modal.style.display = 'flex';
+
+      updateLbTabButtons();
+      fetchLeaderboardData();
+    }
+
+    function closeLeaderboard() {
+      sound.uiClick();
+      const modal = document.getElementById('modal-leaderboard');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleLeaderboardOverlayClick(e) {
+      if (e.target.id === 'modal-leaderboard') {
+        closeLeaderboard();
+      }
+    }
+
+    function setLeaderboardGame(gameKey) {
+      sound.uiClick();
+      currentLbGame = gameKey;
+      updateLbTabButtons();
+      renderLeaderboard();
+    }
+
+    function setLeaderboardSort(sortKey) {
+      sound.uiClick();
+      currentLbSort = sortKey;
+      const btnMeters = document.getElementById('lb-sort-meters-btn');
+      const btnCoins = document.getElementById('lb-sort-coins-btn');
+
+      if (btnMeters && btnCoins) {
+        if (sortKey === 'coins') {
+          btnMeters.classList.remove('active');
+          btnCoins.classList.add('active');
+        } else {
+          btnCoins.classList.remove('active');
+          btnMeters.classList.add('active');
+        }
+      }
+      renderLeaderboard();
+    }
+
+    function updateLbTabButtons() {
+      const tabs = document.querySelectorAll('.lb-game-tab');
+      tabs.forEach(t => {
+        if (t.getAttribute('data-game') === currentLbGame) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+
+      // Update CTA button label in footer
+      const playBtnLabel = document.getElementById('lb-play-btn-label');
+      if (playBtnLabel) {
+        if (currentLbGame === 'andi') playBtnLabel.innerText = 'JOACĂ ANDI LA IESC ▶';
+        else if (currentLbGame === 'subway') playBtnLabel.innerText = 'JOACĂ SUBWAY RUNNER ▶';
+        else if (currentLbGame === 'temple') playBtnLabel.innerText = 'JOACĂ TEMPLE RUN ▶';
+        else playBtnLabel.innerText = 'START ARCADE ▶';
+      }
+    }
+
+    async function fetchLeaderboardData() {
+      const loading = document.getElementById('lb-loading');
+      if (loading) loading.style.display = 'block';
+
+      try {
+        const res = await fetch(`/api/leaderboard?game=all&sort=meters`, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.scores)) {
+            leaderboardCache = data.scores;
+            localStorage.setItem('arcade_leaderboard_cache', JSON.stringify(leaderboardCache));
+          }
+        } else {
+          loadLeaderboardFallback();
+        }
+      } catch (err) {
+        loadLeaderboardFallback();
+      } finally {
+        if (loading) loading.style.display = 'none';
+        renderLeaderboard();
+      }
+    }
+
+    function loadLeaderboardFallback() {
+      try {
+        const cached = localStorage.getItem('arcade_leaderboard_cache');
+        if (cached) {
+          leaderboardCache = JSON.parse(cached);
+        } else {
+          leaderboardCache = [...SEED_FALLBACK_SCORES];
+          localStorage.setItem('arcade_leaderboard_cache', JSON.stringify(leaderboardCache));
+        }
+      } catch (e) {
+        leaderboardCache = [...SEED_FALLBACK_SCORES];
+      }
+    }
+
+    function renderLeaderboard() {
+      const tbody = document.getElementById('lb-table-body');
+      const emptyState = document.getElementById('lb-empty');
+      const thCoins = document.getElementById('lb-th-coins');
+      const sortCoinsLabel = document.getElementById('lb-sort-coins-label');
+
+      if (!tbody) return;
+
+      // Update Coin header title dynamically based on game
+      if (thCoins) {
+        if (currentLbGame === 'andi') thCoins.innerText = 'CREDITE ECTS';
+        else if (currentLbGame === 'subway' || currentLbGame === 'temple') thCoins.innerText = 'MĂLAI COLECTAT';
+        else thCoins.innerText = 'MĂLAI / CREDITE';
+      }
+
+      if (sortCoinsLabel) {
+        if (currentLbGame === 'andi') sortCoinsLabel.innerText = '🎓 CREDITE ECTS';
+        else sortCoinsLabel.innerText = '🪙 MĂLAI / MONEDE';
+      }
+
+      // Filter by game
+      let items = [...leaderboardCache];
+      if (currentLbGame !== 'all') {
+        items = items.filter(it => it.game === currentLbGame);
+      }
+
+      // Sort
+      if (currentLbSort === 'coins') {
+        items.sort((a, b) => (b.coins || 0) - (a.coins || 0) || (b.meters || 0) - (a.meters || 0));
+      } else {
+        items.sort((a, b) => (b.meters || 0) - (a.meters || 0) || (b.coins || 0) - (a.coins || 0));
+      }
+
+      tbody.innerHTML = '';
+
+      if (items.length === 0) {
+        if (emptyState) emptyState.style.display = 'block';
+      } else {
+        if (emptyState) emptyState.style.display = 'none';
+
+        items.forEach((entry, idx) => {
+          const rank = idx + 1;
+          const tr = document.createElement('tr');
+          const isSelf = (entry.name || '').toUpperCase() === (activePlayerName || '').toUpperCase();
+          if (isSelf) tr.classList.add('lb-row-self');
+
+          let rankBadge = `<span class="rank-badge">${rank}</span>`;
+          if (rank === 1) rankBadge = `<span class="rank-badge rank-1" title="Campioană!">🥇 1</span>`;
+          else if (rank === 2) rankBadge = `<span class="rank-badge rank-2" title="Locul 2">🥈 2</span>`;
+          else if (rank === 3) rankBadge = `<span class="rank-badge rank-3" title="Locul 3">🥉 3</span>`;
+
+          const gameBadgeClass = entry.game === 'andi' ? 'andi' : (entry.game === 'temple' ? 'temple' : 'subway');
+          const gameLabel = entry.game === 'andi' ? 'IESC CORP V' : (entry.game === 'temple' ? 'TEMPLE' : 'SUBWAY');
+
+          const coinSymbol = entry.game === 'andi' ? '🎓' : '🪙';
+          const formattedMeters = (entry.meters || 0).toLocaleString('ro-RO') + ' m';
+          const formattedCoins = (entry.coins || 0).toLocaleString('ro-RO') + ' ' + coinSymbol;
+
+          tr.innerHTML = `
+            <td>${rankBadge}</td>
+            <td>
+              <span>${escapeHtml(entry.name || 'ANONIM')}</span>
+              ${isSelf ? '<span class="lb-self-badge">TU</span>' : ''}
+            </td>
+            <td><span class="game-badge ${gameBadgeClass}">${gameLabel}</span></td>
+            <td><span class="col-meters-val">${formattedMeters}</span></td>
+            <td><span class="col-coins-val">${formattedCoins}</span></td>
+            <td><span class="col-date-val">${entry.date || 'AZI'}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Update active user personal summary stats in footer
+      updateUserSummaryStats(items);
+    }
+
+    function updateUserSummaryStats(gameItems) {
+      const summaryEl = document.getElementById('lb-user-summary-stats');
+      if (!summaryEl) return;
+
+      const myEntries = gameItems.filter(e => (e.name || '').toUpperCase() === (activePlayerName || '').toUpperCase());
+      if (myEntries.length > 0) {
+        const bestMeters = Math.max(...myEntries.map(e => e.meters || 0));
+        const bestCoins = Math.max(...myEntries.map(e => e.coins || 0));
+        const myRank = gameItems.findIndex(e => (e.name || '').toUpperCase() === (activePlayerName || '').toUpperCase()) + 1;
+        summaryEl.innerHTML = `${bestMeters.toLocaleString('ro-RO')} m • ${bestCoins.toLocaleString('ro-RO')} coins <span style="color: var(--arcade-ink); font-weight: normal;">(Locul #${myRank})</span>`;
+      } else {
+        summaryEl.innerText = 'Niciun scor înregistrat încă';
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function sendScoreToAPI(name, game, meters, coins) {
+      const payload = {
+        name: name || activePlayerName || 'ANONIM',
+        game: game || gameMode || 'subway',
+        meters: parseInt(meters, 10) || 0,
+        coins: parseInt(coins, 10) || 0
+      };
+
+      try {
+        const res = await fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.entry) {
+            // Also append to local cache
+            leaderboardCache.push(data.entry);
+            localStorage.setItem('arcade_leaderboard_cache', JSON.stringify(leaderboardCache));
+            return data;
+          }
+        }
+      } catch (err) {
+        console.warn('Leaderboard server offline, saving to localStorage:', err);
+      }
+
+      // Fallback local persistence
+      const now = new Date();
+      const fallbackEntry = {
+        id: 'local_' + Date.now(),
+        name: payload.name,
+        game: payload.game,
+        meters: payload.meters,
+        coins: payload.coins,
+        date: now.toISOString().replace('T', ' ').substring(0, 16)
+      };
+      leaderboardCache.push(fallbackEntry);
+      localStorage.setItem('arcade_leaderboard_cache', JSON.stringify(leaderboardCache));
+
+      const gameEntries = leaderboardCache.filter(e => e.game === payload.game);
+      const rankM = gameEntries.filter(e => (e.meters || 0) > payload.meters).length + 1;
+      const rankC = gameEntries.filter(e => (e.coins || 0) > payload.coins).length + 1;
+
+      return {
+        success: true,
+        entry: fallbackEntry,
+        rankMeters: rankM,
+        rankCoins: rankC,
+        totalInGame: gameEntries.length
+      };
+    }
+
+    async function setupGameOverLeaderboard(mode, currentScore, currentCoins) {
+      lastSubmittedScore = { mode, score: currentScore, coins: currentCoins };
+      const nameInput = document.getElementById('player-name-input');
+      const feedback = document.getElementById('gameover-lb-feedback');
+      const statusBadge = document.getElementById('lb-gameover-status-badge');
+
+      if (nameInput) {
+        nameInput.value = activePlayerName;
+      }
+
+      if (feedback) feedback.style.display = 'none';
+
+      // Auto-submit score with active player name
+      const result = await sendScoreToAPI(activePlayerName, mode, currentScore, currentCoins);
+      if (result && result.rankMeters) {
+        if (statusBadge) statusBadge.innerText = 'SALVAT ✓';
+        if (feedback) {
+          const coinTerm = mode === 'andi' ? 'credite' : 'mălai';
+          feedback.style.display = 'block';
+          feedback.innerHTML = `✓ Înregistrat ca <b>${escapeHtml(activePlayerName)}</b>! Locul #${result.rankMeters} la distanță & #${result.rankCoins} la ${coinTerm}!`;
+        }
+      }
+    }
+
+    async function submitCurrentScoreFromGameOver() {
+      sound.uiClick();
+      const nameInput = document.getElementById('player-name-input');
+      const feedback = document.getElementById('gameover-lb-feedback');
+      const btnSave = document.getElementById('btn-save-score');
+
+      let newName = (nameInput ? nameInput.value : '').trim().replace(/[<>]/g, '');
+      if (!newName) newName = activePlayerName || 'PLAYER_01';
+      if (newName.length > 16) newName = newName.substring(0, 16);
+
+      activePlayerName = newName;
+      localStorage.setItem('arcade_player_name', activePlayerName);
+      updatePlayerNameDisplays();
+
+      if (!lastSubmittedScore) {
+        lastSubmittedScore = { mode: gameMode, score: score, coins: coins };
+      }
+
+      if (btnSave) btnSave.innerText = 'SALVAT ✓';
+
+      const result = await sendScoreToAPI(activePlayerName, lastSubmittedScore.mode, lastSubmittedScore.score, lastSubmittedScore.coins);
+      if (feedback && result) {
+        const coinTerm = lastSubmittedScore.mode === 'andi' ? 'credite ECTS' : 'mălai';
+        feedback.style.display = 'block';
+        feedback.innerHTML = `✓ Actualizat ca <b>${escapeHtml(activePlayerName)}</b>! Locul #${result.rankMeters} la distanță & #${result.rankCoins} la ${coinTerm}!`;
+      }
+      showToast(`Scor salvat în clasament pentru ${activePlayerName}!`);
+    }
+
+    function playSelectedLeaderboardGame() {
+      closeLeaderboard();
+      if (currentLbGame === 'andi') {
+        startAndiGame();
+      } else if (currentLbGame === 'temple') {
+        selectedPlayerType = 'marius';
+        chaserType = 'zanni';
+        gameMode = 'temple';
+        setGameMode('temple');
+        startGame();
+      } else {
+        selectedPlayerType = 'marius';
+        chaserType = 'zanni';
+        gameMode = 'subway';
+        setGameMode('subway');
+        startGame();
+      }
+    }
+
     window.onload = () => {
       initThreeScene();
       animate();
+      updateHubStats();
+      initPlayerProfile();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('autoplay') === 'andi') {
+        startAndiGame();
+      } else if (urlParams.get('autoplay') === 'subway') {
+        startGame();
+      } else if (urlParams.get('modal') === 'leaderboard') {
+        openLeaderboard(urlParams.get('game') || 'andi');
+      } else if (urlParams.get('modal') === 'player') {
+        openPlayerNameModal();
+      } else if (urlParams.get('modal') === 'gameover') {
+        gameMode = urlParams.get('game') || 'andi';
+        score = 1420;
+        coins = 88;
+        document.getElementById('screen-hub').style.display = 'none';
+        document.getElementById('screen-gameover').style.display = 'flex';
+        document.getElementById('res-score').innerText = `${score} m`;
+        document.getElementById('res-best').innerText = `1,940 m`;
+        document.getElementById('res-coins').innerText = coins;
+        document.getElementById('res-mode-label').innerText = 'IESC Corp V Brașov';
+        const gameoverTitle = document.querySelector('.gameover-title');
+        if (gameoverTitle) gameoverTitle.innerText = 'TE-A PRINS POLIȚIA LA CORPUL V!';
+        setupGameOverLeaderboard(gameMode, score, coins);
+      }
 
       const unlockAndStartBgm = () => {
         sound.init();

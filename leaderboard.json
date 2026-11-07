@@ -1,0 +1,146 @@
+[
+  {
+    "id": "seed-andi-1",
+    "name": "Andi [IESC Master]",
+    "game": "andi",
+    "meters": 2480,
+    "coins": 185,
+    "date": "2026-11-06 18:30"
+  },
+  {
+    "id": "seed-andi-2",
+    "name": "Decanul IESC",
+    "game": "andi",
+    "meters": 1940,
+    "coins": 142,
+    "date": "2026-11-06 17:15"
+  },
+  {
+    "id": "seed-andi-3",
+    "name": "Prof. de SDA",
+    "game": "andi",
+    "meters": 1420,
+    "coins": 96,
+    "date": "2026-11-06 16:40"
+  },
+  {
+    "id": "seed-andi-4",
+    "name": "Student Restanțier",
+    "game": "andi",
+    "meters": 980,
+    "coins": 68,
+    "date": "2026-11-06 15:10"
+  },
+  {
+    "id": "seed-andi-5",
+    "name": "Portarul Corp V",
+    "game": "andi",
+    "meters": 650,
+    "coins": 45,
+    "date": "2026-11-06 14:00"
+  },
+  {
+    "id": "seed-andi-6",
+    "name": "Poliția Brașov",
+    "game": "andi",
+    "meters": 410,
+    "coins": 28,
+    "date": "2026-11-06 12:20"
+  },
+  {
+    "id": "seed-sub-1",
+    "name": "Marius Mălai",
+    "game": "subway",
+    "meters": 3120,
+    "coins": 240,
+    "date": "2026-11-06 17:50"
+  },
+  {
+    "id": "seed-sub-2",
+    "name": "Zannidache",
+    "game": "subway",
+    "meters": 2850,
+    "coins": 215,
+    "date": "2026-11-06 16:20"
+  },
+  {
+    "id": "seed-sub-3",
+    "name": "Speedy_Bucharest",
+    "game": "subway",
+    "meters": 1760,
+    "coins": 130,
+    "date": "2026-11-06 15:45"
+  },
+  {
+    "id": "seed-sub-4",
+    "name": "Metroul Pantelimon",
+    "game": "subway",
+    "meters": 1150,
+    "coins": 82,
+    "date": "2026-11-06 13:10"
+  },
+  {
+    "id": "seed-sub-5",
+    "name": "Inspector RATB",
+    "game": "subway",
+    "meters": 720,
+    "coins": 50,
+    "date": "2026-11-06 11:05"
+  },
+  {
+    "id": "seed-tmp-1",
+    "name": "Zanni Campionul",
+    "game": "temple",
+    "meters": 2940,
+    "coins": 195,
+    "date": "2026-11-06 18:10"
+  },
+  {
+    "id": "seed-tmp-2",
+    "name": "Marius Cazador",
+    "game": "temple",
+    "meters": 2210,
+    "coins": 160,
+    "date": "2026-11-06 16:55"
+  },
+  {
+    "id": "seed-tmp-3",
+    "name": "Aventurier Carpați",
+    "game": "temple",
+    "meters": 1580,
+    "coins": 110,
+    "date": "2026-11-06 14:30"
+  },
+  {
+    "id": "seed-tmp-4",
+    "name": "Explorator Brașov",
+    "game": "temple",
+    "meters": 890,
+    "coins": 65,
+    "date": "2026-11-06 12:00"
+  },
+  {
+    "id": "score_1793987364360_19lxi",
+    "name": "Mihai",
+    "game": "andi",
+    "meters": 1500,
+    "coins": 105,
+    "date": "2026-11-06 17:49"
+  },
+  {
+    "id": "score_1793988067415_ngyho",
+    "name": "PLAYER_01",
+    "game": "andi",
+    "meters": 1420,
+    "coins": 88,
+    "date": "2026-11-06 18:01"
+  },
+  {
+    "id": "score_1793988070703_h8sy7",
+    "name": "RESTANTIER_AN3",
+    "game": "andi",
+    "meters": 1,
+    "coins": 39,
+    "date": "2026-11-06 18:01"
+  }
+]
